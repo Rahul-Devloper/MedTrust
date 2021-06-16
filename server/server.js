@@ -2,6 +2,7 @@
 const express = require("express");
 const compression = require("compression");
 const cookieParser = require("cookie-parser");
+const mongoose = require("mongoose");
 const morgan = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
@@ -14,15 +15,15 @@ const app = express();
 const PORT = process.env.PORT || 8000;
 
 // db
-// mongoose
-//   .connect(process.env.ATLAS_URI, {
-//     useNewUrlParser: true,
-//     useCreateIndex: true,
-//     useFindAndModify: false,
-//     useUnifiedTopology: true,
-//   })
-//   .then(() => console.log("Connected to MongoDB"))
-//   .catch((err) => console.log(`DB connection error - ${err}`));
+mongoose
+  .connect(process.env.ATLAS_URI, {
+    useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
+    useUnifiedTopology: true,
+  })
+  .then(() => console.log("Connected to MongoDB"))
+  .catch((err) => console.log(`DB connection error - ${err}`));
 
 // middlewares
 app.use(compression());
