@@ -36,7 +36,7 @@ app.use(cookieParser());
 app.use(morgan("dev")); // output colored by response status for development use
 app.use(cors());
 
-// routes (read all routes in the "routes" dir and prepend "/api")
+// routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>
   app.use("/api", require("./routes/" + route))
 );

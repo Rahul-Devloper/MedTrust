@@ -2,9 +2,9 @@ const express = require("express");
 const router = express.Router();
 
 // controllers
-const { testRoute } = require("../controllers/auth");
+const { register } = require("../controllers/auth");
 
 // routes
-router.get("/test-url", testRoute, (req, res) => res.send("Final"));
+router.post("/register", register);
 
 module.exports = router;
