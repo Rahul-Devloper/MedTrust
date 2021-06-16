@@ -1,5 +1,7 @@
 const { validateEmail, validatePassword } = require("../utils/validations");
 const User = require("../models/user");
+const bcrypt = require("bcrypt");
+const user = require("../models/user");
 
 // Register a user
 exports.register = async (req, res, next) => {
@@ -53,7 +55,7 @@ exports.register = async (req, res, next) => {
       error: true,
       type: validationErrors,
     };
-    res.send(errorObject);
+    res.status(422).send(errorObject);
     return;
   }
 
@@ -76,9 +78,15 @@ exports.register = async (req, res, next) => {
       return;
     }
 
-    // Save the user to the database
-    let newUser = await new User({ email, password }).save();
-    res.json(newUser);
+    // Create the user
+    let newUser = await new User({ email, password });
+    // Generate salt to hash the password
+    const salt = await bcrypt.genSalt(10);
+    // Set user password to hashed password
+    newUser.password = await bcrypt.hash(newUser.password, salt);
+    newUser.save().then((user) => {
+      res.status(201).send(user);
+    });
   } catch (error) {
     console.log(error);
   }
