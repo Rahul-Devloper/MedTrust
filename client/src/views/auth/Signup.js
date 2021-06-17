@@ -1,13 +1,13 @@
 import React from "react";
 import { Link } from "react-router-dom";
 
-const Login = () => {
+const Register = () => {
   return (
     <>
       <h1>Login Page</h1>
       <span>
-        Don't have an account?
-        <Link to="/signup">Sign up</Link>
+        Already have an account?
+        <Link to="/login">Log in</Link>
       </span>
       <br />
       <span>
@@ -18,4 +18,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;
