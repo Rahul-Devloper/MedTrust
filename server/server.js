@@ -6,6 +6,7 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
+const passport = require("./utils/passport");
 require("dotenv").config();
 
 // initiate the express app

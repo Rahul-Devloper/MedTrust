@@ -24,9 +24,11 @@ const Signup = () => {
     signUp(email, password)
       .then((res) => {
         console.log(res.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setLoading(false);
       });
   };
 

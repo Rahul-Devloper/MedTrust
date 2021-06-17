@@ -7,3 +7,4 @@
             and decrease latency
 - CookieParser: It looks at the cookie header, we can access it by `req.cookie.key`
 - Morgan: HTTP request logger middleware for node.js
+- Passport: Authentication middleware for Node.js
