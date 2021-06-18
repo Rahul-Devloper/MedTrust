@@ -78,12 +78,10 @@ exports.signup = async (req, res) => {
       return;
     }
 
+    // Hash the password
+    const hashedPassword = await bcrypt.hash(password, 10);
     // Create the user
-    let newUser = await new User({ email, password });
-    // Generate salt to hash the password
-    const salt = await bcrypt.genSalt(10);
-    // Set user password to hashed password
-    newUser.password = await bcrypt.hash(newUser.password, salt);
+    let newUser = await new User({ email, password: hashedPassword });
     newUser.save().then((user) => {
       res.json(user);
     });
@@ -147,22 +145,41 @@ exports.login = async (req, res, next) => {
     return;
   }
 
-  // Use passport to authenticate
-  passport.authenticate("local", (err, user, info) => {
-    if (err) {
-      return next(err);
-    }
-
+  try {
+    let user = await User.findOne({ email });
     if (!user) {
-      res.send(info);
-      return;
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Incorrect Email or password" }] });
     }
 
-    // If login worked, create JWT and send it to the client
-    if (user) {
-      // send token
+    const isMatch = await bcrypt.compare(password, user.password);
+    if (!isMatch) {
+      return res
+        .status(400)
+        .json({ errors: [{ msg: "Incorrect Email or password" }] });
     }
 
     res.send(user);
-  })(req, res, next);
+  } catch (err) {
+    return res.status(500).send("Server Error");
+  }
+
+  // Use passport to authenticate
+  // passport.authenticate("local", (err, user, info) => {
+  //   if (err) {
+  //     return next(err);
+  //   }
+
+  //   if (!user) {
+  //     res.send(info);
+  //     return;
+  //   }
+
+  //   // If login worked, create JWT and send it to the client
+  //   if (user) {
+  //     // send token
+  //     res.send(user);
+  //   }
+  // })(req, res, next);
 };

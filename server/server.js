@@ -6,7 +6,8 @@ const mongoose = require("mongoose");
 const morgan = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
-const passport = require("./utils/passport");
+const session = require("express-session");
+require("./utils/passport");
 require("dotenv").config();
 
 // initiate the express app
@@ -33,9 +34,22 @@ app.use(
     limit: "5mb",
   })
 );
-app.use(cookieParser());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+  })
+);
+app.use(
+  session({
+    secret: "SEcRetCoDe",
+    resave: true,
+    saveUninitialized: true,
+  })
+);
+app.use(cookieParser("SEcRetCoDe"));
 app.use(morgan("dev")); // output colored by response status for development use
-app.use(cors());
 
 // routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>

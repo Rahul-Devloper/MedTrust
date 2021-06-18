@@ -5,8 +5,8 @@ LocalStrategy = require("passport-local").Strategy;
 // Local login
 const localLogin = new LocalStrategy(
   { usernameField: "email", passwordField: "password" },
-  function (email, password, done) {
-    User.findOne({ email }, function (err, user) {
+  (email, password, done) => {
+    User.findOne({ email }, (err, user) => {
       if (err) {
         return done(err);
       }
@@ -21,7 +21,7 @@ const localLogin = new LocalStrategy(
       // Proceed to password validation
       user.comparePassword(password, (err, isMatch) => {
         if (err) {
-          done(err);
+          return done(err);
         }
 
         if (!isMatch) {
