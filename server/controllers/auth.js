@@ -148,15 +148,14 @@ exports.login = async (req, res, next) => {
   // Use passport to authenticate
   passport.authenticate("local", (err, user, info) => {
     if (err) {
-      throw err;
+      return next(err);
     }
     if (!user) {
-      res.send("Incorrect email or password");
+      res.send(info);
     } else {
       req.logIn(user, (err) => {
         if (err) throw err;
-        res.send("Successfully Authenticated");
-        console.log(req.user);
+        res.send({ message: "Successfully Authenticated" });
       });
     }
   })(req, res, next);

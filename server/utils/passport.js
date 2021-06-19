@@ -8,15 +8,28 @@ module.exports = function (passport) {
       { usernameField: "email", passwordField: "password" },
       (email, password, done) => {
         User.findOne({ email }, (err, user) => {
-          if (err) throw err;
-          if (!user) return done(null, false);
+          if (err) {
+            return done(err);
+          }
+          if (!user) {
+            done(null, false, {
+              code: "GLOBAL_ERROR",
+              message:
+                "Your login credentials could not be verified. Please try again",
+            });
+            return;
+          }
 
           bcrypt.compare(password, user.password, (err, result) => {
             if (err) throw err;
             if (result === true) {
               return done(null, user);
             } else {
-              return done(null, false);
+              return done(null, false, {
+                code: "GLOBAL_ERROR",
+                message:
+                  "Your login credentials could not be verified. Please try again",
+              });
             }
           });
         });
