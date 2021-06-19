@@ -7,7 +7,8 @@ const morgan = require("morgan");
 const fs = require("fs");
 const cors = require("cors");
 const session = require("express-session");
-require("./utils/passport");
+const passport = require("passport");
+const passportLocal = require("passport-local").Strategy;
 require("dotenv").config();
 
 // initiate the express app
@@ -37,19 +38,22 @@ app.use(
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: "http://localhost:3000",
+    origin: process.env.CORS_ORIGIN,
     credentials: true,
   })
 );
+app.use(morgan("dev")); // output colored by response status for development use
 app.use(
   session({
-    secret: "SEcRetCoDe",
+    secret: process.env.SESSION_SECRET,
     resave: true,
     saveUninitialized: true,
   })
 );
-app.use(cookieParser("SEcRetCoDe"));
-app.use(morgan("dev")); // output colored by response status for development use
+app.use(cookieParser(process.env.SESSION_SECRET));
+app.use(passport.initialize());
+app.use(passport.session());
+require("./utils/passport")(passport);
 
 // routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>

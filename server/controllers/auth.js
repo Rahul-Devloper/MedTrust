@@ -145,41 +145,19 @@ exports.login = async (req, res, next) => {
     return;
   }
 
-  try {
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Incorrect Email or password" }] });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      return res
-        .status(400)
-        .json({ errors: [{ msg: "Incorrect Email or password" }] });
-    }
-
-    res.send(user);
-  } catch (err) {
-    return res.status(500).send("Server Error");
-  }
-
   // Use passport to authenticate
-  // passport.authenticate("local", (err, user, info) => {
-  //   if (err) {
-  //     return next(err);
-  //   }
-
-  //   if (!user) {
-  //     res.send(info);
-  //     return;
-  //   }
-
-  //   // If login worked, create JWT and send it to the client
-  //   if (user) {
-  //     // send token
-  //     res.send(user);
-  //   }
-  // })(req, res, next);
+  passport.authenticate("local", (err, user, info) => {
+    if (err) {
+      throw err;
+    }
+    if (!user) {
+      res.send("Incorrect email or password");
+    } else {
+      req.logIn(user, (err) => {
+        if (err) throw err;
+        res.send("Successfully Authenticated");
+        console.log(req.user);
+      });
+    }
+  })(req, res, next);
 };

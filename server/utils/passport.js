@@ -1,44 +1,36 @@
-const passport = require("passport");
 const User = require("../models/user");
-LocalStrategy = require("passport-local").Strategy;
+const bcrypt = require("bcrypt");
+const localStrategy = require("passport-local").Strategy;
 
-// Local login
-const localLogin = new LocalStrategy(
-  { usernameField: "email", passwordField: "password" },
-  (email, password, done) => {
-    User.findOne({ email }, (err, user) => {
-      if (err) {
-        return done(err);
-      }
-      // No user with that email found
-      if (!user) {
-        return done(null, null, {
-          code: "GLOBAL_ERROR",
-          field: "email",
-          message: "Your login details could not be verified. Please try again",
+module.exports = function (passport) {
+  passport.use(
+    new localStrategy(
+      { usernameField: "email", passwordField: "password" },
+      (email, password, done) => {
+        User.findOne({ email }, (err, user) => {
+          if (err) throw err;
+          if (!user) return done(null, false);
+
+          bcrypt.compare(password, user.password, (err, result) => {
+            if (err) throw err;
+            if (result === true) {
+              return done(null, user);
+            } else {
+              return done(null, false);
+            }
+          });
         });
       }
-      // Proceed to password validation
-      user.comparePassword(password, (err, isMatch) => {
-        if (err) {
-          return done(err);
-        }
+    )
+  );
+  // Stores a cookie(with user id) inside of the browser
+  passport.serializeUser((user, cb) => {
+    cb(null, user.id);
+  });
 
-        if (!isMatch) {
-          done(null, null, {
-            code: "GLOBAL_ERROR",
-            field: "password",
-            message:
-              "Your login details could not be verified. Please try again",
-          });
-          return;
-        }
-
-        done(null, user);
-        return;
-      });
+  passport.deserializeUser((id, cb) => {
+    User.findOne({ _id: id }, (err, user) => {
+      cb(err, user);
     });
-  }
-);
-
-passport.use(localLogin);
+  });
+};

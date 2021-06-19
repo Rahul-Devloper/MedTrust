@@ -1,6 +1,5 @@
 const mongoose = require("mongoose");
 const { Objectid } = mongoose.Schema;
-const bcrypt = require("bcrypt");
 
 const userSchema = new mongoose.Schema(
   {
@@ -18,16 +17,5 @@ const userSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
-
-// Using bcrypt to compare user entered password with user db password
-userSchema.methods.comparePassword = (candidatePassword, callback) => {
-  bcrypt.compare(candidatePassword, this.password, (err, isMatch) => {
-    if (err) {
-      callback(err);
-      return;
-    }
-    callback(null, isMatch);
-  });
-};
 
 module.exports = mongoose.model("User", userSchema);
