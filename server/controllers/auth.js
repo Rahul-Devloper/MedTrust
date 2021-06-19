@@ -2,6 +2,7 @@ const { validateEmail, validatePassword } = require("../utils/validations");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
+const jwt = require("jsonwebtoken");
 
 // Sign up an user
 exports.signup = async (req, res) => {
@@ -153,10 +154,19 @@ exports.login = async (req, res, next) => {
     if (!user) {
       res.send(info);
     } else {
-      req.logIn(user, (err) => {
-        if (err) throw err;
-        res.send({ message: "Successfully Authenticated" });
+      // If user is authenticated, the create JWT
+      const userObject = user.toObject();
+      // Access token is the JWT token
+      const accessToken = jwt.sign(userObject, process.env.JWT_ACCESS_TOKEN, {
+        expiresIn: 1800,
       });
+
+      // Send the access token to the client
+      res.json({
+        token: accessToken,
+        user: userObject,
+      });
+      return;
     }
   })(req, res, next);
 };
