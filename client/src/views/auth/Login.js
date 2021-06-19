@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   EntryCard,
@@ -8,8 +8,27 @@ import {
   EntryPage,
   PageHeader,
 } from "../../components";
+import { login } from "../../api/auth";
+import Cookies from "js-cookie";
 
 const Login = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleSubmit = (e) => {
+    // Submit email and password to server
+    e.preventDefault();
+
+    login(email, password)
+      .then((res) => {
+        // Extract the JWT that is sent from the server and set it to the browser cookie
+        const token = res.data.token;
+        Cookies.set("token", token, { expires: 0.02 });
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  };
   return (
     <>
       <EntryPage>
@@ -19,7 +38,13 @@ const Login = () => {
           <form onSubmit={(e) => e.preventDefault()}>
             <InputGroup>
               <label htmlFor="login-email">Email Address</label>
-              <Input type="text" placeholder="Enter email" id="login-email" />
+              <Input
+                type="text"
+                placeholder="Enter email"
+                id="login-email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+              />
             </InputGroup>
             <InputGroup>
               <label htmlFor="login-password">Password</label>
@@ -27,9 +52,13 @@ const Login = () => {
                 type="password"
                 placeholder="Enter password"
                 id="login-password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </InputGroup>
-            <Button type="submit">Log in</Button>
+            <Button type="submit" onClick={(e) => handleSubmit(e)}>
+              Log in
+            </Button>
           </form>
           <span>
             Don't have an account?

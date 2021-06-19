@@ -69,7 +69,6 @@ const Signup = () => {
           </span>
         </EntryCard>
       </EntryPage>
-      {JSON.stringify(response)}
     </>
   );
 };

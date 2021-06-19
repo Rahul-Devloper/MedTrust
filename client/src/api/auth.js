@@ -7,3 +7,11 @@ export const signUp = async (email, password) => {
     password,
   });
 };
+
+// Login user
+export const login = async (email, password) => {
+  return await axios.post(`${process.env.REACT_APP_BACKEND_API}/login`, {
+    email,
+    password,
+  });
+};
