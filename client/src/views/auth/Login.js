@@ -7,9 +7,15 @@ import {
   Button,
   EntryPage,
   PageHeader,
+  GoogleContainer,
+  GithubContainer,
+  TwitterContainer,
 } from "../../components";
 import { login } from "../../api/auth";
 import Cookies from "js-cookie";
+import googleLogo from "../../assets/google_logo.png";
+import githubLogo from "../../assets/github_logo.png";
+import twitterLogo from "../../assets/twitter_logo.png";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -60,9 +66,27 @@ const Login = () => {
               Log in
             </Button>
           </form>
+          <br />
+          <br />
+          <hr />
+
           <span>
-            Don't have an account?
-            <Link to="/signup">Sign up</Link>
+            <GoogleContainer>
+              <img src={googleLogo} alt="Google Icon" />
+              <p>Log in with Google</p>
+            </GoogleContainer>
+          </span>
+          <span>
+            <GithubContainer>
+              <img src={githubLogo} alt="Github Icon" />
+              <p>Log in with Github</p>
+            </GithubContainer>
+          </span>
+          <span>
+            <TwitterContainer>
+              <img src={twitterLogo} alt="Twitter Icon" />
+              <p>Log in with Twitter</p>
+            </TwitterContainer>
           </span>
         </EntryCard>
       </EntryPage>
