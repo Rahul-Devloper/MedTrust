@@ -11,10 +11,10 @@ const passport = require("passport");
 const passportLocal = require("passport-local").Strategy;
 require("dotenv").config();
 
-// initiate the express app
+// Initiate the express app
 const app = express();
 
-// port
+// Port
 const PORT = process.env.PORT || 8000;
 
 // db
@@ -28,7 +28,7 @@ mongoose
   .then(() => console.log("Connected to MongoDB"))
   .catch((err) => console.log(`DB connection error - ${err}`));
 
-// middlewares
+// Middlewares
 app.use(compression());
 app.use(
   express.json({
@@ -53,13 +53,14 @@ app.use(
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
-require("./utils/passport")(passport);
+require("./middlewares/passport")(passport);
 
-// routes (read routes in the "routes" dir and prepend "/api" to all routes)
+// Routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>
   app.use("/api", require("./routes/" + route))
 );
 
+// Start server
 app.listen(PORT, () =>
   console.log(`Express server is running on port: ${PORT}`)
 );
