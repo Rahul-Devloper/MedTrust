@@ -1,14 +1,17 @@
 const express = require("express");
 const router = express.Router();
 
-// controllers
+// Middlewares
+const { authCheck } = require("../middlewares/auth");
+
+// Controllers
 const { signup, login } = require("../controllers/auth");
 
-// routes
+// Routes
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/user", (req, res) => {
-  res.send(req.user);
+router.get("/user", authCheck, (req, res) => {
+  res.send("You are accessing a protected route");
 });
 
 module.exports = router;

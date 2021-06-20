@@ -8,4 +8,7 @@
   
 ## Features
 
-- Login
+- Login with passport-local strategy
+- JWT based authentication validation
+
+-

@@ -154,10 +154,12 @@ exports.login = async (req, res, next) => {
     if (!user) {
       res.send(info);
     } else {
-      // If user is authenticated, the create JWT
+      // If user is authenticated, then create JWT
       const userObject = user.toObject();
+      // Use only the user ID to create JWT token
+      const idObject = { _id: userObject._id };
       // Access token is the JWT token
-      const accessToken = jwt.sign(userObject, process.env.JWT_ACCESS_TOKEN, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
         expiresIn: 1800,
       });
 
