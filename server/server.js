@@ -8,7 +8,6 @@ const fs = require("fs");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
-const passportLocal = require("passport-local").Strategy;
 require("dotenv").config();
 
 // Initiate the express app
@@ -54,6 +53,7 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./middlewares/passport")(passport);
+require("./middlewares/passportGoogle");
 
 // Routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>
