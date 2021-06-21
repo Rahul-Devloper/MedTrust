@@ -5,36 +5,25 @@ const passport = require("passport");
 const { authCheck, googleLoggedIn } = require("../middlewares/auth");
 
 // Controllers
-const {
-  signup,
-  login,
-  googleSignup,
-  googleSignupCallback,
-} = require("../controllers/auth");
+const { signup, login } = require("../controllers/auth");
 
 // Google auth routes
 router.get(
   "/auth/google",
-  passport.authenticate("google", { scope: ["profile"] })
+  passport.authenticate("google", { scope: ["profile", "email"] })
 );
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", {
-    failureRedirect: "/api/login/failure",
+    failureRedirect: "http://localhost:3000/login",
   }),
   function (req, res) {
-    res.redirect("http://localhost:3000/login");
+    res.redirect("http://localhost:3000/user/dashboard");
   }
 );
 
 // Routes
 router.post("/signup", signup);
 router.post("/login", login);
-router.get("/user/dashboard", googleLoggedIn, (req, res) => {
-  res.send("<h1>User Dashboard</h1>");
-});
-router.get("/login/failure", (req, res) => {
-  res.send("<h1>Login Failed</h1>");
-});
 
 module.exports = router;

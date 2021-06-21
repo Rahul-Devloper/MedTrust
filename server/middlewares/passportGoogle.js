@@ -13,8 +13,20 @@ module.exports = function (passport) {
       },
       // This function is called on successful authentication
       function (accessToken, refreshToken, profile, done) {
-        // Insert user into database
-        console.log(profile);
+        // Check if user exists in DB
+        User.findOne({ email: profile.emails[0].value }, async (err, doc) => {
+          if (err) {
+            return done(err, null);
+          }
+          // If user doesn't exist, save to db
+          if (!doc) {
+            const newUser = new User({
+              email: profile.emails[0].value,
+            });
+            await newUser.save();
+          }
+        });
+        console.log(profile.emails);
         done(null, profile);
       }
     )
