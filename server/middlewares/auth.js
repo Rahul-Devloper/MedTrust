@@ -27,3 +27,7 @@ exports.authCheck = (req, res, next) => {
     console.log("AUTH_CHECK_ERROR", error);
   }
 };
+
+exports.googleLoggedIn = (req, res, next) => {
+  req.user ? next() : res.sendStatus(401);
+};

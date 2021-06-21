@@ -12,3 +12,6 @@ export {
   GithubContainer,
   TwitterContainer,
 } from "./authCards/style";
+
+// Loaders
+export { default as LoadingToRedirect } from "./loaders/LoadingToRedirect";
