@@ -11,7 +11,7 @@ import {
   GithubContainer,
   TwitterContainer,
 } from "../../components";
-import { login } from "../../api/auth";
+import { login, googleSignup } from "../../api/auth";
 import Cookies from "js-cookie";
 import googleLogo from "../../assets/google_logo.png";
 import githubLogo from "../../assets/github_logo.png";
@@ -35,6 +35,11 @@ const Login = () => {
         console.log(err);
       });
   };
+
+  const handleGoogleLogin = (e) => {
+    window.open(`http://localhost:8000/api/auth/google`, "_self");
+  };
+
   return (
     <>
       <EntryPage>
@@ -71,7 +76,7 @@ const Login = () => {
           <hr />
 
           <span>
-            <GoogleContainer>
+            <GoogleContainer onClick={(e) => handleGoogleLogin(e)}>
               <img src={googleLogo} alt="Google Icon" />
               <p>Log in with Google</p>
             </GoogleContainer>
