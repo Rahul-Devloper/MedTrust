@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   EntryCard,
   InputGroup,
@@ -23,7 +23,9 @@ const initialFormData = {
 
 const Signup = () => {
   const [formData, setFormData] = useState(initialFormData);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // Handle form change
   const handleFormChange = (e) => {
@@ -41,12 +43,15 @@ const Signup = () => {
         alert("Passwords don't match");
         return;
       } else {
+        setLoading(true);
         // Submit name, email & password to the server
         signUp(name, email, password)
           .then((res) => {
-            console.log(res.data);
+            // console.log(res.data);
+            setLoading(false);
           })
           .catch((err) => {
+            setLoading(false);
             console.log("SIGNUP_USER_ERROR", err);
           });
       }
@@ -61,6 +66,7 @@ const Signup = () => {
     const token = await res?.tokenId;
     const { name, email } = result;
 
+    setLoading(true);
     googleCreateOrLogin(name, email)
       .then(() => {
         // Store the userObject and token in redux store & set cookie
@@ -68,8 +74,12 @@ const Signup = () => {
           type: "GOOGLE_LOG_IN",
           data: { result, token },
         });
+        setLoading(false);
+        // Push user to dashboard on successful login
+        history.push("/user/dashboard");
       })
       .catch((error) => {
+        setLoading(false);
         console.log("GOOGLE_LOGIN_ERROR", error);
       });
   };

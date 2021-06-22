@@ -1,8 +1,8 @@
-import axios from "axios";
+import api from "./index";
 
 // Signup user
 export const signUp = async (name, email, password) => {
-  return await axios.post(`${process.env.REACT_APP_BACKEND_API}/signup`, {
+  return await api.post("/signup", {
     name,
     email,
     password,
@@ -11,7 +11,7 @@ export const signUp = async (name, email, password) => {
 
 // Login user
 export const login = async (email, password) => {
-  return await axios.post(`${process.env.REACT_APP_BACKEND_API}/login`, {
+  return await api.post("/login", {
     email,
     password,
   });
@@ -19,7 +19,7 @@ export const login = async (email, password) => {
 
 // Google signup or login
 export const googleCreateOrLogin = async (name, email) => {
-  return await axios.post(`${process.env.REACT_APP_BACKEND_API}/googleAuth`, {
+  return await api.post("/googleAuth", {
     name,
     email,
   });

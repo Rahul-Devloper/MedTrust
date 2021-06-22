@@ -1,14 +1,16 @@
 import React, { useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Navbar } from "../../components";
+
 const Dashboard = () => {
   useEffect(() => {
     // Extract the JWT that is sent from the server and set it to the browser cookie
   }, []);
 
   return (
-    <div>
+    <>
+      <Navbar />
       <h1>User Dashboard</h1>
-    </div>
+    </>
   );
 };
 

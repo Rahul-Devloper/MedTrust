@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   EntryCard,
   InputGroup,
@@ -15,15 +15,17 @@ import { login, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [email, setEmail] = useState("abc@gmail.com");
+  const [password, setPassword] = useState("Abcd1234!");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   // Email login
   const handleSubmit = (e) => {
     // Submit email and password to server
     e.preventDefault();
-
+    setLoading(true);
     login(email, password)
       .then((res) => {
         // Store the userObject and token in redux store & set cookie
@@ -32,8 +34,12 @@ const Login = () => {
           type: "EMAIL_LOG_IN",
           data: { user, token },
         });
+        setLoading(false);
+        // Push user to dashboard on successful login
+        history.push("/user/dashboard");
       })
       .catch((err) => {
+        setLoading(false);
         console.log("EMAIL_LOGIN_ERROR", err);
       });
   };
@@ -44,6 +50,7 @@ const Login = () => {
     const token = await res?.tokenId;
     const { name, email } = result;
 
+    setLoading(true);
     googleCreateOrLogin(name, email)
       .then(() => {
         // Store the userObject and token in redux store & set cookie
@@ -51,8 +58,12 @@ const Login = () => {
           type: "GOOGLE_LOG_IN",
           data: { result, token },
         });
+        setLoading(false);
+        // Push user to dashboard on successful login
+        history.push("/user/dashboard");
       })
       .catch((error) => {
+        setLoading(false);
         console.log("GOOGLE_LOGIN_ERROR", error);
       });
   };
