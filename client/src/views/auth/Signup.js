@@ -7,29 +7,32 @@ import {
   Button,
   EntryPage,
   PageHeader,
+  GoogleContainer,
 } from "../../components";
 import { signUp } from "../../api/auth";
+import googleLogo from "../../assets/google_logo.png";
 
 const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const [response, setResponse] = useState([]);
+  const [confirmPassword, setConfirmPassword] = useState("");
 
   const handleSubmit = (e) => {
     // Submit email and password to server
     e.preventDefault();
 
-    setLoading(true);
     signUp(email, password)
       .then((res) => {
         console.log(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
-        setLoading(false);
       });
+  };
+
+  const handleGoogleSignup = (e) => {
+    window.open(`http://localhost:8000/api/auth/google`, "_self");
   };
 
   return (
@@ -39,6 +42,16 @@ const Signup = () => {
         <EntryCard>
           <h2>Sign up</h2>
           <form onSubmit={(e) => e.preventDefault()}>
+            <InputGroup>
+              <label htmlFor="signup-name">Full name</label>
+              <Input
+                type="text"
+                placeholder="Enter full name"
+                id="signup-name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            </InputGroup>
             <InputGroup>
               <label htmlFor="signup-email">Email address</label>
               <Input
@@ -59,6 +72,16 @@ const Signup = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </InputGroup>
+            <InputGroup>
+              <label htmlFor="signup-password">Confirm password</label>
+              <Input
+                type="password"
+                placeholder="Confirm password"
+                id="signup-confirm-password"
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+              />
+            </InputGroup>
             <Button type="submit" onClick={(e) => handleSubmit(e)}>
               Sign up
             </Button>
@@ -66,6 +89,16 @@ const Signup = () => {
           <span>
             Already have an account?
             <Link to="/login">Log in</Link>
+          </span>
+          <br />
+          <br />
+          <hr />
+
+          <span>
+            <GoogleContainer onClick={(e) => handleGoogleSignup(e)}>
+              <img src={googleLogo} alt="Google Icon" />
+              <p>Sign up with Google</p>
+            </GoogleContainer>
           </span>
         </EntryCard>
       </EntryPage>

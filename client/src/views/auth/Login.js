@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   EntryCard,
   InputGroup,
@@ -8,20 +8,17 @@ import {
   EntryPage,
   PageHeader,
   GoogleContainer,
-  GithubContainer,
-  TwitterContainer,
 } from "../../components";
-import { login, googleSignup } from "../../api/auth";
+import { GoogleLogin } from "react-google-login";
+import { useDispatch } from "react-redux";
+import { login } from "../../api/auth";
 import Cookies from "js-cookie";
 import googleLogo from "../../assets/google_logo.png";
-import githubLogo from "../../assets/github_logo.png";
-import twitterLogo from "../../assets/twitter_logo.png";
 
 const Login = () => {
-  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const dispatch = useDispatch();
   const handleSubmit = (e) => {
     // Submit email and password to server
     e.preventDefault();
@@ -31,15 +28,29 @@ const Login = () => {
         // Extract the JWT that is sent from the server and set it to the browser cookie
         const token = res.data.token;
         Cookies.set("token", token, { expires: 0.02 });
-        history.push("/user/dashboard");
       })
       .catch((err) => {
         console.log(err);
       });
   };
 
-  const handleGoogleLogin = (e) => {
-    window.open(`http://localhost:8000/api/auth/google`, "_self");
+  // Handle google login success
+  const handleGoogleSuccess = async (res) => {
+    const result = res?.profileObj;
+    const token = res?.tokenId;
+
+    try {
+      dispatch({
+        type: "GOOGLE_LOG_IN",
+        data: { result, token },
+      });
+    } catch (error) {
+      console.log("GOOGLE_LOGIN_ERROR", error);
+    }
+  };
+
+  const handleGoogleFailure = () => {
+    console.log("Google log in failed. Try again later");
   };
 
   return (
@@ -73,28 +84,36 @@ const Login = () => {
               Log in
             </Button>
           </form>
+          <span>
+            Don't have an account?
+            <Link to="/signup">Sign up</Link>
+          </span>
           <br />
           <br />
           <hr />
-
-          <span>
+          <GoogleLogin
+            clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_ID}`}
+            render={(renderProps) => (
+              <span>
+                <GoogleContainer
+                  onClick={renderProps.onClick}
+                  disabled={renderProps.disabled}
+                >
+                  <img src={googleLogo} alt="Google Icon" />
+                  <p>Log in with Google</p>
+                </GoogleContainer>
+              </span>
+            )}
+            onSuccess={handleGoogleSuccess}
+            onFailure={handleGoogleFailure}
+            cookiePolicy="single_host_origin"
+          />
+          {/* <span>
             <GoogleContainer onClick={(e) => handleGoogleLogin(e)}>
               <img src={googleLogo} alt="Google Icon" />
               <p>Log in with Google</p>
             </GoogleContainer>
-          </span>
-          <span>
-            <GithubContainer>
-              <img src={githubLogo} alt="Github Icon" />
-              <p>Log in with Github</p>
-            </GithubContainer>
-          </span>
-          <span>
-            <TwitterContainer>
-              <img src={twitterLogo} alt="Twitter Icon" />
-              <p>Log in with Twitter</p>
-            </TwitterContainer>
-          </span>
+          </span> */}
         </EntryCard>
       </EntryPage>
     </>
