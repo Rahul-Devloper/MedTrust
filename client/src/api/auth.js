@@ -16,3 +16,11 @@ export const login = async (email, password) => {
     password,
   });
 };
+
+// Google signup or login
+export const googleCreateOrLogin = async (name, email) => {
+  return await axios.post(`${process.env.REACT_APP_BACKEND_API}/googleAuth`, {
+    name,
+    email,
+  });
+};

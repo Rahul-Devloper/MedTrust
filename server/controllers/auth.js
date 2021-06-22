@@ -87,7 +87,7 @@ exports.signup = async (req, res) => {
       res.json(user);
     });
   } catch (error) {
-    console.log(error);
+    console.log("SERVER_SIGNUP_ERROR", error);
   }
 };
 
@@ -171,4 +171,27 @@ exports.login = async (req, res, next) => {
       return;
     }
   })(req, res, next);
+};
+
+// Google login/sign up
+exports.googleCreateOrLogin = async (req, res) => {
+  try {
+    const { name, email } = req.body;
+    let user = await User.findOne({ email });
+    if (!user) {
+      let newUser = await new User({
+        name: name,
+        email: email,
+      });
+      newUser.save().then((user) => {
+        // Send new user
+        res.json(user);
+      });
+    } else {
+      // Send existing user
+      res.json(user);
+    }
+  } catch (error) {
+    console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
+  }
 };

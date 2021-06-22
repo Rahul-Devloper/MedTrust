@@ -11,7 +11,7 @@ import {
 } from "../../components";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
-import { login } from "../../api/auth";
+import { login, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
 
 const Login = () => {
@@ -42,15 +42,19 @@ const Login = () => {
   const handleGoogleSuccess = async (res) => {
     const result = await res?.profileObj;
     const token = await res?.tokenId;
-    try {
-      // Store the userObject and token in redux store & set cookie
-      dispatch({
-        type: "GOOGLE_LOG_IN",
-        data: { result, token },
+    const { name, email } = result;
+
+    googleCreateOrLogin(name, email)
+      .then(() => {
+        // Store the userObject and token in redux store & set cookie
+        dispatch({
+          type: "GOOGLE_LOG_IN",
+          data: { result, token },
+        });
+      })
+      .catch((error) => {
+        console.log("GOOGLE_LOGIN_ERROR", error);
       });
-    } catch (error) {
-      console.log("GOOGLE_LOGIN_ERROR", error);
-    }
   };
 
   // Handle google login failure
