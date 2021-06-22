@@ -1,11 +1,21 @@
-import React from "react";
-import { StyledNavbar, NavItemLink } from "./style";
-const Navbar = ({ children }) => {
-  const user = false;
+import React, { useState, useEffect } from "react";
+import { StyledNavbar, NavItemLink, NavUserImg } from "./style";
+import defaultUserImg from "../../assets/defauleUser.jpg";
+
+const Navbar = () => {
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("profile")));
+
+  useEffect(() => {
+    const token = user?.token;
+  }, []);
+
   return (
     <StyledNavbar>
       {user ? (
         <>
+          <NavUserImg
+            src={user.result.imageUrl ? user.result.imageUrl : defaultUserImg}
+          />
           <NavItemLink to="/login">Log out</NavItemLink>
         </>
       ) : (

@@ -27,3 +27,8 @@ export const NavItemLink = styled(Link)`
       }
     `}
 `;
+
+export const NavUserImg = styled.img`
+  width: 2.5%;
+  border-radius: 50%;
+`;

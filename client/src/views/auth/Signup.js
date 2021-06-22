@@ -18,10 +18,8 @@ const Signup = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
 
-  const handleSubmit = (e) => {
+  const handleSubmit = () => {
     // Submit email and password to server
-    e.preventDefault();
-
     signUp(email, password)
       .then((res) => {
         console.log(res.data);
@@ -41,7 +39,7 @@ const Signup = () => {
         <PageHeader to="/">SaaS Logo</PageHeader>
         <EntryCard>
           <h2>Sign up</h2>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={handleSubmit}>
             <InputGroup>
               <label htmlFor="signup-name">Full name</label>
               <Input
@@ -82,9 +80,7 @@ const Signup = () => {
                 onChange={(e) => setConfirmPassword(e.target.value)}
               />
             </InputGroup>
-            <Button type="submit" onClick={(e) => handleSubmit(e)}>
-              Sign up
-            </Button>
+            <Button type="submit">Sign up</Button>
           </form>
           <span>
             Already have an account?

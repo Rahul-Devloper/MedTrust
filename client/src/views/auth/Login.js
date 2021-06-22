@@ -19,6 +19,8 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const dispatch = useDispatch();
+
+  // Email login
   const handleSubmit = (e) => {
     // Submit email and password to server
     e.preventDefault();
@@ -26,23 +28,28 @@ const Login = () => {
     login(email, password)
       .then((res) => {
         // Extract the JWT that is sent from the server and set it to the browser cookie
-        const token = res.data.token;
+        const token = res?.data.token;
         Cookies.set("token", token, { expires: 0.02 });
       })
       .catch((err) => {
-        console.log(err);
+        console.log("EMAIL_LOGIN_ERROR", err);
       });
   };
 
   // Handle google login success
   const handleGoogleSuccess = async (res) => {
-    const result = res?.profileObj;
-    const token = res?.tokenId;
-
+    const result = await res?.profileObj;
+    const token = await res?.tokenId;
     try {
+      // Store the userObject and token in redux store
       dispatch({
         type: "GOOGLE_LOG_IN",
         data: { result, token },
+      });
+      // Set google JWT token to cookie
+      dispatch({
+        type: "GOOGLE_JWT_COOKIE",
+        data: { token },
       });
     } catch (error) {
       console.log("GOOGLE_LOGIN_ERROR", error);
@@ -108,12 +115,6 @@ const Login = () => {
             onFailure={handleGoogleFailure}
             cookiePolicy="single_host_origin"
           />
-          {/* <span>
-            <GoogleContainer onClick={(e) => handleGoogleLogin(e)}>
-              <img src={googleLogo} alt="Google Icon" />
-              <p>Log in with Google</p>
-            </GoogleContainer>
-          </span> */}
         </EntryCard>
       </EntryPage>
     </>
