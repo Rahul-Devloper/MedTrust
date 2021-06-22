@@ -16,10 +16,6 @@
 - CORS_ORIGIN="http://localhost:3000" | "YOUR_ORIGIN"
 - SESSION_SECRET="YOUR_SESSION_SECRET" <--- Generate a random crypt
 - JWT_ACCESS_TOKEN="YOUR_JWT_ACCESS_TOKEN" <--- Generate a random crypt (NOTE: Tokens can be brute forced if you use weak secrets)
-  <!-- Google Auth Env Variables -->
-- GOOGLE_OAUTH_CID="YOUR_GOOGLE_OAUTH_CLIENT_ID"
-- GOOGLE_OAUTH_SECRET="YOUR_GOOGLE_OAUTH_CLIENT_SECRET"
-- GOOGLE_OAUTH_CBACKURL="CALLBACK_URL_SET_IN_OAUTH" <--- "http://localhost:8000/api/auth/google/callback"   (Place the same callback URL in the OAUTH ID create console)
 
 ## Know more
 

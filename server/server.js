@@ -53,7 +53,6 @@ app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
 require("./middlewares/passport")(passport);
-require("./middlewares/passportGoogle")(passport);
 
 // Routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./routes").map((route) =>

@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 
 // Sign up an user
 exports.signup = async (req, res) => {
-  const { email, password } = req.body;
+  const { name, email, password } = req.body;
 
   // Validate the input fields
   const validationErrors = [];
@@ -80,9 +80,9 @@ exports.signup = async (req, res) => {
     }
 
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 10);
+    const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = await new User({ email, password: hashedPassword });
+    let newUser = await new User({ name, email, password: hashedPassword });
     newUser.save().then((user) => {
       res.json(user);
     });
