@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 import {
   EntryCard,
   InputGroup,
@@ -18,6 +18,7 @@ import githubLogo from "../../assets/github_logo.png";
 import twitterLogo from "../../assets/twitter_logo.png";
 
 const Login = () => {
+  const history = useHistory();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -30,6 +31,7 @@ const Login = () => {
         // Extract the JWT that is sent from the server and set it to the browser cookie
         const token = res.data.token;
         Cookies.set("token", token, { expires: 0.02 });
+        history.push("/user/dashboard");
       })
       .catch((err) => {
         console.log(err);
