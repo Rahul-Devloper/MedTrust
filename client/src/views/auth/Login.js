@@ -12,7 +12,6 @@ import {
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { login } from "../../api/auth";
-import Cookies from "js-cookie";
 import googleLogo from "../../assets/google_logo.png";
 
 const Login = () => {
@@ -27,9 +26,12 @@ const Login = () => {
 
     login(email, password)
       .then((res) => {
-        // Extract the JWT that is sent from the server and set it to the browser cookie
-        const token = res?.data.token;
-        Cookies.set("token", token, { expires: 0.02 });
+        // Store the userObject and token in redux store & set cookie
+        const { user, token } = res.data;
+        dispatch({
+          type: "EMAIL_LOG_IN",
+          data: { user, token },
+        });
       })
       .catch((err) => {
         console.log("EMAIL_LOGIN_ERROR", err);
@@ -41,21 +43,17 @@ const Login = () => {
     const result = await res?.profileObj;
     const token = await res?.tokenId;
     try {
-      // Store the userObject and token in redux store
+      // Store the userObject and token in redux store & set cookie
       dispatch({
         type: "GOOGLE_LOG_IN",
         data: { result, token },
-      });
-      // Set google JWT token to cookie
-      dispatch({
-        type: "GOOGLE_JWT_COOKIE",
-        data: { token },
       });
     } catch (error) {
       console.log("GOOGLE_LOGIN_ERROR", error);
     }
   };
 
+  // Handle google login failure
   const handleGoogleFailure = () => {
     console.log("Google log in failed. Try again later");
   };
@@ -66,7 +64,7 @@ const Login = () => {
         <PageHeader to="/">SaaS Logo</PageHeader>
         <EntryCard>
           <h2>Log in</h2>
-          <form onSubmit={(e) => e.preventDefault()}>
+          <form onSubmit={(e) => handleSubmit(e)}>
             <InputGroup>
               <label htmlFor="login-email">Email Address</label>
               <Input
@@ -87,9 +85,7 @@ const Login = () => {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </InputGroup>
-            <Button type="submit" onClick={(e) => handleSubmit(e)}>
-              Log in
-            </Button>
+            <Button type="submit">Log in</Button>
           </form>
           <span>
             Don't have an account?
