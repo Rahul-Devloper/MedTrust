@@ -164,11 +164,10 @@ exports.login = async (req, res, next) => {
       });
 
       // Send the access token to the client
-      res.json({
+      return res.json({
         token: accessToken,
         user: userObject,
       });
-      return;
     }
   })(req, res, next);
 };
@@ -179,18 +178,27 @@ exports.googleCreateOrLogin = async (req, res) => {
     const { name, email } = req.body;
     let user = await User.findOne({ email });
     if (!user) {
-      let newUser = await new User({
+      let user = await new User({
         name: name,
         email: email,
+        accountType: "google",
       });
-      newUser.save().then((user) => {
-        // Send new user
-        res.json(user);
-      });
-    } else {
-      // Send existing user
-      res.json(user);
+      user.save();
     }
+
+    // Generate JWT with Google ID
+    // Use only the user ID to create JWT token
+    const idObject = { _id: user._id };
+    // Access token is the JWT token
+    const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+      expiresIn: 1800,
+    });
+
+    // Send the access token to the client
+    return res.json({
+      token: accessToken,
+      user: user,
+    });
   } catch (error) {
     console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
   }

@@ -8,12 +8,9 @@ exports.authCheck = (req, res, next) => {
     try {
       // Get the JWT thats sent in headers of the request
       const token = req.headers.authorization.split(" ")[1];
-      // Check if is local login or google login
-      // If token length < 500, it's local, else google
-      const isCustomAuth = token.length < 500;
 
-      // If token exists and is local auth
-      if (token && isCustomAuth) {
+      // If token exists
+      if (token) {
         jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
           // If the token provided is not valid
           if (err) {
@@ -23,10 +20,6 @@ exports.authCheck = (req, res, next) => {
           }
           req.user = user._id;
         });
-      } else {
-        // If google authentication
-        let decodedData = jwt.decode(token);
-        req.user = decodedData?.sub;
       }
       next();
     } catch (error) {
