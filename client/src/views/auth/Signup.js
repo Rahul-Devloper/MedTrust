@@ -62,9 +62,9 @@ const Signup = () => {
 
   // Handle google signup success
   const handleGoogleSuccess = async (res) => {
-    const result = await res?.profileObj;
+    const user = await res?.profileObj;
     const token = await res?.tokenId;
-    const { name, email } = result;
+    const { name, email } = user;
 
     setLoading(true);
     googleCreateOrLogin(name, email)
@@ -72,7 +72,7 @@ const Signup = () => {
         // Store the userObject and token in redux store & set cookie
         dispatch({
           type: "GOOGLE_LOG_IN",
-          data: { result, token },
+          data: { user, token },
         });
         setLoading(false);
         // Push user to dashboard on successful login

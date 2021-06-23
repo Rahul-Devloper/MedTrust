@@ -159,7 +159,7 @@ exports.login = async (req, res, next) => {
       // Use only the user ID to create JWT token
       const idObject = { _id: userObject._id };
       // Access token is the JWT token
-      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
         expiresIn: 1800,
       });
 

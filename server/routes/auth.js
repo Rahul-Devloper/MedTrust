@@ -13,5 +13,8 @@ const { signup, login, googleCreateOrLogin } = require("../controllers/auth");
 router.post("/signup", signup);
 router.post("/login", login);
 router.post("/googleAuth", googleCreateOrLogin);
+router.get("/protect", authCheck, (req, res) => {
+  res.send("<a>Protected Route</a>");
+});
 
 module.exports = router;
