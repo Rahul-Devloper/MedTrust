@@ -1,5 +1,10 @@
 # SaaS Boilerplate
 
+## Command
+
+- server: `npm run dev`
+- client: `npm start`
+
 ## Tech Stack
 
 - Frontend: ReactJS
@@ -8,7 +13,8 @@
   
 ## Features
 
-- Login with passport-local strategy
+- Email and password register with verification
+- Google signup and login
 - JWT based authentication validation
 
 -

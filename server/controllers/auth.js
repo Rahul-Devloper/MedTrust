@@ -3,8 +3,11 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
+const { v4: uuidv4 } = require("uuid");
 
-// Sign up an user
+/** 
+  Sign up an user
+**/
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -82,16 +85,24 @@ exports.signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = await new User({ name, email, password: hashedPassword });
-    newUser.save().then((user) => {
-      res.json(user);
+    let newUser = new User({
+      name,
+      email,
+      password: hashedPassword,
+      activated: false,
+      activationToken: uuidv4(),
+      activationTokenSentAt: Date.now(),
     });
+    await newUser.save();
+    res.json({ user: User.toClientObject(newUser) });
   } catch (error) {
     console.log("SERVER_SIGNUP_ERROR", error);
   }
 };
 
-// Login a user
+/** 
+  Login a user
+**/
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -165,14 +176,16 @@ exports.login = async (req, res, next) => {
 
       // Send the access token to the client
       return res.json({
+        user: User.toClientObject(user),
         token: accessToken,
-        user: userObject,
       });
     }
   })(req, res, next);
 };
 
-// Google login/sign up
+/** 
+  Google login/sign up
+**/
 exports.googleCreateOrLogin = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -182,6 +195,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         name: name,
         email: email,
         accountType: "google",
+        activated: true,
       });
       user.save();
     }
@@ -196,8 +210,8 @@ exports.googleCreateOrLogin = async (req, res) => {
 
     // Send the access token to the client
     return res.json({
+      user: user, // We don't using this user obj on the client, we use google user obj
       token: accessToken,
-      user: user,
     });
   } catch (error) {
     console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
