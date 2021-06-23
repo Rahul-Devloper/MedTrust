@@ -17,6 +17,14 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: false,
     },
+    accountType: {
+      type: String,
+      default: "local",
+    },
+    role: {
+      type: String,
+      default: "normal",
+    },
   },
   { timestamps: true }
 );
