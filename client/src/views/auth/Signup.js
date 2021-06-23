@@ -63,12 +63,12 @@ const Signup = () => {
   // Handle google signup success
   const handleGoogleSuccess = async (res) => {
     const user = await res?.profileObj;
-    const token = await res?.tokenId;
     const { name, email } = user;
 
     setLoading(true);
     googleCreateOrLogin(name, email)
-      .then(() => {
+      .then((res) => {
+        const { token } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
           type: "GOOGLE_LOG_IN",
@@ -80,7 +80,7 @@ const Signup = () => {
       })
       .catch((error) => {
         setLoading(false);
-        console.log("GOOGLE_LOGIN_ERROR", error);
+        console.log("GOOGLE_SIGNUP_ERROR", error);
       });
   };
 
