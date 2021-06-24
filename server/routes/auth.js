@@ -7,14 +7,17 @@ const jwt = require("jsonwebtoken");
 const { authCheck } = require("../middlewares/auth");
 
 // Controllers
-const { signup, login, googleCreateOrLogin } = require("../controllers/auth");
+const {
+  signup,
+  login,
+  googleCreateOrLogin,
+  accountActivate,
+} = require("../controllers/auth");
 
 // Routes
 router.post("/signup", signup);
+router.post("/account/activate", accountActivate);
 router.post("/login", login);
 router.post("/googleAuth", googleCreateOrLogin);
-router.get("/protect", authCheck, (req, res) => {
-  res.send("<a>Protected Route</a>");
-});
 
 module.exports = router;

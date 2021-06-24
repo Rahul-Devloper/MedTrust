@@ -139,6 +139,42 @@ exports.signup = async (req, res) => {
 };
 
 /**********************************
+  Email Verification, acc. activation
+***********************************/
+exports.accountActivate = async (req, res, next) => {
+  // Get the token from client body
+  const { token } = req.body;
+
+  try {
+    // If token exists
+    if (token) {
+      jwt.verify(token, process.env.JWT_EMAIL_SECRET, async (err, user) => {
+        // If the token provided is not valid
+        if (err) {
+          return res
+            .status(403)
+            .json(
+              "Token is not valid or expired, enter email to resend verification"
+            );
+        }
+        const { email } = user;
+        const updatedUser = await User.findOneAndUpdate(
+          { email },
+          { activated: true },
+          { new: true }
+        ).exec();
+        return res.json({
+          message: "Email verified, please login to continue",
+          user: User.toClientObject(updatedUser),
+        });
+      });
+    }
+  } catch (error) {
+    console.log("AUTH_CHECK_ERROR", error);
+  }
+};
+
+/**********************************
   Login a user
 ***********************************/
 exports.login = async (req, res, next) => {
