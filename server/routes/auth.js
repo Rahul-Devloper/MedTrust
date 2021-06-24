@@ -11,12 +11,14 @@ const {
   signup,
   login,
   googleCreateOrLogin,
-  accountActivate,
+  accountVerify,
+  accountReverify,
 } = require("../controllers/auth");
 
 // Routes
 router.post("/signup", signup);
-router.post("/account/activate", accountActivate);
+router.post("/account/verify", accountVerify);
+router.post("/account/reverify", accountReverify);
 router.post("/login", login);
 router.post("/googleAuth", googleCreateOrLogin);
 

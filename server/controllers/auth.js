@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
 /**********************************
-  Sign up an user and send email verification
+  Sign up user & send email verification
 ***********************************/
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -141,7 +141,7 @@ exports.signup = async (req, res) => {
 /**********************************
   Email Verification, acc. activation
 ***********************************/
-exports.accountActivate = async (req, res, next) => {
+exports.accountVerify = async (req, res, next) => {
   // Get the token from client body
   const { token } = req.body;
 
@@ -171,6 +171,77 @@ exports.accountActivate = async (req, res, next) => {
     }
   } catch (error) {
     console.log("AUTH_CHECK_ERROR", error);
+  }
+};
+
+/**********************************
+  Resend Email Verification
+***********************************/
+exports.accountReverify = async (req, res, next) => {
+  // Get the token from client body
+  const { email } = req.body;
+
+  if (email) {
+    try {
+      // Check if activated is false for the user
+      const existingUser = await User.findOne({ email });
+
+      // Check if the user is already activated
+      if (existingUser.activated === true) {
+        return res.json({
+          message: "Email already activated, login to continue",
+        });
+      }
+
+      // Generate JWT and mail the user
+      const payload = { email: email };
+
+      // Generate JWT token for email verification, expires in 30 mins
+      const verificationToken = jwt.sign(
+        payload,
+        process.env.JWT_EMAIL_SECRET,
+        {
+          expiresIn: 1800,
+        }
+      );
+
+      // Re Send verification to the user email
+      var transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.NODEMAILER_EMAIL,
+          pass: process.env.NODEMAILER_PASSWORD,
+        },
+      });
+
+      // Configure the message
+      var mailOptions = {
+        from: process.env.NODEMAILER_EMAIL,
+        to: email,
+        subject: "SaaS - Verification",
+        html: `<b>Hi, thank you for registering. Here is your verification link 
+          : ${verificationToken}
+        </b>`,
+      };
+
+      // Send the email
+      transporter.sendMail(mailOptions, function (error, info) {
+        if (error) {
+          console.log(error);
+        } else {
+          console.log("Email sent: " + info.response);
+        }
+      });
+
+      return res.json({
+        message: "Please reverify your email",
+        user: User.toClientObject(existingUser),
+      });
+    } catch (error) {
+      console.log("AUTH_CHECK_ERROR", error);
+    }
+  } else {
+    return res.json({ message: "Please enter a valid email" });
   }
 };
 
