@@ -13,7 +13,8 @@
   
 ## Features
 
-- Email and password register with verification
+- Email and password registration and login
+- Nodemailer for email verification
 - Google signup and login
 - JWT based authentication validation
 

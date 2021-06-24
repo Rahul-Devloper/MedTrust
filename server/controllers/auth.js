@@ -3,11 +3,11 @@ const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
-const { v4: uuidv4 } = require("uuid");
+const nodemailer = require("nodemailer");
 
-/** 
-  Sign up an user
-**/
+/**********************************
+  Sign up an user and send email verification
+***********************************/
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
 
@@ -78,10 +78,16 @@ exports.signup = async (req, res) => {
         ],
       };
       res.json(errorObject);
-
       return;
     }
+    // Create payload to create JWT token
+    const payload = { email: email };
+    // Generate JWT token for email verification, expires in 30 mins
+    const verificationToken = jwt.sign(payload, process.env.JWT_EMAIL_SECRET, {
+      expiresIn: 1800,
+    });
 
+    // Create a new user, but keep the activation field to false
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
@@ -90,19 +96,51 @@ exports.signup = async (req, res) => {
       email,
       password: hashedPassword,
       activated: false,
-      activationToken: uuidv4(),
+      activationToken: verificationToken,
       activationTokenSentAt: Date.now(),
     });
     await newUser.save();
-    res.json({ user: User.toClientObject(newUser) });
+
+    // Send verification to the user email
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.NODEMAILER_PASSWORD,
+      },
+    });
+
+    // Configure the message
+    var mailOptions = {
+      from: process.env.NODEMAILER_EMAIL,
+      to: email,
+      subject: "SaaS - Verification",
+      html: `<b>Hi, thank you for registering. Here is your verification link 
+        : ${verificationToken}
+      </b>`,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+    res.json({
+      message: "Please verify your email",
+      user: User.toClientObject(newUser),
+    });
   } catch (error) {
     console.log("SERVER_SIGNUP_ERROR", error);
   }
 };
 
-/** 
+/**********************************
   Login a user
-**/
+***********************************/
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
@@ -183,9 +221,9 @@ exports.login = async (req, res, next) => {
   })(req, res, next);
 };
 
-/** 
-  Google login/sign up
-**/
+/**********************************
+  Google login/sign up save to local
+***********************************/
 exports.googleCreateOrLogin = async (req, res) => {
   try {
     const { name, email } = req.body;
@@ -200,7 +238,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       user.save();
     }
 
-    // Generate JWT with Google ID
+    // Generate JWT for the Google ID
     // Use only the user ID to create JWT token
     const idObject = { _id: user._id };
     // Access token is the JWT token
@@ -210,7 +248,7 @@ exports.googleCreateOrLogin = async (req, res) => {
 
     // Send the access token to the client
     return res.json({
-      user: user, // We don't using this user obj on the client, we use google user obj
+      user: user, // We don't use this user obj on the client, we use google user obj
       token: accessToken,
     });
   } catch (error) {

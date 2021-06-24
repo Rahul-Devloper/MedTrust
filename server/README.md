@@ -16,6 +16,11 @@
 - CORS_ORIGIN="http://localhost:3000" | "YOUR_ORIGIN"
 - SESSION_SECRET="YOUR_SESSION_SECRET" <--- Generate a random crypt
 - JWT_SECRET_KEY="YOUR_JWT_SECRET_KEY" <--- Generate a random crypt (NOTE: Tokens can be brute forced if you use weak secrets)
+- JWT_EMAIL_SECRET="RANDOM_EMAIL_SECRET" <---- used for verifying emails
+- NODEMAILER_EMAIL="YOUR_EMAIL_TO_SEND_VERIFICATION_FROM" <---- If gmail, provide permission `https://myaccount.google.com/lesssecureapps`
+- NODEMAILER_PASSWORD="YOUR_EMAIL_PASSWORD
+
+TIP: To generate a random crypt run the following: `require('crypto').randomBytes(64).toString('hex');`
 
 ## Know more
 
