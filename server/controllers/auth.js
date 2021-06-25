@@ -175,7 +175,7 @@ exports.accountVerify = async (req, res, next) => {
 };
 
 /**********************************
-  Resend Email Verification
+  Resend Account Email Verification
 ***********************************/
 exports.accountReverify = async (req, res, next) => {
   // Get the email from client
@@ -237,6 +237,16 @@ exports.accountReverify = async (req, res, next) => {
         }
       );
 
+      // Update activation token sent at in the user model
+      await User.findOneAndUpdate(
+        { email },
+        {
+          activationToken: verificationToken,
+          activationTokenSentAt: Date.now(),
+        },
+        { new: true }
+      ).exec();
+
       // Re Send verification to the user email
       var transporter = nodemailer.createTransport({
         service: "gmail",
@@ -266,7 +276,7 @@ exports.accountReverify = async (req, res, next) => {
       });
 
       return res.json({
-        message: "Please reverify your email",
+        message: "Check your email to verify",
         user: User.toClientObject(existingUser),
       });
     } catch (error) {
