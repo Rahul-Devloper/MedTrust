@@ -6,7 +6,7 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 
 /**********************************
-  Sign up user & send email verification
+  Sign up & send email verification
 ***********************************/
 exports.signup = async (req, res) => {
   const { name, email, password } = req.body;
@@ -170,7 +170,7 @@ exports.accountVerify = async (req, res, next) => {
       });
     }
   } catch (error) {
-    console.log("AUTH_CHECK_ERROR", error);
+    console.log("ACCOUNT_VERIFY_ERROR", error);
   }
 };
 
@@ -178,8 +178,40 @@ exports.accountVerify = async (req, res, next) => {
   Resend Email Verification
 ***********************************/
 exports.accountReverify = async (req, res, next) => {
-  // Get the token from client body
+  // Get the email from client
   const { email } = req.body;
+
+  // Validate the input fields
+  const validationErrors = [];
+
+  // Empty email
+  if (!email) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "email",
+      message: "Please enter an email",
+    });
+  }
+
+  // Check valid email
+  const isValidEmail = email && validateEmail(email);
+  if (email && !isValidEmail) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "email",
+      message: "Please enter a valid email",
+    });
+  }
+
+  // Sends the validation error message
+  if (validationErrors.length) {
+    const errorObject = {
+      error: true,
+      type: validationErrors,
+    };
+    res.json(errorObject);
+    return;
+  }
 
   if (email) {
     try {
@@ -238,10 +270,179 @@ exports.accountReverify = async (req, res, next) => {
         user: User.toClientObject(existingUser),
       });
     } catch (error) {
-      console.log("AUTH_CHECK_ERROR", error);
+      console.log("AUTH_REVERIFY_ERROR", error);
     }
   } else {
     return res.json({ message: "Please enter a valid email" });
+  }
+};
+
+/**********************************
+  Password Reset Email
+***********************************/
+exports.passwordResetEmail = async (req, res, next) => {
+  // Get the email from client body
+  const { email } = req.body;
+
+  // Validate the input fields
+  const validationErrors = [];
+
+  // Empty email
+  if (!email) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "email",
+      message: "Please enter an email",
+    });
+  }
+
+  // Check valid email
+  const isValidEmail = email && validateEmail(email);
+  if (email && !isValidEmail) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "email",
+      message: "Please enter a valid email",
+    });
+  }
+
+  // Sends the validation error message
+  if (validationErrors.length) {
+    const errorObject = {
+      error: true,
+      type: validationErrors,
+    };
+    res.json(errorObject);
+    return;
+  }
+
+  try {
+    // Check if the user exists
+    const existingUser = await User.findOne({ email });
+
+    // If the user doesn't exist, don't send
+    if (!existingUser) {
+      return res.json({
+        message: "Your email doesn't exist, please sign up to continue",
+      });
+    }
+
+    // If user exists
+    // Generate JWT and mail the user
+    const payload = { email: email };
+
+    // Generate JWT token for password reset, expires in 30 mins
+    const resetToken = jwt.sign(payload, process.env.JWT_EMAIL_SECRET, {
+      expiresIn: 1800,
+    });
+
+    // Send password reset email to the user
+    var transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.NODEMAILER_PASSWORD,
+      },
+    });
+
+    // Configure the message
+    var mailOptions = {
+      from: process.env.NODEMAILER_EMAIL,
+      to: email,
+      subject: "SaaS - Password Reset",
+      html: `<b>Hi, here is your password reset link 
+          : ${resetToken}
+        </b>`,
+    };
+
+    // Send the email
+    transporter.sendMail(mailOptions, function (error, info) {
+      if (error) {
+        console.log(error);
+      } else {
+        console.log("Email sent: " + info.response);
+      }
+    });
+
+    return res.json({
+      message: "Password reset link sent to your email",
+      user: User.toClientObject(existingUser),
+    });
+  } catch (error) {
+    console.log("PASSWORD_RESET_EMAIL_ERROR", error);
+  }
+};
+
+/**********************************
+  Password Reset Verification
+***********************************/
+exports.passwordVerify = async (req, res, next) => {
+  // Get the token from client body
+  const { token, newPassword } = req.body;
+
+  // Validate the input fields
+  const validationErrors = [];
+
+  // Empty password
+  if (!newPassword) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "password",
+      message: "Please enter a password",
+    });
+  }
+
+  // Check valid password
+  const isValidPassword = newPassword && validatePassword(newPassword);
+  if (newPassword && !isValidPassword) {
+    validationErrors.push({
+      code: "VALIDATION_ERROR",
+      field: "password",
+      message:
+        "Password must be min 8 chars, with a symbol, upper & lower case, and a number",
+    });
+  }
+
+  // Sends the validation error message
+  if (validationErrors.length) {
+    const errorObject = {
+      error: true,
+      type: validationErrors,
+    };
+    res.json(errorObject);
+    return;
+  }
+
+  try {
+    // If token exists
+    if (token) {
+      jwt.verify(token, process.env.JWT_EMAIL_SECRET, async (err, user) => {
+        // If the token provided is not valid
+        if (err) {
+          return res
+            .status(403)
+            .json(
+              "Token is not valid or expired, enter email to resend reset link"
+            );
+        }
+        const { email } = user;
+
+        // Hash the new password
+        const hashedPassword = await bcrypt.hash(newPassword, 12);
+
+        const updatedUser = await User.findOneAndUpdate(
+          { email },
+          { password: hashedPassword },
+          { new: true }
+        ).exec();
+        return res.json({
+          message: "Password updated, please login to continue",
+          user: User.toClientObject(updatedUser),
+        });
+      });
+    }
+  } catch (error) {
+    console.log("NEW_PASSWORD_VERIFY_ERROR", error);
   }
 };
 
