@@ -11,7 +11,7 @@ const {
   signup,
   login,
   googleCreateOrLogin,
-  accountVerify,
+  accountActivate,
   accountReverify,
   passwordResetEmail,
   passwordVerify,
@@ -19,7 +19,7 @@ const {
 
 // Routes
 router.post("/signup", signup);
-router.post("/account/verify", accountVerify);
+router.post("/account/activate", accountActivate);
 router.post("/account/reverify", accountReverify); // Account reverify email
 router.post("/password/reset", passwordResetEmail);
 router.post("/password/reset/verify", passwordVerify);

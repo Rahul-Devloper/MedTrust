@@ -141,7 +141,7 @@ exports.signup = async (req, res) => {
 /**********************************
   Email Verification, acc. activation
 ***********************************/
-exports.accountVerify = async (req, res, next) => {
+exports.accountActivate = async (req, res, next) => {
   // Get the token from client body
   const { token } = req.body;
 
