@@ -8,6 +8,7 @@ import {
   ForgotPassword,
   Home,
   Login,
+  NewPassword,
   Signup,
 } from "./views";
 
@@ -22,6 +23,7 @@ const App = () => {
         <Route exact path="/account/activate" component={AccountActivation} />
         <Route exact path="/account/reverify" component={AccountReverify} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
+        <Route exact path="/new-password" component={NewPassword} />
         {/* User Routes */}
         <Route exact path="/user/dashboard" component={Dashboard} />
       </Switch>

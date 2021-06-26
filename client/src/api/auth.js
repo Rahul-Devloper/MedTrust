@@ -32,9 +32,17 @@ export const accountActivate = async (token) => {
   });
 };
 
-// Reset user password
+// Send reset user password email
 export const resetPassword = async (email) => {
   return await api.post("/password/reset", {
     email,
+  });
+};
+
+// Set new password
+export const newPassword = async (token, newPassword) => {
+  return await api.post("/password/reset/verify", {
+    token,
+    newPassword,
   });
 };
