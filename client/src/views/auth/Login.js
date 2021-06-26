@@ -103,8 +103,7 @@ const Login = () => {
             <Button type="submit">Log in</Button>
           </form>
           <span>
-            Don't have an account?
-            <Link to="/signup">Sign up</Link>
+            <Link to="/forgot-password">Forgot your password?</Link>
           </span>
           <br />
           <br />
@@ -126,6 +125,10 @@ const Login = () => {
             onFailure={handleGoogleFailure}
             cookiePolicy="single_host_origin"
           />
+          <span>
+            Don't have an account?
+            <Link to="/signup">Sign up</Link>
+          </span>
         </EntryCard>
       </EntryPage>
     </>

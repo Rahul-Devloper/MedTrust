@@ -31,3 +31,10 @@ export const accountActivate = async (token) => {
     token,
   });
 };
+
+// Reset user password
+export const resetPassword = async (email) => {
+  return await api.post("/password/reset", {
+    email,
+  });
+};
