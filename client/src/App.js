@@ -34,7 +34,6 @@ const App = () => {
         <Route exact path="/login" component={Login} />
         <Route exact path="/signup" component={Signup} />
         <Route exact path="/account/activate" component={AccountActivation} />
-        <Route exact path="/account/reverify" component={AccountReverify} />
         <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route exact path="/new-password" component={NewPassword} />
         {/* User Routes */}

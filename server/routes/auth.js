@@ -20,7 +20,7 @@ const {
 // Routes
 router.post("/signup", signup);
 router.post("/account/activate", accountActivate);
-router.post("/account/reverify", accountReverify); // Account reverify email
+router.post("/account/reverify", accountReverify); // Resend account verification email
 router.post("/password/reset", passwordResetEmail);
 router.post("/password/reset/verify", passwordVerify);
 router.post("/login", login);

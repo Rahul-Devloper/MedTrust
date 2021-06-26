@@ -46,3 +46,10 @@ export const newPassword = async (token, newPassword) => {
     newPassword,
   });
 };
+
+// Account resend verification
+export const resendVerification = async (email) => {
+  return await api.post("/account/reverify", {
+    email,
+  });
+};
