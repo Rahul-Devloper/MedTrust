@@ -2,6 +2,9 @@
 export { default as Home } from "./Home";
 export { default as Login } from "./auth/Login";
 export { default as Signup } from "./auth/Signup";
+export { default as AccountActivation } from "./auth/AccountActivation";
+export { default as AccountReverify } from "./auth/AccountReverify";
+export { default as ForgotPassword } from "./auth/ForgotPassword";
 
 // User views
 export { default as Dashboard } from "./user/Dashboard";
