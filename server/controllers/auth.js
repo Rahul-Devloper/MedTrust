@@ -69,11 +69,11 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       const errorObject = {
         error: true,
-        message: "Email already exists, please login to continue",
         type: [
           {
-            code: "VALIDATION_ERROR",
-            field: "email",
+            code: "GLOBAL_ERROR",
+            field: "user",
+            message: "Email already exists, please login to continue",
           },
         ],
       };
@@ -152,8 +152,14 @@ exports.accountActivate = async (req, res, next) => {
         // If the token provided is not valid
         if (err) {
           return res.json({
-            message:
-              "Token is not valid or expired, enter email to resend verification",
+            error: true,
+            type: [
+              {
+                code: "GLOBAL_ERROR",
+                message:
+                  "Token is not valid or expired, enter email to resend verification",
+              },
+            ],
           });
         }
         const { email } = user;
@@ -220,7 +226,14 @@ exports.accountReverify = async (req, res, next) => {
       // Check if the user is already activated
       if (existingUser.activated === true) {
         return res.json({
-          message: "Email already activated, login to continue",
+          error: true,
+          type: [
+            {
+              code: "GLOBAL_ERROR",
+              field: "user",
+              message: "Email already activated, login to continue",
+            },
+          ],
         });
       }
 
@@ -333,7 +346,14 @@ exports.passwordResetEmail = async (req, res, next) => {
     // If the user doesn't exist, don't send
     if (!existingUser) {
       return res.json({
-        message: "Your email doesn't exist, please sign up to continue",
+        error: true,
+        type: [
+          {
+            code: "GLOBAL_ERROR",
+            field: "user",
+            message: "Your email doesn't exist, please sign up to continue",
+          },
+        ],
       });
     }
 
@@ -429,11 +449,17 @@ exports.passwordVerify = async (req, res, next) => {
       jwt.verify(token, process.env.JWT_EMAIL_SECRET, async (err, user) => {
         // If the token provided is not valid
         if (err) {
-          return res
-            .status(403)
-            .json(
-              "Token is not valid or expired, enter email to resend reset link"
-            );
+          return res.json({
+            error: true,
+            type: [
+              {
+                code: "GLOBAL_ERROR",
+                field: "token",
+                message:
+                  "Token is not valid or expired, enter email to resend reset link",
+              },
+            ],
+          });
         }
         const { email } = user;
 

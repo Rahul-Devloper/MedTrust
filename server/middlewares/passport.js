@@ -13,9 +13,13 @@ module.exports = function (passport) {
           }
           if (!user) {
             done(null, false, {
-              code: "GLOBAL_ERROR",
-              message:
-                "Your login credentials could not be verified. Please try again",
+              error: true,
+              type: [
+                {
+                  code: "GLOBAL_ERROR",
+                  message: "Incorrect email or password. Please try again",
+                },
+              ],
             });
             return;
           }
@@ -26,9 +30,13 @@ module.exports = function (passport) {
               return done(null, user);
             } else {
               return done(null, false, {
-                code: "GLOBAL_ERROR",
-                message:
-                  "Your login credentials could not be verified. Please try again",
+                error: true,
+                type: [
+                  {
+                    code: "GLOBAL_ERROR",
+                    message: "Incorrect email or password. Please try again",
+                  },
+                ],
               });
             }
           });
