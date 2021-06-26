@@ -1,6 +1,6 @@
 import api from "./index";
 
-// Signup user
+// Signup user to send verification email
 export const signUp = async (name, email, password) => {
   return await api.post("/signup", {
     name,
@@ -22,5 +22,12 @@ export const googleCreateOrLogin = async (name, email) => {
   return await api.post("/googleAuth", {
     name,
     email,
+  });
+};
+
+// Activate user account
+export const accountActivate = async (token) => {
+  return await api.post("/account/activate", {
+    token,
   });
 };

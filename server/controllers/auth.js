@@ -69,11 +69,11 @@ exports.signup = async (req, res) => {
     if (existingUser) {
       const errorObject = {
         error: true,
+        message: "Email already exists, please login to continue",
         type: [
           {
             code: "VALIDATION_ERROR",
             field: "email",
-            message: "Email already exists, please login to continue",
           },
         ],
       };
@@ -130,7 +130,7 @@ exports.signup = async (req, res) => {
     });
 
     res.json({
-      message: "Please verify your email",
+      message: "Check your email, and verify your account",
       user: User.toClientObject(newUser),
     });
   } catch (error) {
@@ -151,11 +151,10 @@ exports.accountActivate = async (req, res, next) => {
       jwt.verify(token, process.env.JWT_EMAIL_SECRET, async (err, user) => {
         // If the token provided is not valid
         if (err) {
-          return res
-            .status(403)
-            .json(
-              "Token is not valid or expired, enter email to resend verification"
-            );
+          return res.json({
+            message:
+              "Token is not valid or expired, enter email to resend verification",
+          });
         }
         const { email } = user;
         const updatedUser = await User.findOneAndUpdate(
@@ -276,7 +275,8 @@ exports.accountReverify = async (req, res, next) => {
       });
 
       return res.json({
-        message: "Check your email to verify",
+        message:
+          "Verification email sent, check your email to activate account",
         user: User.toClientObject(existingUser),
       });
     } catch (error) {
