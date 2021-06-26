@@ -13,6 +13,8 @@ import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { signUp, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const initialFormData = {
   name: "",
@@ -37,17 +39,22 @@ const Signup = () => {
   const handleSubmit = (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = formData;
+
     try {
       // Check if passwords match
       if (password !== confirmPassword) {
-        alert("Passwords don't match");
+        toast.error("Passwords don't match");
         return;
       } else {
         setLoading(true);
         // Submit name, email & password to the server
         signUp(name, email, password)
           .then((res) => {
-            // console.log(res.data);
+            // Check for errors
+            if (res.data.error) {
+              toast.error(res.data.type[0].message);
+            }
+            toast.success(res.data.message);
             setLoading(false);
           })
           .catch((err) => {
@@ -105,6 +112,7 @@ const Signup = () => {
                 name="name"
                 value={formData.name}
                 onChange={handleFormChange}
+                required
               />
             </InputGroup>
             <InputGroup>
@@ -116,6 +124,7 @@ const Signup = () => {
                 name="email"
                 value={formData.email}
                 onChange={handleFormChange}
+                required
               />
             </InputGroup>
             <InputGroup>
@@ -127,6 +136,7 @@ const Signup = () => {
                 name="password"
                 value={formData.password}
                 onChange={handleFormChange}
+                required
               />
             </InputGroup>
             <InputGroup>
@@ -138,6 +148,7 @@ const Signup = () => {
                 name="confirmPassword"
                 value={formData.confirmPassword}
                 onChange={handleFormChange}
+                required
               />
             </InputGroup>
             <Button type="submit">Sign up</Button>

@@ -13,6 +13,8 @@ import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import { login, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const Login = () => {
   const [email, setEmail] = useState("abc@gmail.com");
@@ -34,9 +36,12 @@ const Login = () => {
           type: "EMAIL_LOG_IN",
           data: { user, token },
         });
-        setLoading(false);
         // Push user to dashboard on successful login
+        if (res.data.error) {
+          toast.error(res.data.type[0].message);
+        }
         history.push("/user/dashboard");
+        setLoading(false);
       })
       .catch((err) => {
         setLoading(false);
@@ -88,6 +93,7 @@ const Login = () => {
                 id="login-email"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
+                required
               />
             </InputGroup>
             <InputGroup>
@@ -98,6 +104,7 @@ const Login = () => {
                 id="login-password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
+                required
               />
             </InputGroup>
             <Button type="submit">Log in</Button>

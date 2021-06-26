@@ -9,6 +9,8 @@ import {
   PageHeader,
 } from "../../components";
 import { resetPassword } from "../../api/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
@@ -21,7 +23,10 @@ const ForgotPassword = () => {
     setLoading(true);
     resetPassword(email)
       .then((res) => {
-        console.log(res.data);
+        if (res.data.error) {
+          toast.error(res.data.type[0].message);
+        }
+        toast.success(res.data.message);
       })
       .catch((err) => {
         console.log(err);

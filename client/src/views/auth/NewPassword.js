@@ -9,8 +9,9 @@ import {
   PageHeader,
 } from "../../components";
 import { useLocation } from "react-router-dom";
-
 import { newPassword } from "../../api/auth";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
 
 const NewPassword = () => {
   const [password, setPassword] = useState("");
@@ -32,7 +33,10 @@ const NewPassword = () => {
         // Submit token & new password to the server
         newPassword(token, password)
           .then((res) => {
-            console.log(res.data);
+            if (res.data.error) {
+              toast.error(res.data.type[0].message);
+            }
+            toast.success(res.data.message);
           })
           .catch((err) => {
             console.log(err);
