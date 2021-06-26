@@ -116,7 +116,7 @@ exports.signup = async (req, res) => {
       to: email,
       subject: "SaaS - Verification",
       html: `<b>Hi, thank you for registering. Here is your verification link 
-        : ${verificationToken}
+        : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
       </b>`,
     };
 
@@ -261,7 +261,7 @@ exports.accountReverify = async (req, res, next) => {
         to: email,
         subject: "SaaS - Verification",
         html: `<b>Hi, thank you for registering. Here is your verification link 
-          : ${verificationToken}
+          : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
         </b>`,
       };
 
@@ -361,7 +361,7 @@ exports.passwordResetEmail = async (req, res, next) => {
       to: email,
       subject: "SaaS - Password Reset",
       html: `<b>Hi, here is your password reset link 
-          : ${resetToken}
+          : ${process.env.CORS_ORIGIN}/new-password?token=${resetToken}
         </b>`,
     };
 
