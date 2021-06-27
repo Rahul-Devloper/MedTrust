@@ -10,13 +10,13 @@ const LoadingToRedirect = () => {
       setCount((currCount) => --currCount);
     }, 1000);
     // redirect once count is 0
-    count === 0 && history.push("/");
+    count === 0 && history.push("/login");
     // cleanup
     return () => clearInterval(interval);
   }, [count, history]);
 
   return (
-    <div className="container p-5 text-center">
+    <div className="">
       <p>Redirecting you in {count} seconds</p>
     </div>
   );

@@ -40,7 +40,7 @@ const Login = () => {
         if (res.data.error) {
           toast.error(res.data.type[0].message);
         }
-        history.push("/user/dashboard");
+        history.push("/admin/dashboard");
         setLoading(false);
       })
       .catch((err) => {

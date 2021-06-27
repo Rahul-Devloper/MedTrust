@@ -3,7 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import "./App.scss";
 import {
   AccountActivation,
-  AccountReverify,
+  AdminDashboard,
   Dashboard,
   ForgotPassword,
   Home,
@@ -11,6 +11,7 @@ import {
   NewPassword,
   Signup,
 } from "./views";
+import { UserRoute, AdminRoute } from "./routes";
 import { ToastContainer } from "react-toastify";
 
 const App = () => {
@@ -37,7 +38,9 @@ const App = () => {
         <Route exact path="/forgot-password" component={ForgotPassword} />
         <Route exact path="/new-password" component={NewPassword} />
         {/* User Routes */}
-        <Route exact path="/user/dashboard" component={Dashboard} />
+        <UserRoute exact path="/user/dashboard" component={Dashboard} />
+        {/* Admin Routes */}
+        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
       </Switch>
     </div>
   );

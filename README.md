@@ -10,12 +10,15 @@
 - Frontend: ReactJS
 - Backend: ExpressJS
 - Database: MongoDB
-  
+- Mail: Nodemailer
+
 ## Features
 
 - Email and password registration and login
-- Nodemailer for email verification
-- Google signup and login
-- JWT based authentication validation
-
--
+- Google sign up and login
+- JWT based authentication
+- Role based authorization
+- Confirmation emails
+- Password reset through email
+- Account activation reverification email
+- JSON APIs

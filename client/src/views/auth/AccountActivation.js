@@ -74,7 +74,7 @@ const AccountActivation = () => {
                   />
                 </InputGroup>
 
-                <Button type="submit">Reset</Button>
+                <Button type="submit">Resend</Button>
               </form>
               <br />
               <br />
@@ -93,7 +93,7 @@ const AccountActivation = () => {
               <hr />
 
               <span>
-                <Link to="/signup">Login</Link>
+                <Link to="/login">Login</Link>
               </span>
             </>
           )}

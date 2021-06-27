@@ -8,3 +8,6 @@ export { default as NewPassword } from "./auth/NewPassword";
 
 // User views
 export { default as Dashboard } from "./user/Dashboard";
+
+// Admin views
+export { default as AdminDashboard } from "./admin/AdminDashboard";
