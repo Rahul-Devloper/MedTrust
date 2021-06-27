@@ -69,17 +69,23 @@ const Signup = () => {
 
   // Handle google signup success
   const handleGoogleSuccess = async (res) => {
-    const user = await res?.profileObj;
-    const { name, email } = user;
+    const userObjGoogle = await res?.profileObj;
+    const { name, email } = userObjGoogle;
 
     setLoading(true);
     googleCreateOrLogin(name, email)
       .then((res) => {
-        const { token } = res.data;
+        const { user, token } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
           type: "GOOGLE_LOG_IN",
-          data: { user, token },
+          payload: {
+            name: user.name,
+            email: user.email,
+            role: user.role,
+            token: token,
+            _id: user._id,
+          },
         });
         setLoading(false);
         // Push user to dashboard on successful login

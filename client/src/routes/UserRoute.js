@@ -8,7 +8,7 @@ const UserRoute = ({ children, ...restProps }) => {
 
   return (
     <>
-      {auth.authData && auth.authData.token ? (
+      {auth && auth.token ? (
         <Route {...restProps} render={children} />
       ) : (
         <LoadingToRedirect />

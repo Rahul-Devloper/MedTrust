@@ -9,7 +9,7 @@ const AdminRoute = ({ children, ...restProps }) => {
   const [ok, setOk] = useState(false);
 
   useEffect(() => {
-    if (auth.authData && auth.authData.token) {
+    if (auth && auth.token) {
       currentAdmin()
         .then((result) => {
           setOk(true);
@@ -19,11 +19,11 @@ const AdminRoute = ({ children, ...restProps }) => {
           console.log(error);
         });
     }
-  }, [auth.authData]);
+  }, [auth]);
 
   return (
     <>
-      {ok && auth.authData.token ? (
+      {ok && auth.token ? (
         <Route {...restProps} render={children} />
       ) : (
         <LoadingToRedirect />
