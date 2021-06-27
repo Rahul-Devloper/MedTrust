@@ -573,28 +573,42 @@ exports.googleCreateOrLogin = async (req, res) => {
     const { name, email } = req.body;
     let user = await User.findOne({ email });
     if (!user) {
-      let user = await new User({
+      let user = new User({
         name: name,
         email: email,
         accountType: "google",
         activated: true,
       });
-      user.save();
+      await user.save().then((user) => {
+        // Generate JWT for the Google ID
+        // Use only the user ID to create JWT token
+        const idObject = { _id: user._id };
+        // Access token is the JWT token
+        const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+          expiresIn: 1800,
+        });
+
+        // Send the access token to the client
+        return res.json({
+          user: user,
+          token: accessToken,
+        });
+      });
+    } else {
+      // Generate JWT for the Google ID
+      // Use only the user ID to create JWT token
+      const idObject = { _id: user._id };
+      // Access token is the JWT token
+      const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+        expiresIn: 1800,
+      });
+
+      // Send the access token to the client
+      return res.json({
+        user: user,
+        token: accessToken,
+      });
     }
-
-    // Generate JWT for the Google ID
-    // Use only the user ID to create JWT token
-    const idObject = { _id: user._id };
-    // Access token is the JWT token
-    const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
-      expiresIn: 1800,
-    });
-
-    // Send the access token to the client
-    return res.json({
-      user: user, // We don't use this user obj on the client, we use google user obj
-      token: accessToken,
-    });
   } catch (error) {
     console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
   }
