@@ -14,11 +14,17 @@ exports.authCheck = (req, res, next) => {
         jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
           // If the token provided is not valid
           if (err) {
-            return res
-              .status(403)
-              .json("Token is not valid, please log in again");
+            return res.json({
+              error: true,
+              type: [
+                {
+                  code: "GLOBAL_ERROR",
+                  message: "Token is not valid or expired, please log in again",
+                },
+              ],
+            });
           }
-          req.user = user._id;
+          req.user = user;
         });
       }
       next();
@@ -27,5 +33,26 @@ exports.authCheck = (req, res, next) => {
     }
   } else {
     res.json("You are unauthorized");
+  }
+};
+
+// Admin check middleware
+exports.adminCheck = async (req, res, next) => {
+  const { email } = req.user;
+
+  const adminUser = await User.findOne({ email }).exec();
+
+  if (adminUser.role !== "admin") {
+    res.json({
+      error: true,
+      type: [
+        {
+          code: "GLOBAL_ERROR",
+          message: "Admin resource, access denied",
+        },
+      ],
+    });
+  } else {
+    next();
   }
 };
