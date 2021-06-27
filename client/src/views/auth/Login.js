@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, useHistory } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   EntryCard,
   InputGroup,
@@ -16,12 +16,25 @@ import googleLogo from "../../assets/google_logo.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
-const Login = () => {
+const Login = ({ history }) => {
   const [email, setEmail] = useState("abc@gmail.com");
   const [password, setPassword] = useState("Abcd1234!");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
+
+  // Role based redirect upon login
+  const roleBasedRedirect = (res) => {
+    const intended = history.location.state;
+    if (intended) {
+      history.push(intended.from);
+    } else {
+      if (res.data.user.role === "admin") {
+        history.push("/admin/dashboard");
+      } else {
+        history.push("/user/dashboard");
+      }
+    }
+  };
 
   // Email login
   const handleSubmit = (e) => {
@@ -42,11 +55,11 @@ const Login = () => {
             _id: user._id,
           },
         });
-        // Push user to dashboard on successful login
         if (res.data.error) {
           toast.error(res.data.type[0].message);
         }
-        history.push("/admin/dashboard");
+        // Role based redirect upon successful login
+        roleBasedRedirect(res);
         setLoading(false);
       })
       .catch((err) => {
@@ -76,8 +89,8 @@ const Login = () => {
           },
         });
         setLoading(false);
-        // Push user to dashboard on successful login
-        history.push("/user/dashboard");
+        // Role based redirect upon successful login
+        roleBasedRedirect(res);
       })
       .catch((error) => {
         setLoading(false);

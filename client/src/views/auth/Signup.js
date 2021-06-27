@@ -29,6 +29,20 @@ const Signup = () => {
   const dispatch = useDispatch();
   const history = useHistory();
 
+  // Role based redirect upon sign up
+  const roleBasedRedirect = (res) => {
+    const intended = history.location.state;
+    if (intended) {
+      history.push(intended.from);
+    } else {
+      if (res.data.user.role === "admin") {
+        history.push("/admin/dashboard");
+      } else {
+        history.push("/user/dashboard");
+      }
+    }
+  };
+
   // Handle form change
   const handleFormChange = (e) => {
     e.preventDefault();
@@ -88,8 +102,8 @@ const Signup = () => {
           },
         });
         setLoading(false);
-        // Push user to dashboard on successful login
-        history.push("/user/dashboard");
+        // Role based redirect upon successful sign up
+        roleBasedRedirect(res);
       })
       .catch((error) => {
         setLoading(false);
