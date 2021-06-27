@@ -78,7 +78,7 @@ const Signup = () => {
         const { user, token } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
-          type: "GOOGLE_LOG_IN",
+          type: "LOGGED_IN_USER",
           payload: {
             name: user.name,
             email: user.email,

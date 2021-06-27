@@ -33,7 +33,7 @@ const Login = () => {
         // Store the userObject and token in redux store & set cookie
         const { user, token } = res.data;
         dispatch({
-          type: "EMAIL_LOG_IN",
+          type: "LOGGED_IN_USER",
           payload: {
             name: user.name,
             email: user.email,
@@ -66,7 +66,7 @@ const Login = () => {
         const { user, token } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
-          type: "GOOGLE_LOG_IN",
+          type: "LOGGED_IN_USER",
           payload: {
             name: user.name,
             email: user.email,
