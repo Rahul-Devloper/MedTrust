@@ -50,6 +50,8 @@ userSchema.statics.toClientObject = function (user) {
   const clientObject = {
     _id: userObject._id,
     email: userObject.email,
+    name: userObject.name,
+    role: userObject.role,
     activated: userObject.activated,
     createdAt: userObject.createdAt,
     updatedAt: userObject.updatedAt,
