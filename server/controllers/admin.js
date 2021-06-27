@@ -4,9 +4,9 @@ const User = require("../models/user");
   Check if user is admin
 ***********************************/
 exports.currentAdmin = async (req, res) => {
-  const { email } = req.user;
+  const { _id } = req.user;
 
-  const user = await User.findOne({ email }).exec();
+  const user = await User.findOne({ _id }).exec();
 
   if (user.role === "admin") {
     res.json({

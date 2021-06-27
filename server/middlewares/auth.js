@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const User = require("../models/user");
 
 // Authentication check middleware
 exports.authCheck = (req, res, next) => {
@@ -38,19 +39,13 @@ exports.authCheck = (req, res, next) => {
 
 // Admin check middleware
 exports.adminCheck = async (req, res, next) => {
-  const { email } = req.user;
+  const { _id } = req.user;
 
-  const adminUser = await User.findOne({ email }).exec();
+  const adminUser = await User.findOne({ _id }).exec();
 
   if (adminUser.role !== "admin") {
-    res.json({
-      error: true,
-      type: [
-        {
-          code: "GLOBAL_ERROR",
-          message: "Admin resource, access denied",
-        },
-      ],
+    res.status(403).json({
+      error: "Admin Resource, access denied!",
     });
   } else {
     next();
