@@ -1,9 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { StyledNavbar, NavItemLink, NavUserImg } from "./style";
-import defaultUserImg from "../../assets/defaultUser.jpg";
+import defaultUserImg from "../../../assets/defaultUser.jpg";
 import { useSelector } from "react-redux";
 
-const Navbar = () => {
+const NormalNavbar = () => {
   return (
     <StyledNavbar>
       {/* {user ? (
@@ -21,4 +21,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar;
+export default NormalNavbar;

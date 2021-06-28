@@ -2,7 +2,10 @@ export { default as Button } from "./Button";
 export { default as EntryCard } from "./EntryCard";
 export { default as Input } from "./Input";
 export { default as InputGroup } from "./InputGroup";
-export { default as Navbar } from "./NavBar";
+
+// Navbar
+export { default as NormalNavbar } from "./Navbar/NormalNavbar";
+export { default as AdminNavbar } from "./Navbar/AdminNavbar";
 
 // Login and Sign up cards
 export {

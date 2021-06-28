@@ -1,10 +1,10 @@
 import React from "react";
-import { Navbar } from "../components";
+import { NormalNavbar } from "../components";
 
 const Home = () => {
   return (
     <>
-      <Navbar />
+      <NormalNavbar />
     </>
   );
 };

@@ -1,4 +1,4 @@
-import { LOGGED_IN_USER, LOG_OUT } from "./constants/actionTypes";
+import { LOGGED_IN_USER, LOG_OUT_USER } from "./constants/actionTypes";
 import Cookies from "js-cookie";
 
 const authReducer = (state = null, action) => {
@@ -7,8 +7,9 @@ const authReducer = (state = null, action) => {
     case LOGGED_IN_USER:
       Cookies.set("token", action?.payload.token, { expires: 0.02 });
       return action?.payload;
-    case LOG_OUT:
-      break;
+    case LOG_OUT_USER:
+      Cookies.remove("token");
+      return action.payload;
     default:
       return state;
   }

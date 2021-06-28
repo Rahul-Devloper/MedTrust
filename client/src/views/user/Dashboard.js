@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { Navbar } from "../../components";
+import { NormalNavbar } from "../../components";
 
 const Dashboard = () => {
   useEffect(() => {
@@ -8,7 +8,7 @@ const Dashboard = () => {
 
   return (
     <>
-      <Navbar />
+      <NormalNavbar />
       <h1>User Dashboard</h1>
     </>
   );
