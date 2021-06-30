@@ -22,3 +22,5 @@
 - Password reset through email
 - Account activation reverification email
 - JSON APIs
+
+# Created by: dpacman
