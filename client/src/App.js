@@ -10,6 +10,7 @@ import {
   Login,
   NewPassword,
   Signup,
+  StripePayment,
 } from "./views";
 import { UserRoute, AdminRoute } from "./routes";
 import { ToastContainer } from "react-toastify";
@@ -39,6 +40,7 @@ const App = () => {
         <Route exact path="/new-password" component={NewPassword} />
         {/* User Routes */}
         <UserRoute exact path="/user/dashboard" component={Dashboard} />
+        <Route exact path="/user/payment" component={StripePayment} />
         {/* Admin Routes */}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
       </Switch>

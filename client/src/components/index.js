@@ -19,3 +19,6 @@ export {
 
 // Loaders
 export { default as LoadingToRedirect } from "./Loaders/LoadingToRedirect";
+
+// Payment
+export { default as CheckoutForm } from "./Checkout/CheckoutForm";
