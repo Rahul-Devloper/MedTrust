@@ -5,10 +5,12 @@ const authReducer = (state = null, action) => {
   switch (action.type) {
     // Save user to redux store & set google JWT to the browser cookie
     case LOGGED_IN_USER:
-      Cookies.set("token", action?.payload.token, { expires: 0.02 });
+      Cookies.set("access", action?.payload.access, { expires: 0.000231481 });
+      Cookies.set("refresh", action?.payload.refresh, { expires: 365 });
       return action?.payload;
     case LOG_OUT_USER:
-      Cookies.remove("token");
+      Cookies.remove("access");
+      Cookies.remove("refresh");
       return action.payload;
     default:
       return state;
