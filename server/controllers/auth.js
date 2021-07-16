@@ -592,11 +592,16 @@ exports.googleCreateOrLogin = async (req, res) => {
         const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
           expiresIn: 1800,
         });
+        // Generate the refresh token
+        const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
+          expiresIn: "1y",
+        });
 
         // Send the access token to the client
         return res.json({
           user: user,
-          token: accessToken,
+          accessToken: accessToken,
+          refreshToken: refreshToken,
         });
       });
     } else {
@@ -607,11 +612,16 @@ exports.googleCreateOrLogin = async (req, res) => {
       const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
         expiresIn: 1800,
       });
+      // Generate the refresh token
+      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
+        expiresIn: "1y",
+      });
 
       // Send the access token to the client
       return res.json({
         user: user,
-        token: accessToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     }
   } catch (error) {

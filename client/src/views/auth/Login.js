@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import {
   EntryCard,
@@ -15,12 +15,23 @@ import { login, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
+import Cookies from "js-cookie";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("abc@gmail.com");
   const [password, setPassword] = useState("Abcd1234!");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+  let isAuth = Cookies.get("token");
+
+  // If user is already logged in, redirect to dashboard
+  useEffect(() => {
+    if (isAuth & (isAuth !== "undefined")) {
+      history.push("/user/dashboard");
+    } else {
+      history.push("/login");
+    }
+  }, []);
 
   // Role based redirect upon login
   const roleBasedRedirect = (res) => {
@@ -44,14 +55,15 @@ const Login = ({ history }) => {
     login(email, password)
       .then((res) => {
         // Store the userObject and token in redux store & set cookie
-        const { user, token } = res.data;
+        const { user, accessToken, refreshToken } = res.data;
         dispatch({
           type: "LOGGED_IN_USER",
           payload: {
             name: user.name,
             email: user.email,
             role: user.role,
-            token: token,
+            access: accessToken,
+            refresh: refreshToken,
             _id: user._id,
           },
         });
@@ -76,7 +88,7 @@ const Login = ({ history }) => {
     setLoading(true);
     googleCreateOrLogin(name, email)
       .then((res) => {
-        const { user, token } = res.data;
+        const { user, accessToken, refreshToken } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
           type: "LOGGED_IN_USER",
@@ -84,7 +96,8 @@ const Login = ({ history }) => {
             name: user.name,
             email: user.email,
             role: user.role,
-            token: token,
+            access: accessToken,
+            refresh: refreshToken,
             _id: user._id,
           },
         });

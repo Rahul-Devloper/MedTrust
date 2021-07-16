@@ -45,8 +45,6 @@ const NewPassword = () => {
     } catch (error) {
       console.log("SET_PASSWORD_ERROR", error);
     }
-    // Make the API call
-    setLoading(true);
   };
 
   return (

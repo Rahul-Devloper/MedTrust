@@ -9,15 +9,13 @@ const AdminRoute = ({ children, ...restProps }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [ok, setOk] = useState(false);
   const accessToken = Cookies.get("access");
-  const isAdmin = Cookies.get("is_admin");
 
   // Check if current user is admin
   useEffect(() => {
-    if (auth && auth.token) {
+    if (accessToken) {
       currentAdmin()
         .then(() => {
           setOk(true);
-          Cookies.set("is_admin", true);
         })
         .catch((error) => {
           setOk(false);
@@ -26,19 +24,12 @@ const AdminRoute = ({ children, ...restProps }) => {
     }
   }, [auth]);
 
-  // Removes admin cookie
-  const removeAdminCookie = () => {
-    if (accessToken === undefined) {
-      Cookies.remove("is_admin");
-    }
-  };
-
   return (
     <>
-      {isAdmin && accessToken ? (
+      {ok && accessToken !== undefined ? (
         <Route {...restProps} render={children} />
       ) : (
-        (removeAdminCookie(), (<LoadingToRedirect />))
+        <LoadingToRedirect />
       )}
     </>
   );

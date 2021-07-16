@@ -13,8 +13,8 @@ header
 */
 api.interceptors.request.use((req) => {
   // If token exists, add to req auth header
-  if (Cookies.get("token")) {
-    req.headers.authorization = `Bearer ${Cookies.get("token")}`;
+  if (Cookies.get("access")) {
+    req.headers.authorization = `Bearer ${Cookies.get("access")}`;
   }
   return req;
 });

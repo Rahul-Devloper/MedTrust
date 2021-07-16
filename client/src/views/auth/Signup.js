@@ -89,7 +89,7 @@ const Signup = () => {
     setLoading(true);
     googleCreateOrLogin(name, email)
       .then((res) => {
-        const { user, token } = res.data;
+        const { user, accessToken, refreshToken } = res.data;
         // Store the userObject and token in redux store & set cookie
         dispatch({
           type: "LOGGED_IN_USER",
@@ -97,7 +97,8 @@ const Signup = () => {
             name: user.name,
             email: user.email,
             role: user.role,
-            token: token,
+            access: accessToken,
+            refresh: refreshToken,
             _id: user._id,
           },
         });

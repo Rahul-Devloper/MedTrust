@@ -43,7 +43,6 @@ const AccountActivation = () => {
     // Make the API call
     resendVerification(email)
       .then((res) => {
-        console.log(res.data);
         if (res.data.error) {
           toast.error(res.data.type[0].message);
         }

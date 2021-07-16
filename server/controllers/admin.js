@@ -10,10 +10,12 @@ exports.currentAdmin = async (req, res) => {
 
   if (user.role === "admin") {
     res.json({
+      admin: true,
       message: "Welcome admin!",
     });
   } else {
     res.status(401).json({
+      admin: false,
       error: "You are trying to access admin resource. Access Denied",
     });
   }
