@@ -551,17 +551,20 @@ exports.login = async (req, res, next) => {
       const userObject = user.toObject();
       // Use only the user ID to create JWT token
       const idObject = { _id: userObject._id };
-      // Access token is the JWT token
+      // Generate the access token
       const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
-        expiresIn: 1800,
+        expiresIn: "20s",
       });
-
-      res.cookie("accessToken", accessToken);
+      // Generate the refresh token
+      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
+        expiresIn: "1y",
+      });
 
       // Send the access token to the client
       return res.json({
         user: User.toClientObject(user),
-        token: accessToken,
+        accessToken: accessToken,
+        refreshToken: refreshToken,
       });
     }
   })(req, res, next);
