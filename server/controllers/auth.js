@@ -552,9 +552,11 @@ exports.login = async (req, res, next) => {
       // Use only the user ID to create JWT token
       const idObject = { _id: userObject._id };
       // Access token is the JWT token
-      const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
         expiresIn: 1800,
       });
+
+      res.cookie("accessToken", accessToken);
 
       // Send the access token to the client
       return res.json({
@@ -584,7 +586,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         // Use only the user ID to create JWT token
         const idObject = { _id: user._id };
         // Access token is the JWT token
-        const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+        const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
           expiresIn: 1800,
         });
 
@@ -599,7 +601,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       // Use only the user ID to create JWT token
       const idObject = { _id: user._id };
       // Access token is the JWT token
-      const accessToken = jwt.sign(idObject, process.env.JWT_SECRET_KEY, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
         expiresIn: 1800,
       });
 

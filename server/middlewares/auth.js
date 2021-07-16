@@ -12,7 +12,7 @@ exports.authCheck = (req, res, next) => {
 
       // If token exists
       if (token) {
-        jwt.verify(token, process.env.JWT_SECRET_KEY, (err, user) => {
+        jwt.verify(token, process.env.JWT_ACCESS_TOKEN, (err, user) => {
           // If the token provided is not valid
           if (err) {
             return res.json({

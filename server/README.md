@@ -3,8 +3,8 @@
 ## Middlewares
 
 - BodyParser: Populates the values in the `req.body` object
-- Compression: The data exchanged between the server and client is compressed, to save network bandwidth
-            and decrease latency
+- Compression: The data exchanged between the server and client is compressed, to save network bandwidth and decrease latency
+- Express-session: In memory sessions handled with Express, passport requires this
 - CookieParser: It looks at the cookie header, we can access it by `req.cookie.key`
 - Morgan: HTTP request logger middleware for node.js
 - Passport: Authentication middleware for Node.js
@@ -15,7 +15,7 @@
 - ATLAS_URI="YOUR_MONGO_URI"
 - CORS_ORIGIN="http://localhost:3000" | "YOUR_ORIGIN"
 - SESSION_SECRET="YOUR_SESSION_SECRET" <--- Generate a random crypt
-- JWT_SECRET_KEY="YOUR_JWT_SECRET_KEY" <--- Generate a random crypt (NOTE: Tokens can be brute forced if you use weak secrets)
+- JWT_ACCESS_TOKEN="YOUR_JWT_ACCESS_TOKEN" <--- Generate a random crypt (NOTE: Tokens can be brute forced if you use weak secrets)
 - JWT_EMAIL_SECRET="RANDOM_EMAIL_SECRET" <---- used for verifying emails
 - NODEMAILER_EMAIL="YOUR_EMAIL_TO_SEND_VERIFICATION_FROM" <---- If gmail, provide permission `https://myaccount.google.com/lesssecureapps`
 - NODEMAILER_PASSWORD="YOUR_EMAIL_PASSWORD
