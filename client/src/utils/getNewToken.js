@@ -12,11 +12,12 @@ export const getNewToken = () => {
 
   // If access token expired and refresh token is present, refresh the access token
   if (accessToken === undefined && refreshToken) {
+    console.log("REFRESHING");
     // Get new access token
     refreshAccessToken(refreshToken)
       .then((res) => {
         // Set access token cookie
-        Cookies.set("access", res.data.accessToken, { expires: 0.000231481 });
+        Cookies.set("access", res.data.accessToken, { expires: 0.0104167 });
         return;
       })
       .catch((err) => {
