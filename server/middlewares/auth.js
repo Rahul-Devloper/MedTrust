@@ -26,9 +26,9 @@ exports.authCheck = (req, res, next) => {
             });
           }
           req.user = user;
+          next();
         });
       }
-      next();
     } catch (error) {
       console.log("AUTH_CHECK_ERROR", error);
     }
