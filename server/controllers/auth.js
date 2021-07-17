@@ -553,7 +553,7 @@ exports.login = async (req, res, next) => {
       const idObject = { _id: userObject._id };
       // Generate the access token
       const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
-        expiresIn: "20s",
+        expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
       });
       // Generate the refresh token
       const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
@@ -590,7 +590,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         const idObject = { _id: user._id };
         // Access token is the JWT token
         const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
-          expiresIn: 1800,
+          expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
         });
         // Generate the refresh token
         const refreshToken = jwt.sign(
@@ -614,7 +614,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       const idObject = { _id: user._id };
       // Access token is the JWT token
       const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
-        expiresIn: 1800,
+        expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
       });
       // Generate the refresh token
       const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
@@ -676,7 +676,7 @@ exports.newAccessToken = async (req, res) => {
     }
     const idObject = { _id: user._id };
     const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
-      expiresIn: "20s",
+      expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
     });
     return res.json({
       user: User.toClientObject(user),
