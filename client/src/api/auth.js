@@ -53,3 +53,10 @@ export const resendVerification = async (email) => {
     email,
   });
 };
+
+// Refresh access token
+export const refreshAccessToken = async (refreshToken) => {
+  return await api.post("/newAccessToken", {
+    refreshToken,
+  });
+};

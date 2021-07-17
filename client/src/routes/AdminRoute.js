@@ -4,11 +4,17 @@ import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
 import { currentAdmin } from "../api/admin";
 import Cookies from "js-cookie";
+import { getNewToken } from "../utils/getNewToken";
 
 const AdminRoute = ({ children, ...restProps }) => {
   const { auth } = useSelector((state) => ({ ...state }));
   const [ok, setOk] = useState(false);
   const accessToken = Cookies.get("access");
+
+  // If access token doesnt exist, get new access token
+  if (accessToken === undefined || accessToken === null) {
+    getNewToken();
+  }
 
   // Check if current user is admin
   useEffect(() => {
