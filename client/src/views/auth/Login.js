@@ -22,16 +22,6 @@ const Login = ({ history }) => {
   const [password, setPassword] = useState("Abcd1234!");
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  let isAuth = Cookies.get("token");
-
-  // If user is already logged in, redirect to dashboard
-  useEffect(() => {
-    if (isAuth & (isAuth !== "undefined")) {
-      history.push("/user/dashboard");
-    } else {
-      history.push("/login");
-    }
-  }, []);
 
   // Role based redirect upon login
   const roleBasedRedirect = (res) => {

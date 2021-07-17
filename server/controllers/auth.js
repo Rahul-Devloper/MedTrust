@@ -639,10 +639,28 @@ exports.googleCreateOrLogin = async (req, res) => {
 exports.newAccessToken = async (req, res) => {
   try {
     const { refreshToken } = req.body;
+
+    // If refresh token is not provided, return error
+    if (!refreshToken) {
+      return res.json({
+        error: true,
+        type: [
+          {
+            code: "REFRESH_TOKEN_NOT_PROVIDED",
+            field: "refreshToken",
+            message: "Refresh token is not provided",
+          },
+        ],
+      });
+    }
+
+    // Get the user from the refresh token
     const decodedToken = jwt.verify(
       refreshToken,
       process.env.JWT_REFRESH_SECRET
     );
+
+    // Get the user from the refresh token
     const user = await User.findById(decodedToken._id);
     if (!user) {
       return res.json({
