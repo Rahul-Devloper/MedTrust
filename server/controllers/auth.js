@@ -552,11 +552,11 @@ exports.login = async (req, res, next) => {
       // Use only the user ID to create JWT token
       const idObject = { _id: userObject._id };
       // Generate the access token
-      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
         expiresIn: "20s",
       });
       // Generate the refresh token
-      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
+      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
         expiresIn: "1y",
       });
 
@@ -589,17 +589,21 @@ exports.googleCreateOrLogin = async (req, res) => {
         // Use only the user ID to create JWT token
         const idObject = { _id: user._id };
         // Access token is the JWT token
-        const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
+        const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
           expiresIn: 1800,
         });
         // Generate the refresh token
-        const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
-          expiresIn: "1y",
-        });
+        const refreshToken = jwt.sign(
+          idObject,
+          process.env.JWT_REFRESH_SECRET,
+          {
+            expiresIn: "1y",
+          }
+        );
 
         // Send the access token to the client
         return res.json({
-          user: user,
+          user: User.toClientObject(user),
           accessToken: accessToken,
           refreshToken: refreshToken,
         });
@@ -609,22 +613,58 @@ exports.googleCreateOrLogin = async (req, res) => {
       // Use only the user ID to create JWT token
       const idObject = { _id: user._id };
       // Access token is the JWT token
-      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_TOKEN, {
+      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
         expiresIn: 1800,
       });
       // Generate the refresh token
-      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_TOKEN, {
+      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
         expiresIn: "1y",
       });
 
       // Send the access token to the client
       return res.json({
-        user: user,
+        user: User.toClientObject(user),
         accessToken: accessToken,
         refreshToken: refreshToken,
       });
     }
   } catch (error) {
     console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
+  }
+};
+
+/********************************************
+  Generate new access token for refresh token
+*********************************************/
+exports.newAccessToken = async (req, res) => {
+  try {
+    const { refreshToken } = req.body;
+    const decodedToken = jwt.verify(
+      refreshToken,
+      process.env.JWT_REFRESH_SECRET
+    );
+    const user = await User.findById(decodedToken._id);
+    if (!user) {
+      return res.json({
+        error: true,
+        type: [
+          {
+            code: "GLOBAL_ERROR",
+            field: "refreshToken",
+            message: "Refresh token is not valid, please log in again",
+          },
+        ],
+      });
+    }
+    const idObject = { _id: user._id };
+    const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
+      expiresIn: "20s",
+    });
+    return res.json({
+      user: User.toClientObject(user),
+      accessToken: accessToken,
+    });
+  } catch (error) {
+    console.log("SERVER_NEW_TOKEN_ERROR", error);
   }
 };
