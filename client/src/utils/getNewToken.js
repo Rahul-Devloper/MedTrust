@@ -3,15 +3,15 @@ import { refreshAccessToken } from "../api/auth";
 
 export const getNewToken = () => {
   const accessToken = Cookies.get("access");
-  // Check if refresh token is valid
   const refreshToken = Cookies.get("refresh");
+
+  // If refresh token is not present, stop here
   if (refreshToken === undefined && refreshToken === null) {
     return;
   }
 
-  // Check if access token is invalid
+  // If access token expired and refresh token is present, refresh the access token
   if (accessToken === undefined && refreshToken) {
-    console.log("REFRESHIIINNG");
     // Get new access token
     refreshAccessToken(refreshToken)
       .then((res) => {

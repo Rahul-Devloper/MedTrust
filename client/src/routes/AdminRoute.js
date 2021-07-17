@@ -11,10 +11,13 @@ const AdminRoute = ({ children, ...restProps }) => {
   const [ok, setOk] = useState(false);
   const accessToken = Cookies.get("access");
 
-  // If access token doesnt exist, get new access token
-  if (accessToken === undefined || accessToken === null) {
-    getNewToken();
-  }
+  // If access token doesn't exist, get new access token
+  useEffect(() => {
+    const interval = setInterval(() => {
+      getNewToken();
+    }, process.env.REACT_APP_ACCESS_TOKEN_UPDATE_INTERVAL);
+    return () => clearInterval(interval);
+  }, []);
 
   // Check if current user is admin
   useEffect(() => {
