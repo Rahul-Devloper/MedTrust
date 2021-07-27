@@ -12,6 +12,9 @@ import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
 import MailIcon from "@material-ui/icons/Mail";
+import ExitToAppIcon from "@material-ui/icons/ExitToApp";
+import { logoutAction } from "../../../redux/actions/authActions";
+import { useDispatch } from "react-redux";
 
 const drawerWidth = 240;
 
@@ -40,6 +43,14 @@ const useStyles = makeStyles((theme) => ({
 
 const UserNavbar = () => {
   const classes = useStyles();
+  const dispatch = useDispatch();
+
+  // Handle logout
+  const handleLogout = () => {
+    // Dispatch logout action
+    dispatch(logoutAction());
+  };
+
   return (
     <div className={classes.root}>
       <CssBaseline />
@@ -79,6 +90,14 @@ const UserNavbar = () => {
                 <ListItemText primary={text} />
               </ListItem>
             ))}
+          </List>
+          <List onClick={handleLogout}>
+            <ListItem button>
+              <ListItemIcon>
+                <ExitToAppIcon />
+              </ListItemIcon>
+              <ListItemText primary="Log out" />
+            </ListItem>
           </List>
         </div>
       </Drawer>
