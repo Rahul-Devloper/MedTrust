@@ -11,18 +11,32 @@ export const signUp = async (name, email, password) => {
 
 // Login user
 export const login = async (email, password) => {
-  return await api.post("/login", {
-    email,
-    password,
-  });
+  return await api.post(
+    "/login",
+    {
+      email,
+      password,
+    },
+    {
+      withCredentials: true,
+      credentials: "include",
+    }
+  );
 };
 
 // Google signup or login
 export const googleCreateOrLogin = async (name, email) => {
-  return await api.post("/googleAuth", {
-    name,
-    email,
-  });
+  return await api.post(
+    "/googleAuth",
+    {
+      name,
+      email,
+    },
+    {
+      withCredentials: true,
+      credentials: "include",
+    }
+  );
 };
 
 // Activate user account

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import {
   EntryCard,
@@ -15,7 +15,6 @@ import { login, googleCreateOrLogin } from "../../api/auth";
 import googleLogo from "../../assets/google_logo.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
-import Cookies from "js-cookie";
 
 const Login = ({ history }) => {
   const [email, setEmail] = useState("abc@gmail.com");
