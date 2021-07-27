@@ -560,11 +560,17 @@ exports.login = async (req, res, next) => {
         expiresIn: "1y",
       });
 
+      // Set a http only cookie for refresh token
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/api/refresh_token",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
       // Send the access token to the client
       return res.json({
         user: User.toClientObject(user),
         accessToken: accessToken,
-        refreshToken: refreshToken,
       });
     }
   })(req, res, next);
@@ -601,11 +607,17 @@ exports.googleCreateOrLogin = async (req, res) => {
           }
         );
 
+        // Set a http only cookie for refresh token
+        res.cookie("refreshToken", refreshToken, {
+          httpOnly: true,
+          path: "/api/refresh_token",
+          maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+        });
+
         // Send the access token to the client
         return res.json({
           user: User.toClientObject(user),
           accessToken: accessToken,
-          refreshToken: refreshToken,
         });
       });
     } else {
@@ -621,11 +633,17 @@ exports.googleCreateOrLogin = async (req, res) => {
         expiresIn: "1y",
       });
 
+      // Set a http only cookie for refresh token
+      res.cookie("refreshToken", refreshToken, {
+        httpOnly: true,
+        path: "/api/refresh_token",
+        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+      });
+
       // Send the access token to the client
       return res.json({
         user: User.toClientObject(user),
         accessToken: accessToken,
-        refreshToken: refreshToken,
       });
     }
   } catch (error) {
