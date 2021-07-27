@@ -705,3 +705,17 @@ exports.newAccessToken = async (req, res) => {
     console.log("SERVER_NEW_TOKEN_ERROR", error);
   }
 };
+
+/********************************************
+  Logout user by deleting refresh token cookie
+*********************************************/
+exports.logout = async (req, res) => {
+  try {
+    // Clear the set-cookie refresh token
+    res.clearCookie("refreshToken", { path: "/api/refresh_token" });
+
+    return res.json({ message: "Logged out" });
+  } catch (error) {
+    console.log("SERVER_LOGOUT_ERROR", error);
+  }
+};

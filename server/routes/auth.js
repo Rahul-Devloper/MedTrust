@@ -11,6 +11,7 @@ const {
   passwordResetEmail,
   passwordVerify,
   newAccessToken,
+  logout,
 } = require("../controllers/auth");
 
 // Routes
@@ -21,6 +22,7 @@ router.post("/password/reset", passwordResetEmail);
 router.post("/password/reset/verify", passwordVerify);
 router.post("/login", login);
 router.post("/googleAuth", googleCreateOrLogin);
-router.post("/newAccessToken", newAccessToken); // Generate new access token for user
+router.post("/refresh_token", newAccessToken); // Generate new access token for user
+router.post("/logout", logout);
 
 module.exports = router;
