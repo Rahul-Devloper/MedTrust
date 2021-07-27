@@ -656,27 +656,24 @@ exports.googleCreateOrLogin = async (req, res) => {
 *********************************************/
 exports.newAccessToken = async (req, res) => {
   try {
-    const { refreshToken } = req.body;
+    const refToken = req.cookies.refreshToken;
 
     // If refresh token is not provided, return error
-    if (!refreshToken) {
+    if (!refToken) {
       return res.json({
         error: true,
         type: [
           {
-            code: "REFRESH_TOKEN_NOT_PROVIDED",
+            code: "REFRESH_TOKEN_NOT_AVAILABLE",
             field: "refreshToken",
-            message: "Refresh token is not provided",
+            message: "Please login again",
           },
         ],
       });
     }
 
     // Get the user from the refresh token
-    const decodedToken = jwt.verify(
-      refreshToken,
-      process.env.JWT_REFRESH_SECRET
-    );
+    const decodedToken = jwt.verify(refToken, process.env.JWT_REFRESH_SECRET);
 
     // Get the user from the refresh token
     const user = await User.findById(decodedToken._id);
@@ -692,13 +689,17 @@ exports.newAccessToken = async (req, res) => {
         ],
       });
     }
+
+    // Get the ID to generate new access token
     const idObject = { _id: user._id };
+    // Generate new access token with the user ID
     const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
       expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
     });
+
     return res.json({
-      user: User.toClientObject(user),
       accessToken: accessToken,
+      user: User.toClientObject(user),
     });
   } catch (error) {
     console.log("SERVER_NEW_TOKEN_ERROR", error);
