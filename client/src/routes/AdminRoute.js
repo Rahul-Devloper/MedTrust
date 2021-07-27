@@ -3,16 +3,14 @@ import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
 import { currentAdmin } from "../api/admin";
-import Cookies from "js-cookie";
 
 const AdminRoute = ({ children, ...restProps }) => {
-  const { auth } = useSelector((state) => ({ ...state }));
+  const { user } = useSelector((state) => state.auth);
   const [ok, setOk] = useState(false);
-  const accessToken = Cookies.get("access");
 
   // Check if current user is admin
   useEffect(() => {
-    if (accessToken) {
+    if (user) {
       currentAdmin()
         .then(() => {
           setOk(true);
@@ -22,11 +20,11 @@ const AdminRoute = ({ children, ...restProps }) => {
           console.log("ADMIN_ROUTE_ERROR", error);
         });
     }
-  }, [auth]);
+  }, [user]);
 
   return (
     <>
-      {ok && accessToken !== undefined ? (
+      {ok && user !== undefined ? (
         <Route {...restProps} render={children} />
       ) : (
         <LoadingToRedirect />

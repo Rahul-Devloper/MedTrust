@@ -1,13 +1,14 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Route } from "react-router-dom";
+import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
-import Cookies from "js-cookie";
+
 const UserRoute = ({ children, ...restProps }) => {
-  const accessToken = Cookies.get("access");
+  const { user } = useSelector((state) => state.auth);
 
   return (
     <>
-      {accessToken ? (
+      {user ? (
         <Route {...restProps} render={children} />
       ) : (
         <LoadingToRedirect />
