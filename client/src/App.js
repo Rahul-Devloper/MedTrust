@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
 import "./App.scss";
 import {
   AccountActivation,
@@ -13,9 +15,17 @@ import {
   StripePayment,
 } from "./views";
 import { UserRoute, AdminRoute } from "./routes";
+import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
 
 const App = () => {
+  const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
+
+  // Update access token on every refresh
+  useEffect(() => {
+    dispatch(refreshTokenAction());
+  }, [dispatch]);
   return (
     <div className="App">
       {/* Toast notification container */}
@@ -33,11 +43,23 @@ const App = () => {
       <Switch>
         {/* Common Routes */}
         <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={Login} />
-        <Route exact path="/signup" component={Signup} />
-        <Route exact path="/account/activate" component={AccountActivation} />
-        <Route exact path="/forgot-password" component={ForgotPassword} />
-        <Route exact path="/new-password" component={NewPassword} />
+        <Route exact path="/login" component={user ? Dashboard : Login} />
+        <Route exact path="/signup" component={user ? Dashboard : Signup} />
+        <Route
+          exact
+          path="/account/activate"
+          component={user ? Dashboard : AccountActivation}
+        />
+        <Route
+          exact
+          path="/forgot-password"
+          component={user ? Dashboard : ForgotPassword}
+        />
+        <Route
+          exact
+          path="/new-password"
+          component={user ? Dashboard : NewPassword}
+        />
         {/* User Routes */}
         <UserRoute exact path="/user/dashboard" component={Dashboard} />
         <Route exact path="/user/payment" component={StripePayment} />
