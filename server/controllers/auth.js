@@ -571,6 +571,7 @@ exports.login = async (req, res, next) => {
       return res.json({
         user: User.toClientObject(user),
         accessToken: accessToken,
+        message: "Login Success",
       });
     }
   })(req, res, next);
@@ -618,6 +619,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         return res.json({
           user: User.toClientObject(user),
           accessToken: accessToken,
+          message: "Login Success",
         });
       });
     } else {
@@ -644,6 +646,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       return res.json({
         user: User.toClientObject(user),
         accessToken: accessToken,
+        message: "Login Success",
       });
     }
   } catch (error) {
