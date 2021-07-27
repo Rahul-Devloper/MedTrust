@@ -11,7 +11,10 @@ import {
 } from "../../components";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
-import { signUp, googleCreateOrLogin } from "../../api/auth";
+import {
+  signupAction,
+  googleLoginAction,
+} from "../../redux/actions/authActions";
 import googleLogo from "../../assets/google_logo.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
@@ -23,25 +26,9 @@ const initialFormData = {
   confirmPassword: "",
 };
 
-const Signup = () => {
+const Signup = ({ history }) => {
   const [formData, setFormData] = useState(initialFormData);
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
-  const history = useHistory();
-
-  // Role based redirect upon sign up
-  const roleBasedRedirect = (res) => {
-    const intended = history.location.state;
-    if (intended) {
-      history.push(intended.from);
-    } else {
-      if (res.data.user.role === "admin") {
-        history.push("/admin/dashboard");
-      } else {
-        history.push("/user/dashboard");
-      }
-    }
-  };
 
   // Handle form change
   const handleFormChange = (e) => {
@@ -50,7 +37,7 @@ const Signup = () => {
   };
 
   // Handle custom email sign up
-  const handleSubmit = (e) => {
+  const handleEmailSignup = (e) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = formData;
 
@@ -60,61 +47,27 @@ const Signup = () => {
         toast.error("Passwords don't match");
         return;
       } else {
-        setLoading(true);
-        // Submit name, email & password to the server
-        signUp(name, email, password)
-          .then((res) => {
-            // Check for errors
-            if (res.data.error) {
-              toast.error(res.data.type[0].message);
-            }
-            toast.success(res.data.message);
-            setLoading(false);
-          })
-          .catch((err) => {
-            setLoading(false);
-            console.log("SIGNUP_USER_ERROR", err);
-          });
+        // Dispatch email, password and history to action
+        dispatch(signupAction({ name, email, password, history }));
       }
     } catch (error) {
       console.log("SIGNUP_ERROR", error);
     }
   };
 
-  // Handle google signup success
+  // Handle google login success
   const handleGoogleSuccess = async (res) => {
     const userObjGoogle = await res?.profileObj;
     const { name, email } = userObjGoogle;
 
-    setLoading(true);
-    googleCreateOrLogin(name, email)
-      .then((res) => {
-        const { user, accessToken, refreshToken } = res.data;
-        // Store the userObject and token in redux store & set cookie
-        dispatch({
-          type: "LOGGED_IN_USER",
-          payload: {
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            access: accessToken,
-            refresh: refreshToken,
-            _id: user._id,
-          },
-        });
-        setLoading(false);
-        // Role based redirect upon successful sign up
-        roleBasedRedirect(res);
-      })
-      .catch((error) => {
-        setLoading(false);
-        console.log("GOOGLE_SIGNUP_ERROR", error);
-      });
+    // Dispatch name, email and history to action
+    dispatch(googleLoginAction({ name, email, history }));
   };
 
   // Handle google login failure
   const handleGoogleFailure = () => {
-    console.log("Google log in failed. Try again later");
+    toast.error("Google Login Error");
+    console.log("GOOGLE_LOGIN_ERROR");
   };
 
   return (
@@ -123,7 +76,7 @@ const Signup = () => {
         <PageHeader to="/">SaaS Logo</PageHeader>
         <EntryCard>
           <h2>Sign up</h2>
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleEmailSignup}>
             <InputGroup>
               <label htmlFor="signup-name">Full name</label>
               <Input

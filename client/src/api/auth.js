@@ -79,3 +79,8 @@ export const refreshAccessToken = async () => {
     }
   );
 };
+
+// Log out user
+export const logout = async () => {
+  return await api.post("/logout", {});
+};
