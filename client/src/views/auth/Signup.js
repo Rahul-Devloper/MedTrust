@@ -66,7 +66,6 @@ const Signup = ({ history }) => {
 
   // Handle google login failure
   const handleGoogleFailure = () => {
-    toast.error("Google Login Error");
     console.log("GOOGLE_LOGIN_ERROR");
   };
 
