@@ -16,7 +16,6 @@ import {
   googleLoginAction,
 } from "../../redux/actions/authActions";
 import googleLogo from "../../assets/google_logo.png";
-import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
 const Login = ({ history }) => {
