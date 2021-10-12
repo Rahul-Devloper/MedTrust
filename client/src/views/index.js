@@ -12,3 +12,4 @@ export { default as StripePayment } from "./payment/StripePayment";
 
 // Admin views
 export { default as AdminDashboard } from "./admin/AdminDashboard";
+export { default as CreateCoupon } from "./admin/coupons/createCoupon";

@@ -13,6 +13,7 @@ import {
   NewPassword,
   Signup,
   StripePayment,
+  CreateCoupon,
 } from "./views";
 import { UserRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
@@ -65,6 +66,11 @@ const App = () => {
         <Route exact path="/user/payment" component={StripePayment} />
         {/* Admin Routes */}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute
+          exact
+          path="/admin/coupon/create"
+          component={CreateCoupon}
+        />
       </Switch>
     </div>
   );
