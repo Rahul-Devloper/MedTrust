@@ -5,8 +5,8 @@ import { GlobalStyle } from "./globalCSS";
 import { BrowserRouter as Router } from "react-router-dom";
 import App from "./App";
 
-// redux
-import DataProvider from "./redux/store";
+// Redux
+import { DataProvider } from "./redux/store";
 
 const browserHistory = createBrowserHistory();
 

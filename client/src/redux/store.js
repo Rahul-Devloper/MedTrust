@@ -15,4 +15,4 @@ const DataProvider = ({ children }) => {
   return <Provider store={store}>{children}</Provider>;
 };
 
-export default DataProvider;
+export { store, DataProvider };
