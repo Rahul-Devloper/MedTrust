@@ -5,6 +5,7 @@ const User = require("../models/user");
 exports.authCheck = (req, res, next) => {
   const authHeader = req.headers.authorization;
 
+  // If auth header is present
   if (authHeader) {
     try {
       // Get the JWT thats sent in headers of the request
@@ -15,7 +16,7 @@ exports.authCheck = (req, res, next) => {
         jwt.verify(token, process.env.JWT_ACCESS_SECRET, (err, user) => {
           // If the token provided is not valid
           if (err) {
-            return res.json({
+            return res.status(401).json({
               error: true,
               type: [
                 {
@@ -33,7 +34,16 @@ exports.authCheck = (req, res, next) => {
       console.log("AUTH_CHECK_ERROR", error);
     }
   } else {
-    res.json("You are unauthorized");
+    // Auth header isn't present so, send a 401 error
+    res.status(401).json({
+      error: true,
+      type: [
+        {
+          code: "GLOBAL_ERROR",
+          message: "You are not authorized to access this resource",
+        },
+      ],
+    });
   }
 };
 
