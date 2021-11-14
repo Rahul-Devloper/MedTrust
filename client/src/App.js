@@ -27,6 +27,7 @@ const App = () => {
   useEffect(() => {
     dispatch(refreshTokenAction());
   }, [dispatch]);
+
   return (
     <div className="App">
       {/* Toast notification container */}
