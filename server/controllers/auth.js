@@ -693,6 +693,31 @@ exports.newAccessToken = async (req, res) => {
       });
     }
 
+    // If the current access token is not expired, return the current access token
+    const currentAccessToken =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    if (currentAccessToken) {
+      // Function to check if the current access token is expired
+      const isTokenExpired = (token) => {
+        // Split the JWT by "." and get the payload (middle part)
+        const payloadBase64 = token.split(".")[1];
+        const decodedJson = Buffer.from(payloadBase64, "base64").toString();
+        const decoded = JSON.parse(decodedJson);
+        const exp = decoded.exp;
+        const expired = Date.now() >= exp * 1000;
+        return expired;
+      };
+
+      // If the current access token is not expired, return the current access token
+      if (!isTokenExpired(currentAccessToken)) {
+        return res.json({
+          accessToken: currentAccessToken,
+          user: User.toClientObject(user),
+        });
+      }
+    }
+
     // Get the ID to generate new access token
     const idObject = { _id: user._id };
     // Generate new access token with the user ID
