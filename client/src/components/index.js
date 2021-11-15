@@ -1,3 +1,6 @@
+// Landing Page
+export { default as Navbar } from "./LandingPage/Navbar";
+
 // Auth Components
 export { default as Button } from "./auth/Button";
 export { default as EntryCard } from "./auth/EntryCard";
