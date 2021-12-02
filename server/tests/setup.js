@@ -21,6 +21,8 @@ beforeAll(async () => {
 
   await mongoose.connect(uri, {
     useNewUrlParser: true,
+    useCreateIndex: true,
+    useFindAndModify: false,
     useUnifiedTopology: true,
   });
 });

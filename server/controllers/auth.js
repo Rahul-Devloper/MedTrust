@@ -176,7 +176,7 @@ exports.accountActivate = async (req, res, next) => {
 /**********************************
   Resend Account Email Verification
 ***********************************/
-exports.accountReverify = async (req, res, next) => {
+exports.accountReverify = async (req, res) => {
   // Get the email from client
   const { email } = req.body;
 
@@ -208,7 +208,7 @@ exports.accountReverify = async (req, res, next) => {
       error: true,
       type: validationErrors,
     };
-    res.json(errorObject);
+    res.status(400).json(errorObject);
     return;
   }
 
@@ -273,13 +273,7 @@ exports.accountReverify = async (req, res, next) => {
       };
 
       // Send the email
-      transporter.sendMail(mailOptions, function (error, info) {
-        if (error) {
-          console.log(error);
-        } else {
-          console.log("Email sent: " + info.response);
-        }
-      });
+      transporter.sendMail(mailOptions, function (error, info) {});
 
       return res.json({
         message:
@@ -329,7 +323,7 @@ exports.passwordResetEmail = async (req, res, next) => {
       error: true,
       type: validationErrors,
     };
-    res.json(errorObject);
+    res.status(400).json(errorObject);
     return;
   }
 
@@ -380,15 +374,9 @@ exports.passwordResetEmail = async (req, res, next) => {
     };
 
     // Send the email
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    transporter.sendMail(mailOptions, function (error, info) {});
 
-    return res.json({
+    return res.status(200).json({
       message: "Password reset link sent to your email",
       user: User.toClientObject(existingUser),
     });
@@ -433,7 +421,7 @@ exports.passwordVerify = async (req, res, next) => {
       error: true,
       type: validationErrors,
     };
-    res.json(errorObject);
+    res.status(400).json(errorObject);
     return;
   }
 
@@ -443,7 +431,7 @@ exports.passwordVerify = async (req, res, next) => {
       jwt.verify(token, process.env.JWT_EMAIL_SECRET, async (err, user) => {
         // If the token provided is not valid
         if (err) {
-          return res.json({
+          return res.status(401).json({
             error: true,
             type: [
               {
@@ -465,7 +453,8 @@ exports.passwordVerify = async (req, res, next) => {
           { password: hashedPassword },
           { new: true }
         ).exec();
-        return res.json({
+
+        return res.status(200).json({
           message: "Password updated, please login to continue",
           user: User.toClientObject(updatedUser),
         });
@@ -610,7 +599,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         });
 
         // Send the access token to the client
-        return res.json({
+        return res.status(200).json({
           user: User.toClientObject(user),
           accessToken: accessToken,
           message: "Login Success",
@@ -637,7 +626,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       });
 
       // Send the access token to the client
-      return res.json({
+      return res.status(200).json({
         user: User.toClientObject(user),
         accessToken: accessToken,
         message: "Login Success",
@@ -657,7 +646,7 @@ exports.newAccessToken = async (req, res) => {
 
     // If refresh token is not provided, return error
     if (!refToken) {
-      return res.json({
+      return res.status(401).json({
         error: true,
         type: [
           {
@@ -675,7 +664,7 @@ exports.newAccessToken = async (req, res) => {
     // Get the user from the refresh token
     const user = await User.findById(decodedToken._id);
     if (!user) {
-      return res.json({
+      return res.status(401).json({
         error: true,
         type: [
           {
@@ -705,7 +694,7 @@ exports.newAccessToken = async (req, res) => {
 
       // If the current access token is not expired, return the current access token
       if (!isTokenExpired(currentAccessToken)) {
-        return res.json({
+        return res.status(200).json({
           accessToken: currentAccessToken,
           user: User.toClientObject(user),
         });
@@ -719,7 +708,7 @@ exports.newAccessToken = async (req, res) => {
       expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
     });
 
-    return res.json({
+    return res.status(200).json({
       accessToken: accessToken,
       user: User.toClientObject(user),
     });

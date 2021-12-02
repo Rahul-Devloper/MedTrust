@@ -4,7 +4,7 @@ const app = require("../../app");
 /**********************************
   User signup tests
 ***********************************/
-describe("Signup user", () => {
+describe("Signup user tests", () => {
   // Test successful signup
   it("returns 201 on successful sign up", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -56,7 +56,7 @@ describe("Signup user", () => {
 /**********************************
   User login tests
 ***********************************/
-describe("Login user", () => {
+describe("Login user tests", () => {
   // Test successful login
   it("returns 200 on successful login", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -104,7 +104,6 @@ describe("Login user", () => {
       email: "test@gmail.com",
       password: "Test1234!",
     });
-
     expect(response2.status).toBe(200);
     expect(response2.body.accessToken).toBeDefined();
   });
@@ -113,7 +112,7 @@ describe("Login user", () => {
 /**********************************
   User logout tests
 ***********************************/
-describe("Logout user", () => {
+describe("Logout user tests", () => {
   // Test successful logout
   it("returns 200 on successful logout", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -135,5 +134,40 @@ describe("Logout user", () => {
     expect(logout.get("Set-Cookie")[0]).toEqual(
       "refreshToken=; Path=/api/refresh_token; Expires=Thu, 01 Jan 1970 00:00:00 GMT"
     );
+  });
+});
+
+/**********************************
+  User account tests
+***********************************/
+describe("User account tests", () => {
+  // Test account reverify email
+  it("returns 200 on account reverify email", async () => {
+    const response = await request(app).post("/api/signup").send({
+      name: "test",
+      email: "test@gmail.com",
+      password: "Test1234!",
+    });
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app).post("/api/account/reverify").send({
+      email: "test@gmail.com",
+    });
+    expect(response2.status).toBe(200);
+  });
+
+  // Test password reset email
+  it("returns 200 on password reset email", async () => {
+    const response = await request(app).post("/api/signup").send({
+      name: "test",
+      email: "test@gmail.com",
+      password: "Test1234!",
+    });
+    expect(response.status).toBe(201);
+
+    const response2 = await request(app).post("/api/password/reset").send({
+      email: "test@gmail.com",
+    });
+    expect(response2.status).toBe(200);
   });
 });
