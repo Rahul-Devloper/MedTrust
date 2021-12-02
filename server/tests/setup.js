@@ -13,7 +13,7 @@ beforeAll(async () => {
   process.env.JWT_ACCESS_TOKEN_TTL = "15m";
   process.env.JWT_EMAIL_SECRET = "asdasduediuabs";
   process.env.NODEMAILER_EMAIL = "dk09525@gmail.com";
-  process.env.NODEMAILER_PASSWORD = "Socketstone1!";
+  process.env.NODEMAILER_PASSWORD = "SOMEPASSWORD!";
 
   // Create a new MongoDB instance
   mongo = await MongoMemoryServer.create();

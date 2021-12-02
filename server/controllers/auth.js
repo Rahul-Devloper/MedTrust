@@ -162,7 +162,7 @@ exports.accountActivate = async (req, res, next) => {
           { activated: true },
           { new: true }
         ).exec();
-        return res.json({
+        return res.status(200).json({
           message: "Email verified, please login to continue",
           user: User.toClientObject(updatedUser),
         });
@@ -736,7 +736,7 @@ exports.logout = async (req, res) => {
     // Clear the set-cookie refresh token
     res.clearCookie("refreshToken", { path: "/api/refresh_token" });
 
-    return res.json({ message: "Logged out" });
+    return res.status(200).json({ message: "Logged out" });
   } catch (error) {
     console.log("SERVER_LOGOUT_ERROR", error);
   }
