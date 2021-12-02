@@ -59,7 +59,7 @@ exports.signup = async (req, res) => {
       error: true,
       type: validationErrors,
     };
-    res.json(errorObject);
+    res.status(400).json(errorObject);
     return;
   }
 
@@ -529,7 +529,7 @@ exports.login = async (req, res, next) => {
       error: true,
       type: validationErrors,
     };
-    res.json(errorObject);
+    res.status(401).json(errorObject);
     return;
   }
 
@@ -562,7 +562,7 @@ exports.login = async (req, res, next) => {
       });
 
       // Send the access token to the client
-      return res.json({
+      return res.status(200).json({
         user: User.toClientObject(user),
         accessToken: accessToken,
         message: "Login Success",

@@ -13,6 +13,7 @@ module.exports = function (passport) {
           }
           if (!user) {
             done(null, false, {
+              status: 401,
               error: true,
               type: [
                 {
@@ -30,6 +31,7 @@ module.exports = function (passport) {
               return done(null, user);
             } else {
               return done(null, false, {
+                status: 401,
                 error: true,
                 type: [
                   {
