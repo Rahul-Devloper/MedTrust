@@ -5,7 +5,12 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
-    "start": "node server.js"
+    "start": "node server.js",
+    "test": "jest --watchAll --no-cache"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "setupFilesAfterEnv": ["./tests/setup.js"]
   },
   "keywords": [
     "saas"
@@ -31,6 +36,7 @@
   },
   "devDependencies": {
     "jest": "^27.4.2",
+    "mongodb-memory-server": "^8.0.4",
     "nodemon": "^2.0.7",
     "supertest": "^6.1.6"
   }
