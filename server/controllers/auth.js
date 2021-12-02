@@ -77,7 +77,7 @@ exports.signup = async (req, res) => {
           },
         ],
       };
-      res.json(errorObject);
+      res.status(409).json(errorObject);
       return;
     }
     // Create payload to create JWT token
@@ -121,15 +121,9 @@ exports.signup = async (req, res) => {
     };
 
     // Send the email
-    transporter.sendMail(mailOptions, function (error, info) {
-      if (error) {
-        console.log(error);
-      } else {
-        console.log("Email sent: " + info.response);
-      }
-    });
+    transporter.sendMail(mailOptions, async function (error, info) {});
 
-    res.json({
+    res.status(201).json({
       message: "Check your email, and verify your account",
       user: User.toClientObject(newUser),
     });
