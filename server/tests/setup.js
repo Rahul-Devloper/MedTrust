@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 let mongo;
 
+// jest.setTimeout(30000);
+
 // Mongo Hook
 beforeAll(async () => {
   // Set JWT environment variables
@@ -35,6 +37,8 @@ beforeEach(async () => {
 
 // Now stop the mongo server
 afterAll(async () => {
-  await mongo.stop();
-  await mongoose.connection.close();
+  setTimeout(async () => {
+    await mongo.stop();
+    await mongoose.connection.close();
+  }, 10000);
 });
