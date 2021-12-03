@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "jest --watchAll --no-cache --runInBand"
+    "test": "jest --watchAll --no-cache --runInBand --coverage"
   },
   "jest": {
     "verbose": true,

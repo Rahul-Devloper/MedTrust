@@ -26,7 +26,7 @@ beforeAll(async () => {
   });
 });
 
-// A hook that runs before all tests in the suite
+// A hook that runs before every test in the suite
 beforeEach(async () => {
   // Drop the database before each test
   const collections = await mongoose.connection.db.collections();
@@ -36,10 +36,29 @@ beforeEach(async () => {
   }
 });
 
-// Now stop the mongo server
+// After all the test suites, stop the mongo server
 afterAll(async () => {
   setTimeout(async () => {
+    // Stop the mongo memory server
     await mongo.stop();
+    // Disconnect mongoose
     await mongoose.connection.close();
-  });
+  }, 1000).unref();
 });
+
+// Global login function
+global.login = async (request, app, role) => {
+  await request(app).post("/api/signup").send({
+    name: "test",
+    email: "test@test.com",
+    password: "Test1234!",
+    role: role,
+  });
+
+  const login = await request(app).post("/api/login").send({
+    email: "test@test.com",
+    password: "Test1234!",
+  });
+
+  return login.body.accessToken;
+};
