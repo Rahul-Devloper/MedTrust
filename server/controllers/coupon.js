@@ -6,6 +6,14 @@ const Coupon = require("../models/coupon");
 exports.createCoupon = async (req, res) => {
   const { name, code } = req.body;
 
+  // Validate name and code
+  if (!name || !code) {
+    return res.status(400).json({
+      status: "error",
+      message: "Please enter a name and code",
+    });
+  }
+
   try {
     const coupon = new Coupon({
       name,
