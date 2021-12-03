@@ -4,7 +4,7 @@ const app = require("../../app");
 /**********************************
   User signup tests
 ***********************************/
-describe("Signup user tests", () => {
+describe("User Signup Tests", () => {
   // Test successful signup
   it("returns 201 on successful sign up", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -56,7 +56,7 @@ describe("Signup user tests", () => {
 /**********************************
   User login tests
 ***********************************/
-describe("Login user tests", () => {
+describe("User Login Tests", () => {
   // Test successful login
   it("returns 200 on successful login", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -112,7 +112,7 @@ describe("Login user tests", () => {
 /**********************************
   User logout tests
 ***********************************/
-describe("Logout user tests", () => {
+describe("User Logout Tests", () => {
   // Test successful logout
   it("returns 200 on successful logout", async () => {
     const response = await request(app).post("/api/signup").send({
@@ -140,7 +140,7 @@ describe("Logout user tests", () => {
 /**********************************
   User account tests
 ***********************************/
-describe("User account tests", () => {
+describe("User Account Tests", () => {
   // Test account reverify email
   it("returns 200 on account reverify email", async () => {
     const response = await request(app).post("/api/signup").send({

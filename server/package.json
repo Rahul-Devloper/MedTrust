@@ -11,7 +11,7 @@
   "jest": {
     "verbose": true,
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./tests/setup.js"],
+    "setupFilesAfterEnv": ["./tests/jest.setup.js"],
     "collectCoverage": true
   },
   "keywords": [
