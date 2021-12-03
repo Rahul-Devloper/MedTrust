@@ -9,7 +9,7 @@ const nodemailer = require("nodemailer");
   Sign up & send email verification
 ***********************************/
 exports.signup = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { name, email, password, role } = req.body;
 
   // Validate the input fields
   const validationErrors = [];
@@ -94,6 +94,7 @@ exports.signup = async (req, res) => {
     let newUser = new User({
       name,
       email,
+      role: role || "normal",
       password: hashedPassword,
       activated: false,
       activationToken: verificationToken,
