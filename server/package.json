@@ -6,12 +6,13 @@
   "scripts": {
     "dev": "nodemon server.js",
     "start": "node server.js",
-    "test": "jest --watchAll --no-cache"
+    "test": "jest --watchAll --no-cache --runInBand"
   },
   "jest": {
     "verbose": true,
     "testEnvironment": "node",
-    "setupFilesAfterEnv": ["./tests/setup.js"]
+    "setupFilesAfterEnv": ["./tests/setup.js"],
+    "collectCoverage": true
   },
   "keywords": [
     "saas"
