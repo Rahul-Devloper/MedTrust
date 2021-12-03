@@ -3,12 +3,11 @@ const mongoose = require("mongoose");
 
 let mongo;
 
-// jest.setTimeout(30000);
-
 // Mongo Hook
 beforeAll(async () => {
   // Set JWT environment variables
-  process.env.JWT_ACCESS_SECRET = "asdasdasdasdf";
+  process.env.JWT_ACCESS_SECRET =
+    "b0c120ba56c8d245fa6189b6a93a22046afbc2f462cd1d5329868c140fe9c14749020c52e9fcc1060e6523b6f00ad8d35b215f7e6a34316432439cd6e07036d2";
   process.env.JWT_REFRESH_SECRET = "asdasdasdasadsdf";
   process.env.JWT_ACCESS_TOKEN_TTL = "15m";
   process.env.JWT_EMAIL_SECRET = "asdasduediuabs";
@@ -42,5 +41,5 @@ afterAll(async () => {
   setTimeout(async () => {
     await mongo.stop();
     await mongoose.connection.close();
-  }, 10000);
+  });
 });

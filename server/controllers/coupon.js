@@ -7,17 +7,16 @@ exports.createCoupon = async (req, res) => {
   const { name, code } = req.body;
 
   try {
-    // Create a coupon
-    const newCouponCreate = new Coupon({
+    const coupon = new Coupon({
       name,
       code,
     });
 
     await coupon.save();
 
-    res.json({
-      status: "Coupon created successfully",
-      newCouponCreate,
+    res.status(201).json({
+      status: "success",
+      data: coupon,
     });
   } catch (error) {
     console.log("CREATE_COUPON_ERROR", error);
