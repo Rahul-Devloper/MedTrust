@@ -44,4 +44,11 @@ fs.readdirSync("./routes").map((route) =>
   app.use("/api", require("./routes/" + route))
 );
 
+// Error handling
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).send("Something broke!");
+});
+
+// Export the app
 module.exports = app;
