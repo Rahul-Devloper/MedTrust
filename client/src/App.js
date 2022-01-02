@@ -1,7 +1,6 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-
 import "./App.css";
 import {
   AccountActivation,
@@ -15,7 +14,7 @@ import {
   StripePayment,
   CreateCoupon,
 } from "./views";
-import { UserRoute, AdminRoute } from "./routes";
+import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
 
@@ -62,8 +61,8 @@ const App = () => {
           path="/new-password"
           component={user ? Dashboard : NewPassword}
         />
-        {/* User Routes */}
-        <UserRoute exact path="/user/dashboard" component={Dashboard} />
+        {/* Member Routes */}
+        <MemberRoute exact path="/user/dashboard" component={Dashboard} />
         <Route exact path="/user/payment" component={StripePayment} />
         {/* Admin Routes */}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
