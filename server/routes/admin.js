@@ -9,8 +9,5 @@ const { currentAdmin } = require("../controllers/admin");
 
 // Routes
 router.post("/currentAdmin", authCheck, adminCheck, currentAdmin);
-router.get("/protected", authCheck, (req, res) => {
-  return res.json("Protected");
-});
 
 module.exports = router;
