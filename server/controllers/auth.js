@@ -1,5 +1,6 @@
 const { validateEmail, validatePassword } = require("../utils/validations");
 const User = require("../models/user");
+const Admin = require("../models/admin");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
