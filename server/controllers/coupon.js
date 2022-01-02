@@ -4,28 +4,30 @@ const Coupon = require("../models/coupon");
   Create a coupon
 ***********************************/
 exports.createCoupon = async (req, res) => {
-  const { name, code } = req.body;
+  const { name, code, expiry, discount, limit, used } = req.body;
 
-  // Validate name and code
-  if (!name || !code) {
+  // Validate request
+  if (!name || !code || !expiry || !discount || !limit || !used) {
     return res.status(400).json({
+      message: "Please provide all required fields",
       status: "error",
-      message: "Please enter a name and code",
+    });
+  }
+
+  // If coupon code already exists, return error
+  const coupon = await Coupon.findOne({ code }).exec();
+
+  if (coupon) {
+    return res.status(400).json({
+      message: "Coupon code already exists",
+      status: "error",
     });
   }
 
   try {
-    const coupon = new Coupon({
-      name,
-      code,
-    });
+    const newCoupon = await new Coupon(req.body).save();
 
-    await coupon.save();
-
-    res.status(201).json({
-      status: "success",
-      data: coupon,
-    });
+    res.status(201).json(newCoupon);
   } catch (error) {
     console.log("CREATE_COUPON_ERROR", error);
   }
@@ -36,94 +38,75 @@ exports.createCoupon = async (req, res) => {
 ***********************************/
 exports.getAllCoupons = async (req, res) => {
   try {
-    const coupons = await Coupon.find({});
-    // If no coupons are found then return error
-    if (!coupons.length) {
+    const coupons = await Coupon.find({}).sort({ createdAt: -1 }).exec();
+
+    // If no coupons found return 404
+    if (coupons.length === 0) {
       return res.status(404).json({
-        status: "error",
         message: "No coupons found",
+        status: "error",
       });
     }
 
-    res.status(200).json({
-      status: "success",
-      coupons,
-    });
+    res.status(200).json(coupons);
   } catch (error) {
     console.log("GET_ALL_COUPONS_ERROR", error);
   }
 };
 
 /**********************************
-  Get a coupon
+  Get a coupon by id
 ***********************************/
-exports.getCoupon = async (req, res) => {
+exports.getCouponById = async (req, res) => {
   try {
-    const coupon = await Coupon.findById(req.params.id);
+    const coupon = await Coupon.findById(req.params.id).exec();
 
-    // If id is not sent then return error
+    // If no coupon found return 404
     if (!coupon) {
       return res.status(404).json({
+        message: "No coupon found",
         status: "error",
-        message: "Coupon not found",
       });
     }
 
-    res.status(200).json({
-      status: "success",
-      coupon,
-    });
+    res.status(200).json(coupon);
   } catch (error) {
-    console.log("GET_COUPON_ERROR", error);
+    console.log("GET_COUPON_BY_ID_ERROR", error);
   }
 };
 
 /**********************************
-  Update a coupon
+  Update a coupon by id
 ***********************************/
-exports.updateCoupon = async (req, res) => {
-  // Validate name and code
-  if (!req.body.name && !req.body.code) {
-    return res.status(400).json({
-      status: "error",
-      message: "Please enter a name and code",
-    });
-  }
-
+exports.updateCouponById = async (req, res) => {
   try {
     const coupon = await Coupon.findByIdAndUpdate(req.params.id, req.body, {
       new: true,
-    });
+    }).exec();
 
-    res.status(200).json({
-      status: "updated",
-      coupon,
-    });
+    // If no coupon found return 404
+    if (!coupon) {
+      return res.status(404).json({
+        message: "No coupon found",
+        status: "error",
+      });
+    }
+
+    res.status(200).json(coupon);
   } catch (error) {
-    console.log("UPDATE_COUPON_ERROR", error);
+    console.log("UPDATE_COUPON_BY_ID_ERROR", error);
   }
 };
 
 /**********************************
-  Delete a coupon
+  Delete a coupon by id
 ***********************************/
-exports.deleteCoupon = async (req, res) => {
+exports.deleteCouponById = async (req, res) => {
   try {
-    const coupon = await Coupon.findByIdAndDelete(req.params.id);
+    const coupon = await Coupon.findByIdAndDelete(req.params.id).exec();
 
-    // If no coupon is found then return error
-    if (!coupon) {
-      return res.status(404).json({
-        status: "error",
-        message: "Coupon not found",
-      });
-    }
-
-    res.status(200).json({
-      status: "deleted",
-      coupon,
-    });
+    res.status(200).json(coupon);
   } catch (error) {
-    console.log("DELETE_COUPON_ERROR", error);
+    console.log("DELETE_COUPON_BY_ID_ERROR", error);
   }
 };

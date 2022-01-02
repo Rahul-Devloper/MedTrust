@@ -5,21 +5,34 @@ const couponSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      trim: true,
-      minlength: 3,
-      maxlength: 50,
     },
     code: {
       type: String,
-      required: true,
       trim: true,
-      minlength: 3,
-      maxlength: 50,
+      unique: true,
+      uppercase: true,
+      required: true,
+      minlength: [5, "Too Short"],
+      maxlength: [10, "Too Long"],
+    },
+    expiry: {
+      type: Date,
+      required: true,
+    },
+    discount: {
+      type: Number,
+      required: true,
+    },
+    limit: {
+      type: Number,
+      required: true,
+    },
+    used: {
+      type: Number,
+      required: true,
     },
   },
-  {
-    timestamps: true,
-  }
+  { timestamps: true }
 );
 
 module.exports = mongoose.model("Coupon", couponSchema);
