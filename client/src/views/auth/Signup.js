@@ -15,7 +15,6 @@ import {
   signupAction,
   googleLoginAction,
 } from "../../redux/actions/authActions";
-import googleLogo from "../../assets/google_logo.png";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.min.css";
 
@@ -141,7 +140,7 @@ const Signup = ({ history }) => {
                   onClick={renderProps.onClick}
                   disabled={renderProps.disabled}
                 >
-                  <img src={googleLogo} alt="Google Icon" />
+                  <img alt="Google Icon" />
                   <p>Sign up with Google</p>
                 </GoogleContainer>
               </span>

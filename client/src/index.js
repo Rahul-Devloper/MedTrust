@@ -5,7 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import App from "./App";
 
 import "./assets/icons/remixicon.css";
-import "./assets/less/yoda-theme.less";
+import "./assets/less/netraga-theme.less";
 
 // Redux
 import { DataProvider } from "./redux/store";

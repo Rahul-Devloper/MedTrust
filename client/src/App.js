@@ -17,7 +17,6 @@ import {
 import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
-import "./App.css";
 import { ConfigProvider } from "antd";
 
 const App = () => {

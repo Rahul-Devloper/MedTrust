@@ -9,7 +9,7 @@ import bgDark from "../../assets/images/pages/authentication/authentication-bg-d
 import logo from "../../assets/images/logo/logo-vector-blue.svg";
 import logoDark from "../../assets/images/logo/logo-vector.svg";
 
-export default function LeftContent() {
+const LeftContent = () => {
   // Redux
   const theme = useSelector((state) => state.customize.theme);
 
@@ -39,7 +39,7 @@ export default function LeftContent() {
 
             <Col xl={18} span={24} className="da-text-item da-text-center">
               <h2 className="da-text-color-primary-1 da-text-color-dark-0 da-mx-lg-16 da-mb-16">
-                Very good works are waiting for you 🤞
+                Add your own content here 🤞
               </h2>
 
               <p className="da-mb-0 da-text-color-black-80 da-text-color-dark-30">
@@ -53,4 +53,6 @@ export default function LeftContent() {
       </Row>
     </Col>
   );
-}
+};
+
+export default LeftContent;

@@ -7,7 +7,7 @@ module.exports = {
       options: {
         modifyVars: {
           hack: `true;@import "${require.resolve(
-            "./src/assets/less/yoda-theme.less"
+            "./src/assets/less/netraga-theme.less"
           )}";`,
         },
         javascriptEnabled: true,
