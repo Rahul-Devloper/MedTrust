@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import "./App.css";
+import { useHistory } from "react-router";
 import {
   AccountActivation,
   AdminDashboard,
@@ -13,13 +13,17 @@ import {
   Signup,
   StripePayment,
   CreateCoupon,
+  // -------------- Wildcard --------------
+  RandomPageRedirect,
 } from "./views";
 import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
+import "./App.css";
 
-const App = ({ history }) => {
+const App = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { user } = useSelector((state) => state.auth);
 
   // Update access token on every refresh
@@ -44,14 +48,12 @@ const App = ({ history }) => {
       {/* Toast notification container */}
       <ToastContainer
         position="top-right"
-        autoClose={5000}
+        autoClose={2000}
         hideProgressBar={false}
         newestOnTop={false}
         closeOnClick
         rtl={false}
-        pauseOnFocusLoss
         draggable
-        pauseOnHover
       />
       <Switch>
         {/**************** Common Routes ****************/}
@@ -83,6 +85,9 @@ const App = ({ history }) => {
           path="/admin/coupon/create"
           component={CreateCoupon}
         />
+
+        {/* Wildcard */}
+        <Route path={"*"} component={RandomPageRedirect} />
       </Switch>
     </div>
   );
