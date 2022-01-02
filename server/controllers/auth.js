@@ -1,4 +1,4 @@
-const { validateEmail, validatePassword } = require("../utils/validations");
+const { emailValidator, passwordValidator } = require("../utils/validations");
 const User = require("../models/user");
 const Admin = require("../models/admin");
 const bcrypt = require("bcrypt");
@@ -12,46 +12,18 @@ const nodemailer = require("nodemailer");
 exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body;
 
-  // Validate the input fields
   const validationErrors = [];
 
-  // Empty email
-  if (!email) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter an email",
-    });
+  // Validate the email and password with utils
+  const emailValidationErrors = emailValidator(email);
+  const passwordValidationErrors = passwordValidator(password);
+
+  if (emailValidationErrors.length) {
+    validationErrors.push(...emailValidationErrors);
   }
 
-  // Check valid email
-  const isValidEmail = email && validateEmail(email);
-  if (email && !isValidEmail) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter a valid email",
-    });
-  }
-
-  // Empty password
-  if (!password) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message: "Please enter a password",
-    });
-  }
-
-  // Check valid password
-  const isValidPassword = password && validatePassword(password);
-  if (password && !isValidPassword) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message:
-        "Password must be min 8 chars, with a symbol, upper & lower case, and a number",
-    });
+  if (passwordValidationErrors.length) {
+    validationErrors.push(...passwordValidationErrors);
   }
 
   // Sends the validation error message
@@ -211,26 +183,7 @@ exports.accountReverify = async (req, res) => {
   const { email } = req.body;
 
   // Validate the input fields
-  const validationErrors = [];
-
-  // Empty email
-  if (!email) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter an email",
-    });
-  }
-
-  // Check valid email
-  const isValidEmail = email && validateEmail(email);
-  if (email && !isValidEmail) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter a valid email",
-    });
-  }
+  const validationErrors = emailValidator(email);
 
   // Sends the validation error message
   if (validationErrors.length) {
@@ -327,26 +280,7 @@ exports.passwordResetEmail = async (req, res, next) => {
   const { email } = req.body;
 
   // Validate the input fields
-  const validationErrors = [];
-
-  // Empty email
-  if (!email) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter an email",
-    });
-  }
-
-  // Check valid email
-  const isValidEmail = email && validateEmail(email);
-  if (email && !isValidEmail) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter a valid email",
-    });
-  }
+  const validationErrors = emailValidator(email);
 
   // Sends the validation error message
   if (validationErrors.length) {
@@ -425,27 +359,7 @@ exports.passwordVerify = async (req, res, next) => {
   const { token, newPassword } = req.body;
 
   // Validate the input fields
-  const validationErrors = [];
-
-  // Empty password
-  if (!newPassword) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message: "Please enter a password",
-    });
-  }
-
-  // Check valid password
-  const isValidPassword = newPassword && validatePassword(newPassword);
-  if (newPassword && !isValidPassword) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message:
-        "Password must be min 8 chars, with a symbol, upper & lower case, and a number",
-    });
-  }
+  const validationErrors = passwordValidator(newPassword);
 
   // Sends the validation error message
   if (validationErrors.length) {
@@ -504,45 +418,18 @@ exports.passwordVerify = async (req, res, next) => {
 exports.login = async (req, res, next) => {
   const { email, password } = req.body;
 
-  // Validate the input fields
   const validationErrors = [];
 
-  // Empty email
-  if (!email) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter an email",
-    });
+  // Validate the email and password with utils
+  const emailValidationErrors = emailValidator(email);
+  const passwordValidationErrors = passwordValidator(password);
+
+  if (emailValidationErrors.length) {
+    validationErrors.push(...emailValidationErrors);
   }
 
-  // Check valid email
-  const isValidEmail = email && validateEmail(email);
-  if (email && !isValidEmail) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "email",
-      message: "Please enter a valid email",
-    });
-  }
-
-  // Empty password
-  if (!password) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message: "Please enter a password",
-    });
-  }
-
-  // Check valid password
-  const isValidPassword = password && validatePassword(password);
-  if (password && !isValidPassword) {
-    validationErrors.push({
-      code: "VALIDATION_ERROR",
-      field: "password",
-      message: "Password is incorrect",
-    });
+  if (passwordValidationErrors.length) {
+    validationErrors.push(...passwordValidationErrors);
   }
 
   // Sends the validation error message
