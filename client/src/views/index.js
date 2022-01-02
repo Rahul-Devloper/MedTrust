@@ -8,7 +8,6 @@ export { default as NewPassword } from "./auth/NewPassword";
 
 // User views
 export { default as Dashboard } from "./user/Dashboard";
-export { default as StripePayment } from "./payment/StripePayment";
 
 // Admin views
 export { default as AdminDashboard } from "./admin/AdminDashboard";

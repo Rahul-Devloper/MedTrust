@@ -21,6 +21,3 @@ export { default as UserNavbar } from "./Navbar/UserNavbar/";
 
 // Loaders
 export { default as LoadingToRedirect } from "./Loaders/LoadingToRedirect";
-
-// Payment
-export { default as CheckoutForm } from "./Checkout/CheckoutForm";

@@ -11,7 +11,6 @@ import {
   Login,
   NewPassword,
   Signup,
-  StripePayment,
   CreateCoupon,
   // -------------- Wildcard --------------
   RandomPageRedirect,
@@ -77,7 +76,6 @@ const App = () => {
         />
         {/**************** Member Routes ****************/}
         <MemberRoute exact path="/user/dashboard" component={Dashboard} />
-        <Route exact path="/user/payment" component={StripePayment} />
         {/* Admin Routes */}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute
