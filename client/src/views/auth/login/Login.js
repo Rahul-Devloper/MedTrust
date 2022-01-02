@@ -65,12 +65,32 @@ const Login = ({ history }) => {
                   initialValues={{ remember: true }}
                   className="da-mt-sm-16 da-mt-32"
                 >
-                  <Form.Item label="Email :" className="da-mb-16">
-                    <Input id="error" />
+                  <Form.Item
+                    label="Email :"
+                    className="da-mb-16"
+                    rules={[
+                      { required: true, message: "Please enter your email" },
+                    ]}
+                  >
+                    <Input
+                      id="error"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                    />
                   </Form.Item>
 
-                  <Form.Item label="Password :" className="da-mb-8">
-                    <Input.Password id="warning2" />
+                  <Form.Item
+                    label="Password :"
+                    className="da-mb-8"
+                    rules={[
+                      { required: true, message: "Please enter your password" },
+                    ]}
+                  >
+                    <Input.Password
+                      id="warning2"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                    />
                   </Form.Item>
 
                   <Row align="middle" justify="space-between">
@@ -80,18 +100,19 @@ const Login = ({ history }) => {
 
                     <Link
                       className="da-button da-text-color-black-80 da-text-color-dark-40"
-                      to="/pages/authentication/recover-password"
+                      to="/forgot-password"
                     >
                       Forgot Password?
                     </Link>
                   </Row>
 
-                  <Form.Item className="da-mt-16 da-mb-8">
-                    <Link to="/">
-                      <Button block type="primary" htmlType="submit">
-                        Sign in
-                      </Button>
-                    </Link>
+                  <Form.Item
+                    className="da-mt-16 da-mb-8"
+                    onClick={handleLoginSubmit}
+                  >
+                    <Button block type="primary" htmlType="submit">
+                      Sign in
+                    </Button>
                   </Form.Item>
                 </Form>
 
@@ -102,7 +123,7 @@ const Login = ({ history }) => {
 
                   <Link
                     className="da-text-color-primary-1 da-text-color-dark-primary-2 da-caption"
-                    to="/pages/authentication/register"
+                    to="/signup"
                   >
                     {" "}
                     Create an account
@@ -159,21 +180,25 @@ const Login = ({ history }) => {
                   />
                 </Col>
 
-                {/* Align center */}
-
-                <Col className="da-other-links da-mt-24">
-                  <a
-                    href="#"
+                <Col
+                  className="da-other-links da-mt-24"
+                  style={{
+                    justifyContent: "center",
+                    display: "flex",
+                  }}
+                >
+                  <Link
+                    href="/privacy"
                     className="da-text-color-black-80 da-text-color-dark-40"
                   >
                     Privacy Policy
-                  </a>
-                  <a
-                    href="#"
+                  </Link>
+                  <Link
+                    href="/terms"
                     className="da-text-color-black-80 da-text-color-dark-40"
                   >
                     Term of use
-                  </a>
+                  </Link>
                 </Col>
               </Col>
             </Row>
