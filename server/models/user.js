@@ -1,9 +1,16 @@
 const mongoose = require("mongoose");
+const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
     name: {
       type: String,
+      required: true,
+    },
+    picture: {
+      type: Array,
+      default:
+        "https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg",
     },
     email: {
       type: String,
@@ -15,15 +22,15 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    // Local account or Google
-    accountType: {
+    // Organization name
+    organization: {
       type: String,
-      default: "local",
     },
     // Normal or admin
     role: {
       type: String,
-      default: "normal",
+      enum: ["member", "manager", "admin", "superadmin"],
+      default: "admin",
     },
     // Account activation fields
     activated: {
@@ -38,6 +45,10 @@ const userSchema = new mongoose.Schema(
     activatedAt: {
       type: Date,
     },
+    gender: {
+      type: String,
+      enum: ["Male", "Female"],
+    },
   },
   { timestamps: true }
 );
@@ -50,6 +61,7 @@ userSchema.statics.toClientObject = function (user) {
     _id: userObject._id,
     email: userObject.email,
     name: userObject.name,
+    organization: userObject.organization,
     role: userObject.role,
     activated: userObject.activated,
     createdAt: userObject.createdAt,

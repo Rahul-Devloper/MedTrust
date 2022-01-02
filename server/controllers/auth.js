@@ -94,13 +94,24 @@ exports.signup = async (req, res) => {
     let newUser = new User({
       name,
       email,
-      role: role || "normal",
+      role: role || "admin",
       password: hashedPassword,
       activated: false,
       activationToken: verificationToken,
       activationTokenSentAt: Date.now(),
     });
     await newUser.save();
+
+    // If admin, create an admin account
+    if (newUser.role === "admin") {
+      let newAdmin = new Admin({
+        user: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
+        organization: newUser.organization,
+      });
+      await newAdmin.save();
+    }
 
     // Send verification to the user email
     var transporter = nodemailer.createTransport({
@@ -116,9 +127,9 @@ exports.signup = async (req, res) => {
       from: process.env.NODEMAILER_EMAIL,
       to: email,
       subject: "SaaS - Verification",
-      html: `<b>Hi, thank you for registering. Here is your verification link 
-        : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
-      </b>`,
+      html: `<b>Welcome, ${newUser.name}! thank you for signing up on SaaS. Here is your account verification link
+      : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
+    </b>`,
     };
 
     // Send the email
@@ -129,7 +140,8 @@ exports.signup = async (req, res) => {
       user: User.toClientObject(newUser),
     });
   } catch (error) {
-    console.log("SERVER_SIGNUP_ERROR", error);
+    res.status(500).json(error);
+    console.log("SIGNUP_ERROR", error);
   }
 };
 
@@ -158,6 +170,21 @@ exports.accountActivate = async (req, res, next) => {
           });
         }
         const { email } = user;
+
+        // Check if already activated
+        const existingUser = await User.findOne({ email });
+        if (existingUser.activated) {
+          return res.status(409).json({
+            error: true,
+            type: [
+              {
+                code: "GLOBAL_ERROR",
+                message: "Account already activated",
+              },
+            ],
+          });
+        }
+
         const updatedUser = await User.findOneAndUpdate(
           { email },
           { activated: true },
@@ -170,6 +197,7 @@ exports.accountActivate = async (req, res, next) => {
       });
     }
   } catch (error) {
+    res.status(500).json(error);
     console.log("ACCOUNT_VERIFY_ERROR", error);
   }
 };
@@ -282,6 +310,7 @@ exports.accountReverify = async (req, res) => {
         user: User.toClientObject(existingUser),
       });
     } catch (error) {
+      res.status(500).json(error);
       console.log("AUTH_REVERIFY_ERROR", error);
     }
   } else {
@@ -382,6 +411,7 @@ exports.passwordResetEmail = async (req, res, next) => {
       user: User.toClientObject(existingUser),
     });
   } catch (error) {
+    res.status(500).json(error);
     console.log("PASSWORD_RESET_EMAIL_ERROR", error);
   }
 };
@@ -462,6 +492,7 @@ exports.passwordVerify = async (req, res, next) => {
       });
     }
   } catch (error) {
+    res.status(500).json(error);
     console.log("NEW_PASSWORD_VERIFY_ERROR", error);
   }
 };
@@ -634,7 +665,8 @@ exports.googleCreateOrLogin = async (req, res) => {
       });
     }
   } catch (error) {
-    console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
+    res.status(500).json(error);
+    console.log("GOOGLE_LOGIN_ERROR", error);
   }
 };
 
@@ -714,7 +746,8 @@ exports.newAccessToken = async (req, res) => {
       user: User.toClientObject(user),
     });
   } catch (error) {
-    console.log("SERVER_NEW_TOKEN_ERROR", error);
+    res.status(500).json(error);
+    console.log("NEW_ACCESS_TOKEN_ERROR", error);
   }
 };
 
@@ -728,6 +761,7 @@ exports.logout = async (req, res) => {
 
     return res.status(200).json({ message: "Logged out" });
   } catch (error) {
-    console.log("SERVER_LOGOUT_ERROR", error);
+    res.status(500).json(error);
+    console.log("LOGOUT_ERROR", error);
   }
 };
