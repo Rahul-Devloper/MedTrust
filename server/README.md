@@ -1,5 +1,10 @@
 # SaaS Server
 
+## Commands
+
+- Run in dev:  `npm run dev`
+- Run all tests: `npm run test`
+
 ## Middlewares
 
 - BodyParser: Populates the values in the `req.body` object

@@ -37,11 +37,11 @@ app.use(
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
-require("./middlewares/passport")(passport);
+require("./src//middlewares/passport")(passport);
 
 // Routes (read routes in the "routes" dir and prepend "/api" to all routes)
-fs.readdirSync("./routes").map((route) =>
-  app.use("/api", require("./routes/" + route))
+fs.readdirSync("./src/routes").map((route) =>
+  app.use("/api", require("./src/routes/" + route))
 );
 
 // Error handling
