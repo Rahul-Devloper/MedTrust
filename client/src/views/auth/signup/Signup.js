@@ -1,33 +1,52 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { GoogleLogin } from "react-google-login";
+import { Link, useHistory } from "react-router-dom";
 import { GoogleContainer } from "../../../components";
+import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
-import { Row, Col, Form, Input, Button, Checkbox } from "antd";
-import LeftContent from "../leftContent";
-import FullLayout from "../../../layouts/FullLayout";
 import {
-  loginAction,
+  signupAction,
   googleLoginAction,
 } from "../../../redux/actions/authActions";
 import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.min.css";
+import FullLayout from "../../../layouts/FullLayout";
+import { Row, Col, Form, Input, Button } from "antd";
+import LeftContent from "../leftContent";
 
-const Login = ({ history }) => {
-  const [email, setEmail] = useState("abc@gmail.com");
-  const [password, setPassword] = useState("Abcd1234!");
+const initialFormData = {
+  name: "",
+  email: "",
+  password: "",
+  confirmPassword: "",
+};
+
+const Signup = ({ history }) => {
+  const [formData, setFormData] = useState(initialFormData);
   const dispatch = useDispatch();
 
-  // Handle email password login
-  const handleLoginSubmit = (e) => {
+  // Handle form change
+  const handleFormChange = (e) => {
     e.preventDefault();
-    // Validate email and password
-    if (!email || !password || password.length < 6) {
-      toast.error("Incorrect email or password");
-      return;
-    }
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  };
 
-    // Dispatch email, password and history to action
-    dispatch(loginAction({ email, password, history }));
+  // Handle custom email sign up
+  const handleEmailSignup = (e) => {
+    e.preventDefault();
+    const { name, email, password, confirmPassword } = formData;
+
+    try {
+      // Check if passwords match
+      if (password !== confirmPassword) {
+        toast.error("Passwords don't match");
+        return;
+      } else {
+        // Dispatch email, password and history to action
+        dispatch(signupAction({ name, email, password, history }));
+      }
+    } catch (error) {
+      console.log("SIGNUP_ERROR", error);
+    }
   };
 
   // Handle google login success
@@ -35,13 +54,13 @@ const Login = ({ history }) => {
     const userObjGoogle = await res?.profileObj;
     const { name, email } = userObjGoogle;
 
-    // Dispatch email, password and history to action
+    // Dispatch name, email and history to action
     dispatch(googleLoginAction({ name, email, history }));
   };
 
   // Handle google login failure
   const handleGoogleFailure = () => {
-    console.log("GOOGLE_LOGIN_ERROR");
+    console.log("GOOGLE_SIGNUP_ERROR");
   };
 
   return (
@@ -50,7 +69,7 @@ const Login = ({ history }) => {
         <Row gutter={[32, 0]} className="da-authentication-page">
           <LeftContent />
 
-          <Col lg={12} span={24} className="da-py-sm-0 da-py-md-64">
+          <Col md={12}>
             <Row className="da-h-100" align="middle" justify="center">
               <Col
                 xxl={11}
@@ -60,83 +79,73 @@ const Login = ({ history }) => {
                 sm={24}
                 className="da-px-sm-8 da-pt-24 da-pb-48"
               >
-                <h1 className="da-mb-sm-0">Login</h1>
-                <p className="da-mt-sm-0 da-mt-8 da-text-color-black-60">
-                  Welcome back, please login to your account.
-                </p>
+                <h1>Create Account</h1>
 
                 <Form
                   layout="vertical"
                   name="basic"
-                  initialValues={{ remember: true }}
                   className="da-mt-sm-16 da-mt-32"
                 >
-                  <Form.Item
-                    label="Email :"
-                    className="da-mb-16"
-                    rules={[
-                      { required: true, message: "Please enter your email" },
-                    ]}
-                  >
+                  <Form.Item label="Name :">
+                    <Input
+                      id="error"
+                      name="name"
+                      value={formData.name}
+                      onChange={handleFormChange}
+                    />
+                  </Form.Item>
+
+                  <Form.Item label="E-mail :">
                     <Input
                       id="validating"
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      name="email"
+                      value={formData.email}
+                      onChange={handleFormChange}
                     />
                   </Form.Item>
 
-                  <Form.Item
-                    label="Password :"
-                    className="da-mb-8"
-                    rules={[
-                      { required: true, message: "Please enter your password" },
-                    ]}
-                  >
+                  <Form.Item label="Password :">
                     <Input.Password
-                      id="warning2"
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
+                      id="password"
+                      name="password"
+                      value={formData.password}
+                      onChange={handleFormChange}
                     />
                   </Form.Item>
 
-                  <Row align="middle" justify="space-between">
-                    <Form.Item className="da-mb-0">
-                      <Checkbox name="remember">Remember me</Checkbox>
-                    </Form.Item>
-
-                    <Link
-                      className="da-button da-text-color-black-80 da-text-color-dark-40"
-                      to="/forgot-password"
-                    >
-                      Forgot Password?
-                    </Link>
-                  </Row>
+                  <Form.Item label="Confirm Password :">
+                    <Input.Password
+                      id="confirm-password"
+                      name="confirmPassword"
+                      value={formData.confirmPassword}
+                      onChange={handleFormChange}
+                    />
+                  </Form.Item>
 
                   <Form.Item className="da-mt-16 da-mb-8">
                     <Button
                       block
                       type="primary"
                       htmlType="submit"
-                      onClick={handleLoginSubmit}
+                      onClick={handleEmailSignup}
                     >
-                      Sign in
+                      Sign up
                     </Button>
                   </Form.Item>
                 </Form>
 
-                <Col className="da-form-info">
+                <div className="da-form-info">
                   <span className="da-text-color-black-80 da-text-color-dark-40 da-caption da-mr-4">
-                    Don’t you have an account?
+                    Already have an account?{" "}
                   </span>
 
                   <Link
+                    to="/login"
                     className="da-text-color-primary-1 da-text-color-dark-primary-2 da-caption"
-                    to="/signup"
                   >
-                    {" "}
-                    Create an account
+                    Login
                   </Link>
-                </Col>
+                </div>
 
                 <Col className="da-or-line da-text-center da-mt-32">
                   <span className="da-caption da-text-color-black-80 da-text-color-dark-30 da-px-16 da-bg-color-black-0 da-bg-color-dark-100">
@@ -178,7 +187,7 @@ const Login = ({ history }) => {
                               fill="#F14336"
                             />
                           </svg>
-                          <p>Continue with Google account</p>
+                          <p>Sign up with Google account</p>
                         </GoogleContainer>
                       </span>
                     )}
@@ -217,4 +226,4 @@ const Login = ({ history }) => {
   );
 };
 
-export default Login;
+export default Signup;
