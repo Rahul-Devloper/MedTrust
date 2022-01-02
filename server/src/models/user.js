@@ -29,7 +29,7 @@ const userSchema = new mongoose.Schema(
     // Normal or admin
     role: {
       type: String,
-      enum: ["member", "manager", "admin", "superadmin"],
+      enum: ["member", "admin", "superadmin"],
       default: "admin",
     },
     // Account activation fields
