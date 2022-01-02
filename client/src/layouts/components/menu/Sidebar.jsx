@@ -22,7 +22,7 @@ const Sidebar = (props) => {
   const customize = useSelector((state) => state.customize);
 
   // Collapsed
-  const [collapsed, setCollapsed] = useState(false);
+  const [collapsed, setCollapsed] = useState(true);
 
   useEffect(() => {
     if (customize.sidebarCollapsed) {
