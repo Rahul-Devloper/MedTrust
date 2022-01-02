@@ -18,11 +18,13 @@ import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
 import "./App.css";
+import { ConfigProvider } from "antd";
 
 const App = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { user } = useSelector((state) => state.auth);
+  const customize = useSelector((state) => state.customize);
 
   // Update access token on every refresh
   useEffect(() => {
@@ -53,35 +55,41 @@ const App = () => {
         rtl={false}
         draggable
       />
-      <Switch>
-        {/**************** Common Routes ****************/}
-        <Route exact path="/" component={!user && Login} />
-        <Route exact path="/login" component={!user && Login} />
-        <Route exact path="/signup" component={!user && Signup} />
-        <Route
-          exact
-          path="/account/activate"
-          component={!user && AccountActivation}
-        />
-        <Route
-          exact
-          path="/forgot-password"
-          component={!user && ForgotPassword}
-        />
-        <Route exact path="/new-password" component={!user && NewPassword} />
-        {/**************** Member Routes ****************/}
-        <MemberRoute exact path="/member/dashboard" component={Dashboard} />
-        {/**************** Admin Routes ****************/}
-        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
-        <AdminRoute
-          exact
-          path="/admin/coupon/create"
-          component={CreateCoupon}
-        />
+      <ConfigProvider direction={customize.direction}>
+        <Switch>
+          {/**************** Common Routes ****************/}
+          <Route exact path="/" component={!user && Login} />
+          <Route exact path="/login" component={!user && Login} />
+          <Route exact path="/signup" component={!user && Signup} />
+          <Route
+            exact
+            path="/account/activate"
+            component={!user && AccountActivation}
+          />
+          <Route
+            exact
+            path="/forgot-password"
+            component={!user && ForgotPassword}
+          />
+          <Route exact path="/new-password" component={!user && NewPassword} />
+          {/**************** Member Routes ****************/}
+          <MemberRoute exact path="/member/dashboard" component={Dashboard} />
+          {/**************** Admin Routes ****************/}
+          <AdminRoute
+            exact
+            path="/admin/dashboard"
+            component={AdminDashboard}
+          />
+          <AdminRoute
+            exact
+            path="/admin/coupon/create"
+            component={CreateCoupon}
+          />
 
-        {/* Wildcard */}
-        <Route path={"*"} component={RandomPageRedirect} />
-      </Switch>
+          {/* Wildcard */}
+          <Route path={"*"} component={RandomPageRedirect} />
+        </Switch>
+      </ConfigProvider>
     </div>
   );
 };

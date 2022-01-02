@@ -12,8 +12,6 @@ export {
 } from "./auth/AuthCards/style";
 
 // Navbar
-export { default as AdminNavbar } from "./Navbar/AdminNavbar";
-export { default as UserNavbar } from "./Navbar/UserNavbar/";
 
 // Loaders
 export { default as LoadingToRedirect } from "./Loaders/LoadingToRedirect";

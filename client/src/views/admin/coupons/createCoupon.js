@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
 import { createCoupon, getAllCoupons } from "../../../api/coupon";
 
 const initialState = {
@@ -79,9 +78,9 @@ const CreateCoupon = () => {
           <h3>{coupon.name}</h3>
           <p>{coupon.code}</p>
           // Edit coupon form and button
-          <Button variant="contained" color="primary" onClick={() => {}}>
+          <button variant="contained" color="primary" onClick={() => {}}>
             Edit
-          </Button>
+          </button>
         </div>
       ))}
     </div>
