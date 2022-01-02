@@ -16,7 +16,7 @@ const {
   getPlanById,
   updatePlanById,
   deletePlanById,
-} = require("../controllers/plan");
+} = require("../controllers/planController");
 
 // Routes
 router.post("/plan", authCheck, superAdminCheck, createPlan);

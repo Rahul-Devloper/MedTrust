@@ -5,7 +5,7 @@ const router = express.Router();
 const { authCheck } = require("../middlewares/auth");
 
 // Controllers
-const { currentMember } = require("../controllers/member");
+const { currentMember } = require("../controllers/memberController");
 
 // Routes
 router.post("/currentMember", authCheck, currentMember);

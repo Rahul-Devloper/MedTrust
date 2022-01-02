@@ -12,7 +12,7 @@ const {
   passwordVerify,
   newAccessToken,
   logout,
-} = require("../controllers/auth");
+} = require("../controllers/authController");
 
 // Routes
 router.post("/signup", signup);

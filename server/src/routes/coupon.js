@@ -16,7 +16,7 @@ const {
   getCouponById,
   updateCouponById,
   deleteCouponById,
-} = require("../controllers/coupon");
+} = require("../controllers/couponController");
 
 // Routes
 router.post("/coupon", authCheck, superAdminCheck, createCoupon);

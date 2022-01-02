@@ -5,7 +5,7 @@ const router = express.Router();
 const { authCheck, superAdminCheck } = require("../middlewares/auth");
 
 // Controllers
-const { currentSuperAdmin } = require("../controllers/superAdmin");
+const { currentSuperAdmin } = require("../controllers/superAdminController");
 
 // Routes
 router.post(
