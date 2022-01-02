@@ -26,7 +26,7 @@ describe("Coupon Create Tests", () => {
 
   // Test coupon create by non-superadmin
   test("return 403 on coupon create by non-superadmin", async () => {
-    const accessToken = await global.login(request, app, "user");
+    const accessToken = await global.login(request, app, "member");
 
     const response = await request(app)
       .post("/api/coupon")

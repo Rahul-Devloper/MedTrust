@@ -47,18 +47,22 @@ afterAll(async () => {
 });
 
 // Global login function
-global.login = async (request, app, role) => {
-  await request(app).post("/api/signup").send({
-    name: "test",
-    email: "test@test.com",
-    password: "Test1234!",
-    role: role,
-  });
+global.login = async (request, app, role, email) => {
+  await request(app)
+    .post("/api/signup")
+    .send({
+      name: "test",
+      email: email || "test@test.com",
+      password: "Test1234!",
+      role: role,
+    });
 
-  const login = await request(app).post("/api/login").send({
-    email: "test@test.com",
-    password: "Test1234!",
-  });
+  const login = await request(app)
+    .post("/api/login")
+    .send({
+      email: email || "test@test.com",
+      password: "Test1234!",
+    });
 
   return login.body.accessToken;
 };
