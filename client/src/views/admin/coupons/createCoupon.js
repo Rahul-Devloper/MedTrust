@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button } from "@material-ui/core";
-import { createCoupon, getCoupons } from "../../../api/coupon";
+import { createCoupon, getAllCoupons } from "../../../api/coupon";
 
 const initialState = {
   name: "",
@@ -35,18 +34,13 @@ const CreateCoupon = () => {
 
   // Handle fetch all coupons
   const handleFetchCoupons = () => {
-    getCoupons()
+    getAllCoupons()
       .then((res) => {
         setAllCoupons(res.data.coupons);
       })
       .catch((err) => {
         console.log(err);
       });
-  };
-
-  // Handle coupon update
-  const handleCouponUpdate = (e) => {
-    e.preventDefault();
   };
 
   return (
@@ -84,9 +78,9 @@ const CreateCoupon = () => {
           <h3>{coupon.name}</h3>
           <p>{coupon.code}</p>
           // Edit coupon form and button
-          <Button variant="contained" color="primary" onClick={() => {}}>
+          <button variant="contained" color="primary" onClick={() => {}}>
             Edit
-          </Button>
+          </button>
         </div>
       ))}
     </div>

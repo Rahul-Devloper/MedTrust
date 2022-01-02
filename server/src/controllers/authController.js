@@ -272,7 +272,7 @@ exports.accountReverify = async (req, res) => {
 /**********************************
   Password Reset Email
 ***********************************/
-exports.passwordResetEmail = async (req, res, next) => {
+exports.passwordResetEmail = async (req, res) => {
   // Get the email from client body
   const { email } = req.body;
 

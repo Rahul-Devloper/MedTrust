@@ -6,9 +6,3 @@ export const ACTION_TYPES = {
   // Alert action types
   ALERT: "ALERT",
 };
-
-// Profile Actions
-export const PROFILE_TYPES = {
-  LOADING: "LOADING",
-  GET_USER: "GET_USER",
-};
