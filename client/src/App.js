@@ -7,7 +7,6 @@ import {
   AdminDashboard,
   Dashboard,
   ForgotPassword,
-  Home,
   Login,
   NewPassword,
   Signup,
@@ -56,27 +55,23 @@ const App = () => {
       />
       <Switch>
         {/**************** Common Routes ****************/}
-        <Route exact path="/" component={Home} />
-        <Route exact path="/login" component={user ? Dashboard : Login} />
-        <Route exact path="/signup" component={user ? Dashboard : Signup} />
+        <Route exact path="/" component={!user && Login} />
+        <Route exact path="/login" component={!user && Login} />
+        <Route exact path="/signup" component={!user && Signup} />
         <Route
           exact
           path="/account/activate"
-          component={user ? Dashboard : AccountActivation}
+          component={!user && AccountActivation}
         />
         <Route
           exact
           path="/forgot-password"
-          component={user ? Dashboard : ForgotPassword}
+          component={!user && ForgotPassword}
         />
-        <Route
-          exact
-          path="/new-password"
-          component={user ? Dashboard : NewPassword}
-        />
+        <Route exact path="/new-password" component={!user && NewPassword} />
         {/**************** Member Routes ****************/}
-        <MemberRoute exact path="/user/dashboard" component={Dashboard} />
-        {/* Admin Routes */}
+        <MemberRoute exact path="/member/dashboard" component={Dashboard} />
+        {/**************** Admin Routes ****************/}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
         <AdminRoute
           exact
