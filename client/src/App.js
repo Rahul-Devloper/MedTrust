@@ -16,8 +16,9 @@ import {
 } from "./views";
 import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
-import { ToastContainer } from "react-toastify";
 import { ConfigProvider } from "antd";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const App = () => {
   const dispatch = useDispatch();
