@@ -9,7 +9,7 @@ export { default as NewPassword } from "./auth/newPassword/NewPassword";
 export { default as Dashboard } from "./user/Dashboard";
 
 // Admin views
-export { default as AdminDashboard } from "./admin/AdminDashboard";
+export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
 export { default as CreateCoupon } from "./admin/coupons/createCoupon";
 
 // Random Redirect

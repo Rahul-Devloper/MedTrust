@@ -1,3 +1,5 @@
-export default function FullLayout({ children }) {
+const FullLayout = ({ children }) => {
   return <>{children}</>;
-}
+};
+
+export default FullLayout;

@@ -1,4 +1,4 @@
-import { ACTION_TYPES } from "../constants/actionTypes";
+import { ACTION_TYPES, AUTH_TYPES } from "../constants/actionTypes";
 import {
   signUp,
   login,
@@ -69,7 +69,7 @@ export const loginAction = (data) => async (dispatch) => {
 
     // Dispatch token and user
     dispatch({
-      type: ACTION_TYPES.AUTH,
+      type: AUTH_TYPES.AUTH,
       payload: {
         accessToken: res.data.accessToken,
         user: res.data.user,
@@ -124,7 +124,7 @@ export const googleLoginAction = (data) => async (dispatch) => {
 
     // Dispatch token and user
     dispatch({
-      type: ACTION_TYPES.AUTH,
+      type: AUTH_TYPES.AUTH,
       payload: {
         accessToken: res.data.accessToken,
         user: res.data.user,
@@ -171,7 +171,7 @@ export const refreshTokenAction = () => async (dispatch) => {
 
       // Dispatch token and user
       dispatch({
-        type: ACTION_TYPES.AUTH,
+        type: AUTH_TYPES.AUTH,
         payload: {
           accessToken: res.data.accessToken,
           user: res.data.user,
@@ -204,7 +204,7 @@ export const logoutAction = () => async (dispatch) => {
 
     // Dispatch logout
     dispatch({
-      type: ACTION_TYPES.LOGOUT,
+      type: AUTH_TYPES.LOGOUT,
       payload: {},
     });
 

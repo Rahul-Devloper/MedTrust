@@ -177,7 +177,7 @@ const Login = ({ history }) => {
                             fill="#F14336"
                           />
                         </svg>
-                        <p>Continue with Google account</p>
+                        <p>Continue with Google</p>
                       </GoogleContainer>
                     </span>
                   )}

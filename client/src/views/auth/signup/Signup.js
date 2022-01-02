@@ -68,7 +68,7 @@ const Signup = ({ history }) => {
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
-        <Col md={12}>
+        <Col lg={12} span={24} className="da-py-sm-0 da-py-md-64">
           <Row className="da-h-100" align="middle" justify="center">
             <Col
               xxl={11}
@@ -78,16 +78,16 @@ const Signup = ({ history }) => {
               sm={24}
               className="da-px-sm-8 da-pt-24 da-pb-48"
             >
-              <h1>Create Account</h1>
+              <h1 className="da-mb-sm-0">Create Account</h1>
 
               <Form
                 layout="vertical"
                 name="basic"
                 className="da-mt-sm-16 da-mt-32"
               >
-                <Form.Item label="Name :">
+                <Form.Item label="Name :" className="da-mb-16">
                   <Input
-                    id="error"
+                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleFormChange}
@@ -96,7 +96,7 @@ const Signup = ({ history }) => {
 
                 <Form.Item label="E-mail :">
                   <Input
-                    id="validating"
+                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleFormChange}
