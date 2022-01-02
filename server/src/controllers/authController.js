@@ -1,8 +1,12 @@
 const { emailValidator, passwordValidator } = require("../utils/validations");
-const User = require("../models/user");
-const { CreateUser, FindOneUser } = require("../services/userService");
+const {
+  CreateUser,
+  FindUserById,
+  FindOneUser,
+  FindOneUserAndUpdate,
+} = require("../services/userService");
 const { CreateAdmin } = require("../services/adminService");
-const Admin = require("../models/admin");
+const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
@@ -66,7 +70,7 @@ exports.signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = CreateUser({
+    let newUser = await CreateUser({
       name,
       email,
       role: role || "admin",
@@ -78,7 +82,7 @@ exports.signup = async (req, res) => {
 
     // If admin, create an admin account
     if (newUser.role === "admin") {
-      CreateAdmin({
+      await CreateAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
@@ -145,7 +149,7 @@ exports.accountActivate = async (req, res, next) => {
         const { email } = user;
 
         // Check if already activated
-        const existingUser = await User.findOne({ email });
+        const existingUser = await FindOneUser({ email });
         if (existingUser.activated) {
           return res.status(409).json({
             error: true,
@@ -158,11 +162,11 @@ exports.accountActivate = async (req, res, next) => {
           });
         }
 
-        const updatedUser = await User.findOneAndUpdate(
+        const updatedUser = await FindOneUserAndUpdate(
           { email },
-          { activated: true },
-          { new: true }
-        ).exec();
+          { activated: true }
+        );
+
         return res.status(200).json({
           message: "Email verified, please login to continue",
           user: User.toClientObject(updatedUser),
@@ -198,8 +202,7 @@ exports.accountReverify = async (req, res) => {
   if (email) {
     try {
       // Check if activated is false for the user
-      const existingUser = await User.findOne({ email });
-
+      const existingUser = await FindOneUser({ email });
       // Check if the user is already activated
       if (existingUser.activated === true) {
         return res.json({
@@ -227,14 +230,13 @@ exports.accountReverify = async (req, res) => {
       );
 
       // Update activation token sent at in the user model
-      await User.findOneAndUpdate(
+      await FindOneUserAndUpdate(
         { email },
         {
           activationToken: verificationToken,
           activationTokenSentAt: Date.now(),
-        },
-        { new: true }
-      ).exec();
+        }
+      );
 
       // Re Send verification to the user email
       var transporter = nodemailer.createTransport({
@@ -294,7 +296,7 @@ exports.passwordResetEmail = async (req, res, next) => {
 
   try {
     // Check if the user exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await FindOneUser({ email });
 
     // If the user doesn't exist, don't send
     if (!existingUser) {
@@ -394,11 +396,10 @@ exports.passwordVerify = async (req, res, next) => {
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-        const updatedUser = await User.findOneAndUpdate(
+        const updatedUser = await FindOneUserAndUpdate(
           { email },
-          { password: hashedPassword },
-          { new: true }
-        ).exec();
+          { password: hashedPassword }
+        );
 
         return res.status(200).json({
           message: "Password updated, please login to continue",
@@ -486,15 +487,18 @@ exports.login = async (req, res, next) => {
 exports.googleCreateOrLogin = async (req, res) => {
   try {
     const { name, email } = req.body;
-    let user = await User.findOne({ email });
+
+    let user = await FindOneUser({ email });
+
+    // If user doesn't exist
     if (!user) {
-      let user = new User({
+      await CreateUser({
         name: name,
         email: email,
+        role: "admin",
         accountType: "google",
         activated: true,
-      });
-      await user.save().then((user) => {
+      }).then((user) => {
         // Generate JWT for the Google ID
         // Use only the user ID to create JWT token
         const idObject = { _id: user._id };
@@ -583,7 +587,7 @@ exports.newAccessToken = async (req, res) => {
     const decodedToken = jwt.verify(refToken, process.env.JWT_REFRESH_SECRET);
 
     // Get the user from the refresh token
-    const user = await User.findById(decodedToken._id);
+    const user = await FindUserById(decodedToken._id);
     if (!user) {
       return res.status(401).json({
         error: true,

@@ -21,3 +21,8 @@ exports.FindUserById = async (id) => {
 exports.FindOneUser = async (query) => {
   return await User.findOne(query).exec();
 };
+
+// Find one user and update
+exports.FindOneUserAndUpdate = async (query, update) => {
+  return await User.findOneAndUpdate(query, update, { new: true }).exec();
+};
