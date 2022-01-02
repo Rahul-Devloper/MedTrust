@@ -76,3 +76,18 @@ exports.superAdminCheck = async (req, res, next) => {
     next();
   }
 };
+
+// Super admin or admin check middleware
+exports.superOrAdminCheck = async (req, res, next) => {
+  const { _id } = req.user;
+
+  const user = await User.findOne({ _id }).exec();
+
+  if (user.role !== "superadmin" && user.role !== "admin") {
+    res.status(403).json({
+      error: "Super Admin or Admin Resource, access denied!",
+    });
+  } else {
+    next();
+  }
+};

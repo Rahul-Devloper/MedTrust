@@ -6,6 +6,7 @@ const {
   authCheck,
   adminCheck,
   superAdminCheck,
+  superOrAdminCheck,
 } = require("../middlewares/auth");
 
 // Controllers
@@ -19,8 +20,8 @@ const {
 
 // Routes
 router.post("/plan", authCheck, superAdminCheck, createPlan);
-router.get("/plans", authCheck, adminCheck, getAllPlans);
-router.get("/plan/:id", authCheck, adminCheck, getPlanById);
+router.get("/plans", authCheck, superOrAdminCheck, getAllPlans);
+router.get("/plan/:id", authCheck, superOrAdminCheck, getPlanById);
 router.put("/plan/:id", authCheck, superAdminCheck, updatePlanById);
 router.delete("/plan/:id", authCheck, superAdminCheck, deletePlanById);
 

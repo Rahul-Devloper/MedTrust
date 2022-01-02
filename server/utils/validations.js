@@ -49,8 +49,8 @@ exports.passwordValidator = (password) => {
   }
 
   // Check valid password
-  const isValidPassword = newPassword && validatePassword(newPassword);
-  if (newPassword && !isValidPassword) {
+  const isValidPassword = password && validatePassword(password);
+  if (password && !isValidPassword) {
     validationErrors.push({
       code: "VALIDATION_ERROR",
       field: "password",

@@ -6,6 +6,7 @@ const {
   authCheck,
   adminCheck,
   superAdminCheck,
+  superOrAdminCheck,
 } = require("../middlewares/auth");
 
 // Controllers
@@ -19,8 +20,8 @@ const {
 
 // Routes
 router.post("/coupon", authCheck, superAdminCheck, createCoupon);
-router.get("/coupons", authCheck, adminCheck, getAllCoupons);
-router.get("/coupon/:id", authCheck, adminCheck, getCouponById);
+router.get("/coupons", authCheck, superOrAdminCheck, getAllCoupons);
+router.get("/coupon/:id", authCheck, superOrAdminCheck, getCouponById);
 router.put("/coupon/:id", authCheck, superAdminCheck, updateCouponById);
 router.delete("/coupon/:id", authCheck, superAdminCheck, deleteCouponById);
 
