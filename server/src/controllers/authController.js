@@ -1,5 +1,7 @@
 const { emailValidator, passwordValidator } = require("../utils/validations");
 const User = require("../models/user");
+const { CreateUser, FindOneUser } = require("../services/userService");
+const { CreateAdmin } = require("../services/adminService");
 const Admin = require("../models/admin");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -38,7 +40,7 @@ exports.signup = async (req, res) => {
 
   try {
     // Check if user already exists
-    const existingUser = await User.findOne({ email });
+    const existingUser = await FindOneUser({ email });
     if (existingUser) {
       const errorObject = {
         error: true,
@@ -64,7 +66,7 @@ exports.signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = new User({
+    let newUser = CreateUser({
       name,
       email,
       role: role || "admin",
@@ -73,17 +75,15 @@ exports.signup = async (req, res) => {
       activationToken: verificationToken,
       activationTokenSentAt: Date.now(),
     });
-    await newUser.save();
 
     // If admin, create an admin account
     if (newUser.role === "admin") {
-      let newAdmin = new Admin({
+      CreateAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
         organization: newUser.organization,
       });
-      await newAdmin.save();
     }
 
     // Send verification to the user email
