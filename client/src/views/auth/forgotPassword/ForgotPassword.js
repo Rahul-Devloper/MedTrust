@@ -1,0 +1,115 @@
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { resetPassword } from "../../../api/auth";
+import FullLayout from "../../../layouts/FullLayout";
+import { Row, Col, Form, Input, Button } from "antd";
+import LeftContent from "../leftContent";
+import { toast } from "react-toastify";
+
+const ForgotPassword = () => {
+  const [email, setEmail] = useState("");
+
+  // Handle Reset Submit
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    // Make the API call
+    resetPassword(email)
+      .then((res) => {
+        if (res.data.error) {
+          toast.error(res.data.type[0].message);
+        }
+        toast.success(res.data.message);
+      })
+      .catch((err) => {
+        toast.error(err.response.data.type[0].message);
+      });
+  };
+
+  return (
+    <FullLayout>
+      <Row gutter={[32, 0]} className="da-authentication-page">
+        <LeftContent />
+
+        <Col md={12}>
+          <Row className="da-h-100" align="middle" justify="center">
+            <Col
+              xxl={11}
+              xl={15}
+              lg={20}
+              md={20}
+              sm={24}
+              className="da-px-sm-8 da-pt-24 da-pb-48"
+            >
+              <h1 className="da-mb-sm-0">Reset Password</h1>
+              <p className="da-mt-sm-0 da-mt-8 da-text-color-black-60">
+                We’ll e-mail you instructions on how to reset your password.
+              </p>
+
+              <Form
+                layout="vertical"
+                name="basic"
+                className="da-mt-sm-16 da-mt-32"
+              >
+                <Form.Item label="E-mail :">
+                  <Input
+                    id="validating"
+                    placeholder="you@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                  />
+                </Form.Item>
+
+                <Form.Item className="da-mt-16 da-mb-8">
+                  <Button
+                    block
+                    type="primary"
+                    htmlType="submit"
+                    onClick={handleSubmit}
+                  >
+                    Reset Password
+                  </Button>
+                </Form.Item>
+              </Form>
+
+              <div className="da-form-info">
+                <span className="da-text-color-black-80 da-text-color-dark-40 da-caption da-mr-4">
+                  Go back to{" "}
+                </span>
+
+                <Link
+                  to="/login"
+                  className="da-text-color-primary-1 da-text-color-dark-primary-2 da-caption"
+                >
+                  Login
+                </Link>
+              </div>
+
+              <Col
+                className="da-other-links da-mt-24"
+                style={{
+                  justifyContent: "center",
+                  display: "flex",
+                }}
+              >
+                <Link
+                  href="/privacy"
+                  className="da-text-color-black-80 da-text-color-dark-40"
+                >
+                  Privacy Policy
+                </Link>
+                <Link
+                  href="/terms"
+                  className="da-text-color-black-80 da-text-color-dark-40"
+                >
+                  Term of use
+                </Link>
+              </Col>
+            </Col>
+          </Row>
+        </Col>
+      </Row>
+    </FullLayout>
+  );
+};
+
+export default ForgotPassword;

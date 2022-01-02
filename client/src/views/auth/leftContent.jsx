@@ -21,7 +21,7 @@ const LeftContent = () => {
     >
       <Row className="da-image-row da-h-100 da-px-sm-8 da-px-md-16 da-pb-sm-32 da-pt-md-96 da-pt-md-32">
         <Col className="da-logo-item da-m-sm-16 da-m-md-32 da-m-64">
-          <img src={theme == "light" ? logo : logoDark} alt="Logo" />
+          <img src={theme === "light" ? logo : logoDark} alt="Logo" />
         </Col>
 
         <Col span={24}>
@@ -31,10 +31,7 @@ const LeftContent = () => {
               span={24}
               className="da-bg-item da-text-center da-mb-md-32"
             >
-              <img
-                src={theme == "light" ? bg : bgDark}
-                alt="Background Image"
-              />
+              <img src={theme === "light" ? bg : bgDark} alt="Background" />
             </Col>
 
             <Col xl={18} span={24} className="da-text-item da-text-center">

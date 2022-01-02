@@ -2,7 +2,7 @@
 export { default as Login } from "./auth/login/Login";
 export { default as Signup } from "./auth/signup/Signup";
 export { default as AccountActivation } from "./auth/AccountActivation";
-export { default as ForgotPassword } from "./auth/ForgotPassword";
+export { default as ForgotPassword } from "./auth/forgotPassword/ForgotPassword";
 export { default as NewPassword } from "./auth/NewPassword";
 
 // User views
