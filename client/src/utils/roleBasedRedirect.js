@@ -3,10 +3,31 @@ export const RoleBasedRedirect = (res, history) => {
   if (intended) {
     history.push(intended.from);
   } else {
-    if (res.data.user.role === "admin") {
-      history.push("/admin/dashboard");
-    } else {
-      history.push("/user/dashboard");
+    if (!res.data.user) {
+      window.location.href = "/";
+    } else if (res.data.user.role === "superadmin") {
+      window.location.href = "/super-admin/dashboard";
+    } else if (res.data.user.role === "admin") {
+      window.location.href = "/admin/dashboard";
+    } else if (res.data.user.role === "member") {
+      window.location.href = "/member/dashboard";
+    }
+  }
+};
+
+export const RoleBasedRedirectWithUser = (user, history) => {
+  const intended = history.location.state;
+  if (intended) {
+    history.push(intended.from);
+  } else {
+    if (!user) {
+      window.location.href = "/";
+    } else if (user.role === "superadmin") {
+      window.location.href = "/super-admin/dashboard";
+    } else if (user.role === "admin") {
+      window.location.href = "/admin/dashboard";
+    } else if (user.role === "member") {
+      window.location.href = "/member/dashboard";
     }
   }
 };

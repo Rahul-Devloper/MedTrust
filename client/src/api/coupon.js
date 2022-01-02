@@ -1,5 +1,6 @@
 import api from "./index";
 
+// Create a new coupon
 export const createCoupon = async (name, code) => {
   return await api.post("/coupon", { name, code });
 };
