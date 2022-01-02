@@ -1,4 +1,4 @@
-import { AUTH_TYPES } from "../constants/actionTypes";
+import { AUTH_TYPES } from "../constants/authTypes";
 import Cookies from "js-cookie";
 
 // Initial state

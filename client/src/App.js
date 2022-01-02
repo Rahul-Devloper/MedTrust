@@ -3,13 +3,16 @@ import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import {
+  Home,
+  // Auth
+  Signup,
   AccountActivation,
+  Login,
+  ForgotPassword,
+  NewPassword,
+  // Admin
   AdminDashboard,
   Dashboard,
-  ForgotPassword,
-  Login,
-  NewPassword,
-  Signup,
   CreateCoupon,
   // -------------- Wildcard --------------
   RandomPageRedirect,
@@ -58,7 +61,7 @@ const App = () => {
       <ConfigProvider direction={customize.direction}>
         <Switch>
           {/**************** Common Routes ****************/}
-          <Route exact path="/" component={!user && Login} />
+          <Route exact path="/" component={Home} />
           <Route exact path="/login" component={!user && Login} />
           <Route exact path="/signup" component={!user && Signup} />
           <Route

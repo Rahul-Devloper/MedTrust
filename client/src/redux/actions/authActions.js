@@ -1,4 +1,5 @@
-import { ACTION_TYPES, AUTH_TYPES } from "../constants/actionTypes";
+import { ACTION_TYPES } from "../constants/actionTypes";
+import { AUTH_TYPES } from "../constants/authTypes";
 import {
   signUp,
   login,

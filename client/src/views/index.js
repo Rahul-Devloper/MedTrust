@@ -1,4 +1,5 @@
 // Common views
+export { default as Home } from "./Home";
 export { default as Login } from "./auth/login/Login";
 export { default as Signup } from "./auth/signup/Signup";
 export { default as AccountActivation } from "./auth/accountActivation/AccountActivation";
