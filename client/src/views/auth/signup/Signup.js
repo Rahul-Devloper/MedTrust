@@ -40,8 +40,9 @@ const Signup = ({ history }) => {
         toast.error("Passwords don't match");
         return;
       } else {
-        // Dispatch email, password and history to action
-        dispatch(signupAction({ name, email, password, history }));
+        // Dispatch name, email, and password
+        dispatch(signupAction({ name, email, password }));
+        setFormData(initialFormData);
       }
     } catch (error) {
       console.log("SIGNUP_ERROR", error);

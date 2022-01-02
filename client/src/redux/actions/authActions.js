@@ -32,8 +32,6 @@ export const signupAction = (data) => async (dispatch) => {
     });
 
     toast.success(res.data.message);
-    // Clear the form on success
-    data.setFormData(data.initialFormData);
   } catch (error) {
     toast.error(error.response.data.type[0].message);
     // Dispatch a error alert
