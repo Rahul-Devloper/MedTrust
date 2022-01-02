@@ -19,7 +19,11 @@ const MenuFooter = (props) => {
         <Row align="middle">
           <Avatar size={36} src={avatar} className="da-mr-8" />
 
-          <div>
+          <div
+            style={{
+              margin: "1px 0 0 8px",
+            }}
+          >
             <span className="da-d-block da-text-color-black-100 da-text-color-dark-0 da-p1-body">
               Jane Doe
             </span>

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { GoogleContainer } from "../../../components";
+import { GoogleButton } from "../../../components";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import {
@@ -157,7 +157,7 @@ const Signup = ({ history }) => {
                   clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_ID}`}
                   render={(renderProps) => (
                     <span>
-                      <GoogleContainer
+                      <GoogleButton
                         onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                       >
@@ -187,7 +187,7 @@ const Signup = ({ history }) => {
                           />
                         </svg>
                         <p>Sign up with Google</p>
-                      </GoogleContainer>
+                      </GoogleButton>
                     </span>
                   )}
                   onSuccess={handleGoogleSuccess}
