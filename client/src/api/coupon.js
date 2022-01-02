@@ -1,11 +1,26 @@
 import api from "./index";
 
-// Create a new coupon
-export const createCoupon = async (name, code) => {
-  return await api.post("/coupon", { name, code });
+// Create a coupon
+export const createCoupon = async (values) => {
+  return await api.post("/coupon", values);
 };
 
 // Get all coupons
-export const getCoupons = async (id, name, code) => {
-  return await api.get(`/coupons/${id}`, { name, code });
+export const getAllCoupons = async () => {
+  return await api.get(`/coupons`);
+};
+
+// Get a coupon by id
+export const getCouponById = async (id) => {
+  return await api.get(`/coupon/${id}`);
+};
+
+// Update a coupon by id
+export const updateCouponById = async (id, values) => {
+  return await api.put(`/coupon/${id}`, values);
+};
+
+// Delete a coupon by id
+export const deleteCouponById = async (id) => {
+  return await api.delete(`/coupon/${id}`);
 };
