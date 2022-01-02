@@ -1,11 +1,6 @@
 const { emailValidator, passwordValidator } = require("../utils/validations");
-const {
-  CreateUser,
-  FindUserById,
-  FindOneUser,
-  FindOneUserAndUpdate,
-} = require("../services/userService");
-const { CreateAdmin } = require("../services/adminService");
+const UserService = require("../services/userService");
+const AdminService = require("../services/adminService");
 const User = require("../models/user");
 const bcrypt = require("bcrypt");
 const passport = require("passport");
@@ -44,7 +39,7 @@ exports.signup = async (req, res) => {
 
   try {
     // Check if user already exists
-    const existingUser = await FindOneUser({ email });
+    const existingUser = await UserService.FindOneUser({ email });
     if (existingUser) {
       const errorObject = {
         error: true,
@@ -70,7 +65,7 @@ exports.signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = await CreateUser({
+    let newUser = await UserService.CreateUser({
       name,
       email,
       role: role || "admin",
@@ -82,7 +77,7 @@ exports.signup = async (req, res) => {
 
     // If admin, create an admin account
     if (newUser.role === "admin") {
-      await CreateAdmin({
+      await AdminService.CreateAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
@@ -149,7 +144,7 @@ exports.accountActivate = async (req, res, next) => {
         const { email } = user;
 
         // Check if already activated
-        const existingUser = await FindOneUser({ email });
+        const existingUser = await UserService.FindOneUser({ email });
         if (existingUser.activated) {
           return res.status(409).json({
             error: true,
@@ -162,7 +157,7 @@ exports.accountActivate = async (req, res, next) => {
           });
         }
 
-        const updatedUser = await FindOneUserAndUpdate(
+        const updatedUser = await UserService.FindOneUserAndUpdate(
           { email },
           { activated: true }
         );
@@ -202,7 +197,7 @@ exports.accountReverify = async (req, res) => {
   if (email) {
     try {
       // Check if activated is false for the user
-      const existingUser = await FindOneUser({ email });
+      const existingUser = await UserService.FindOneUser({ email });
       // Check if the user is already activated
       if (existingUser.activated === true) {
         return res.json({
@@ -230,7 +225,7 @@ exports.accountReverify = async (req, res) => {
       );
 
       // Update activation token sent at in the user model
-      await FindOneUserAndUpdate(
+      await UserService.FindOneUserAndUpdate(
         { email },
         {
           activationToken: verificationToken,
@@ -296,7 +291,7 @@ exports.passwordResetEmail = async (req, res, next) => {
 
   try {
     // Check if the user exists
-    const existingUser = await FindOneUser({ email });
+    const existingUser = await UserService.FindOneUser({ email });
 
     // If the user doesn't exist, don't send
     if (!existingUser) {
@@ -396,7 +391,7 @@ exports.passwordVerify = async (req, res, next) => {
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 12);
 
-        const updatedUser = await FindOneUserAndUpdate(
+        const updatedUser = await UserService.FindOneUserAndUpdate(
           { email },
           { password: hashedPassword }
         );
@@ -488,7 +483,7 @@ exports.googleCreateOrLogin = async (req, res) => {
   try {
     const { name, email } = req.body;
 
-    let user = await FindOneUser({ email });
+    let user = await UserService.FindOneUser({ email });
 
     // If user doesn't exist
     if (!user) {
@@ -587,7 +582,7 @@ exports.newAccessToken = async (req, res) => {
     const decodedToken = jwt.verify(refToken, process.env.JWT_REFRESH_SECRET);
 
     // Get the user from the refresh token
-    const user = await FindUserById(decodedToken._id);
+    const user = await UserService.FindUserById(decodedToken._id);
     if (!user) {
       return res.status(401).json({
         error: true,

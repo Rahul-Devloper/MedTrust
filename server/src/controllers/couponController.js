@@ -1,11 +1,4 @@
-const {
-  CreateCoupon,
-  FindOneCoupon,
-  FindCouponById,
-  FindAllCoupons,
-  FindOneCouponAndUpdate,
-  DeleteCouponById,
-} = require("../services/couponService");
+const CouponService = require("../services/couponService");
 
 /**********************************
   Create a coupon
@@ -22,7 +15,7 @@ exports.createCoupon = async (req, res) => {
   }
 
   // If coupon code already exists, return error
-  const coupon = await FindOneCoupon({ code });
+  const coupon = await CouponService.FindOneCoupon({ code });
 
   if (coupon) {
     return res.status(400).json({
@@ -32,7 +25,7 @@ exports.createCoupon = async (req, res) => {
   }
 
   try {
-    const newCoupon = await CreateCoupon(req.body);
+    const newCoupon = await CouponService.CreateCoupon(req.body);
 
     res.status(201).json(newCoupon);
   } catch (error) {
@@ -45,7 +38,7 @@ exports.createCoupon = async (req, res) => {
 ***********************************/
 exports.getAllCoupons = async (req, res) => {
   try {
-    const coupons = await FindAllCoupons();
+    const coupons = await CouponService.FindAllCoupons();
 
     // If no coupons found return 404
     if (coupons.length === 0) {
@@ -66,7 +59,7 @@ exports.getAllCoupons = async (req, res) => {
 ***********************************/
 exports.getCouponById = async (req, res) => {
   try {
-    const coupon = await FindCouponById(req.params.id);
+    const coupon = await CouponService.FindCouponById(req.params.id);
 
     // If no coupon found return 404
     if (!coupon) {
@@ -87,7 +80,10 @@ exports.getCouponById = async (req, res) => {
 ***********************************/
 exports.updateCouponById = async (req, res) => {
   try {
-    const coupon = await FindOneCouponAndUpdate(req.params.id, req.body);
+    const coupon = await CouponService.FindOneCouponAndUpdate(
+      req.params.id,
+      req.body
+    );
 
     // If no coupon found return 404
     if (!coupon) {
@@ -108,7 +104,7 @@ exports.updateCouponById = async (req, res) => {
 ***********************************/
 exports.deleteCouponById = async (req, res) => {
   try {
-    const coupon = await DeleteCouponById(req.params.id);
+    const coupon = await CouponService.DeleteCouponById(req.params.id);
 
     res.status(200).json(coupon);
   } catch (error) {
