@@ -20,32 +20,27 @@ export const signupAction = (data) => async (dispatch) => {
   });
 
   try {
-    let errorMessage = "";
-
     // Fetch response from server
     const res = await signUp(data.name, data.email, data.password);
 
-    // Success or error toast message
-    if (res.data.error === true) {
-      toast.error(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-    } else {
-      toast.success(res.data.message);
-    }
-
-    // Dispatch a success/error sign up alert
+    // Dispatch a success/error login notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: errorMessage ? errorMessage : res.data.message,
+        message: res.data.message,
       },
     });
+
+    toast.success(res.data.message);
+    // Clear the form on success
+    data.setFormData(data.initialFormData);
   } catch (error) {
+    toast.error(error.response.data.type[0].message);
     // Dispatch a error alert
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "SIGNUP_AUTH_ACTION_ERROR",
+        message: error.response.data.type[0].message,
       },
     });
   }
@@ -66,6 +61,14 @@ export const loginAction = (data) => async (dispatch) => {
 
     // Fetch response from server
     const res = await login(data.email, data.password);
+
+    // Error toast message
+    if (res.data.error === true) {
+      toast.error(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      return;
+    }
+
     // Dispatch token and user
     dispatch({
       type: ACTION_TYPES.AUTH,
@@ -76,12 +79,6 @@ export const loginAction = (data) => async (dispatch) => {
     });
 
     localStorage.setItem("firstLogin", true);
-
-    // Error toast message
-    if (res.data.error === true) {
-      toast.error(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-    }
 
     // Dispatch a success/error login notify
     dispatch({
@@ -119,6 +116,14 @@ export const googleLoginAction = (data) => async (dispatch) => {
 
     // Fetch response from server
     const res = await googleCreateOrLogin(data.name, data.email);
+
+    // Error toast message
+    if (res.data.error === true) {
+      toast.error(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      return;
+    }
+
     // Dispatch token and user
     dispatch({
       type: ACTION_TYPES.AUTH,
@@ -129,12 +134,6 @@ export const googleLoginAction = (data) => async (dispatch) => {
     });
 
     localStorage.setItem("firstLogin", true);
-
-    // Error toast message
-    if (res.data.error === true) {
-      toast.error(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-    }
 
     // Dispatch a success/error login notify
     dispatch({
