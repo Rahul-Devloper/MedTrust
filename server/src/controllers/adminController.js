@@ -1,4 +1,4 @@
-const { FindUserById } = require("../services/userService");
+const UserService = require("../services/userService");
 
 /**********************************
   Check if user is admin
@@ -6,7 +6,7 @@ const { FindUserById } = require("../services/userService");
 exports.currentAdmin = async (req, res) => {
   const { _id } = req.user;
 
-  const user = await FindUserById(_id);
+  const user = await UserService.FindUserById(_id);
 
   if (user.role === "admin") {
     res.status(200).json({
