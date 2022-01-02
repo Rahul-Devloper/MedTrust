@@ -18,7 +18,7 @@ import { MemberRoute, AdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ToastContainer } from "react-toastify";
 
-const App = () => {
+const App = ({ history }) => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
@@ -26,6 +26,18 @@ const App = () => {
   useEffect(() => {
     dispatch(refreshTokenAction());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (user?.role && history.location.pathname === "/") {
+      if (user.role === "superadmin") {
+        history.push("/super-admin/dashboard");
+      } else if (user.role === "admin") {
+        history.push("/admin/dashboard");
+      } else if (user.role === "member") {
+        history.push("/member/dashboard");
+      }
+    }
+  }, [user, history]);
 
   return (
     <div className="App">
@@ -42,7 +54,7 @@ const App = () => {
         pauseOnHover
       />
       <Switch>
-        {/* Common Routes */}
+        {/**************** Common Routes ****************/}
         <Route exact path="/" component={Home} />
         <Route exact path="/login" component={user ? Dashboard : Login} />
         <Route exact path="/signup" component={user ? Dashboard : Signup} />
@@ -61,7 +73,7 @@ const App = () => {
           path="/new-password"
           component={user ? Dashboard : NewPassword}
         />
-        {/* Member Routes */}
+        {/**************** Member Routes ****************/}
         <MemberRoute exact path="/user/dashboard" component={Dashboard} />
         <Route exact path="/user/payment" component={StripePayment} />
         {/* Admin Routes */}
