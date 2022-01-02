@@ -1,4 +1,4 @@
-const User = require("../models/user");
+const { FindUserById } = require("../services/userService");
 
 /**********************************
   Check if user is super admin
@@ -6,7 +6,7 @@ const User = require("../models/user");
 exports.currentSuperAdmin = async (req, res) => {
   const { _id } = req.user;
 
-  const user = await User.findOne({ _id }).exec();
+  const user = await FindUserById(_id).exec();
 
   if (user.role === "superadmin") {
     res.status(200).json({
