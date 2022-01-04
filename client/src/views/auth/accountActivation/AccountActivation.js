@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { useLocation } from "react-router-dom";
 import { accountActivate, resendVerification } from "../../../api/auth";
-import FullLayout from "../../../layouts/FullLayout";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
 import { toast } from "react-toastify";
@@ -44,7 +43,7 @@ const AccountActivation = () => {
   console.log("message", typeof message);
 
   return (
-    <FullLayout>
+    <>
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
@@ -123,7 +122,7 @@ const AccountActivation = () => {
           </Row>
         </Col>
       </Row>
-    </FullLayout>
+    </>
   );
 };
 

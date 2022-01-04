@@ -5,7 +5,6 @@ import { GoogleButton } from "../../../components";
 import { useDispatch } from "react-redux";
 import { Row, Col, Form, Input, Button, Checkbox } from "antd";
 import LeftContent from "../leftContent";
-import FullLayout from "../../../layouts/FullLayout";
 import {
   loginAction,
   googleLoginAction,
@@ -45,7 +44,7 @@ const Login = ({ history }) => {
   };
 
   return (
-    <FullLayout>
+    <>
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
@@ -211,7 +210,7 @@ const Login = ({ history }) => {
           </Row>
         </Col>
       </Row>
-    </FullLayout>
+    </>
   );
 };
 

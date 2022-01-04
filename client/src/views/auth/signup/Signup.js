@@ -7,7 +7,6 @@ import {
   signupAction,
   googleLoginAction,
 } from "../../../redux/actions/authActions";
-import FullLayout from "../../../layouts/FullLayout";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
 import { toast } from "react-toastify";
@@ -64,7 +63,7 @@ const Signup = ({ history }) => {
   };
 
   return (
-    <FullLayout>
+    <>
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
@@ -220,7 +219,7 @@ const Signup = ({ history }) => {
           </Row>
         </Col>
       </Row>
-    </FullLayout>
+    </>
   );
 };
 
