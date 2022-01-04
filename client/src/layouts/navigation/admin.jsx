@@ -1,6 +1,6 @@
 import { Home, Calendar, People, Chat, Document } from "react-iconly";
 
-const main = [
+const admin = [
   {
     id: "dashboard",
     title: "Dashboard",
@@ -23,7 +23,7 @@ const main = [
     id: "chat",
     title: "Chat",
     icon: <Chat set="curved" className="remix-icon" />,
-    navLink: "/admin/team",
+    navLink: "/admin/chat",
   },
   {
     id: "team",
@@ -33,4 +33,4 @@ const main = [
   },
 ];
 
-export default main;
+export default admin;

@@ -1,17 +1,24 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
-
 import { useSelector } from "react-redux";
-
 import { Menu } from "antd";
 
-import navigation from "../../../navigation/vertical";
+import { superAdminNav, adminNav, memberNav } from "../../../navigation";
 
 const MenuItem = (props) => {
   const { onClose } = props;
+  const { user } = useSelector((state) => state.auth);
+  const [navigation, setNavigation] = useState([]);
 
-  // Redux
-  const customize = useSelector((state) => state.customize);
+  useEffect(() => {
+    if (user?.role === "superadmin") {
+      setNavigation(superAdminNav);
+    } else if (user?.role === "admin") {
+      setNavigation(adminNav);
+    } else {
+      setNavigation(memberNav);
+    }
+  }, [user]);
 
   // Location
   const location = useLocation();
@@ -19,7 +26,7 @@ const MenuItem = (props) => {
 
   const splitLocation = pathname.split("/");
 
-  const menuItem = navigation.map((item, index) => {
+  const menuItem = navigation?.map((item, index) => {
     const itemNavLink = item.navLink.split("/");
 
     return (
@@ -53,7 +60,7 @@ const MenuItem = (props) => {
           : null,
         splitLocation[splitLocation.length - 2],
       ]}
-      theme={customize.theme === "light" ? "light" : "dark"}
+      theme={"light"}
     >
       {menuItem}
     </Menu>
