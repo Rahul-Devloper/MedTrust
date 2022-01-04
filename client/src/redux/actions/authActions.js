@@ -42,6 +42,7 @@ export const signupAction = (data) => async (dispatch) => {
         message: error.response.data.type[0].message,
       },
     });
+    return;
   }
 };
 

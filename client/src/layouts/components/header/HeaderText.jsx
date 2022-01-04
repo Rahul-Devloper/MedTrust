@@ -16,7 +16,7 @@ const HeaderText = () => {
           Our roadmap is alive for future updates.
         </span>
         <a
-          href="https://trello.com/b/8ZRmDN5y/yoda-roadmap"
+          href="https://netraga.com"
           className="da-ml-8 da-text-color-black-60"
           target="_blank"
         >

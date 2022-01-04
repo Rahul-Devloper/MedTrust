@@ -8,7 +8,7 @@ const MenuLogo = (props) => {
       className="da-header-logo da-d-flex da-align-items-end"
       onClick={props.onClose}
       style={{
-        marginLeft: "22px",
+        marginLeft: "20px",
       }}
     >
       <img className="da-logo" src={Yoda} alt="logo" />

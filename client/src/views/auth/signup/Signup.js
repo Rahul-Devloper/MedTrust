@@ -33,6 +33,17 @@ const Signup = ({ history }) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = formData;
 
+    // If fields are empty, throw error
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     try {
       // Check if passwords match
       if (password !== confirmPassword) {
@@ -41,10 +52,10 @@ const Signup = ({ history }) => {
       } else {
         // Dispatch name, email, and password
         dispatch(signupAction({ name, email, password }));
-        setFormData(initialFormData);
       }
     } catch (error) {
       console.log("SIGNUP_ERROR", error);
+      toast.error(error.response.data.type[0].message);
     }
   };
 
