@@ -1,11 +1,10 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "react-google-login";
-import { GoogleContainer } from "../../../components";
+import { GoogleButton } from "../../../components";
 import { useDispatch } from "react-redux";
 import { Row, Col, Form, Input, Button, Checkbox } from "antd";
 import LeftContent from "../leftContent";
-import FullLayout from "../../../layouts/FullLayout";
 import {
   loginAction,
   googleLoginAction,
@@ -45,7 +44,7 @@ const Login = ({ history }) => {
   };
 
   return (
-    <FullLayout>
+    <>
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
@@ -148,7 +147,7 @@ const Login = ({ history }) => {
                   clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_ID}`}
                   render={(renderProps) => (
                     <span>
-                      <GoogleContainer
+                      <GoogleButton
                         onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                       >
@@ -177,8 +176,8 @@ const Login = ({ history }) => {
                             fill="#F14336"
                           />
                         </svg>
-                        <p>Continue with Google account</p>
-                      </GoogleContainer>
+                        <p>Continue with Google</p>
+                      </GoogleButton>
                     </span>
                   )}
                   onSuccess={handleGoogleSuccess}
@@ -211,7 +210,7 @@ const Login = ({ history }) => {
           </Row>
         </Col>
       </Row>
-    </FullLayout>
+    </>
   );
 };
 

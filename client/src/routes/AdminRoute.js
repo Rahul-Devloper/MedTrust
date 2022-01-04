@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
+import VerticalLayout from "../layouts/VerticalLayout";
 import { currentAdmin } from "../api/admin";
 
 const AdminRoute = ({ children, ...restProps }) => {
@@ -25,7 +26,9 @@ const AdminRoute = ({ children, ...restProps }) => {
   return (
     <>
       {ok && user !== undefined ? (
-        <Route {...restProps} render={children} />
+        <VerticalLayout>
+          <Route {...restProps} render={children} />
+        </VerticalLayout>
       ) : (
         <LoadingToRedirect />
       )}

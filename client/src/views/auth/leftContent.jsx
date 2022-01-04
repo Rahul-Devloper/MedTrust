@@ -6,8 +6,7 @@ import { Row, Col } from "antd";
 
 import bg from "../../assets/images/pages/authentication/authentication-bg.svg";
 import bgDark from "../../assets/images/pages/authentication/authentication-bg-dark.svg";
-import logo from "../../assets/images/logo/logo-vector-blue.svg";
-import logoDark from "../../assets/images/logo/logo-vector.svg";
+import logo from "../../assets/images/logo/logo-vector-blue.png";
 
 const LeftContent = () => {
   // Redux
@@ -21,7 +20,7 @@ const LeftContent = () => {
     >
       <Row className="da-image-row da-h-100 da-px-sm-8 da-px-md-16 da-pb-sm-32 da-pt-md-96 da-pt-md-32">
         <Col className="da-logo-item da-m-sm-16 da-m-md-32 da-m-64">
-          <img src={theme === "light" ? logo : logoDark} alt="Logo" />
+          <img src={logo} alt="Logo" />
         </Col>
 
         <Col span={24}>

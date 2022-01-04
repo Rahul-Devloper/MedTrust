@@ -1,13 +1,12 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { GoogleContainer } from "../../../components";
+import { GoogleButton } from "../../../components";
 import { GoogleLogin } from "react-google-login";
 import { useDispatch } from "react-redux";
 import {
   signupAction,
   googleLoginAction,
 } from "../../../redux/actions/authActions";
-import FullLayout from "../../../layouts/FullLayout";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
 import { toast } from "react-toastify";
@@ -34,6 +33,17 @@ const Signup = ({ history }) => {
     e.preventDefault();
     const { name, email, password, confirmPassword } = formData;
 
+    // If fields are empty, throw error
+    if (
+      name === "" ||
+      email === "" ||
+      password === "" ||
+      confirmPassword === ""
+    ) {
+      toast.error("Please fill in all fields");
+      return;
+    }
+
     try {
       // Check if passwords match
       if (password !== confirmPassword) {
@@ -42,10 +52,10 @@ const Signup = ({ history }) => {
       } else {
         // Dispatch name, email, and password
         dispatch(signupAction({ name, email, password }));
-        setFormData(initialFormData);
       }
     } catch (error) {
       console.log("SIGNUP_ERROR", error);
+      toast.error(error.response.data.type[0].message);
     }
   };
 
@@ -64,11 +74,11 @@ const Signup = ({ history }) => {
   };
 
   return (
-    <FullLayout>
+    <>
       <Row gutter={[32, 0]} className="da-authentication-page">
         <LeftContent />
 
-        <Col md={12}>
+        <Col lg={12} span={24} className="da-py-sm-0 da-py-md-64">
           <Row className="da-h-100" align="middle" justify="center">
             <Col
               xxl={11}
@@ -78,16 +88,16 @@ const Signup = ({ history }) => {
               sm={24}
               className="da-px-sm-8 da-pt-24 da-pb-48"
             >
-              <h1>Create Account</h1>
+              <h1 className="da-mb-sm-0">Create Account</h1>
 
               <Form
                 layout="vertical"
                 name="basic"
                 className="da-mt-sm-16 da-mt-32"
               >
-                <Form.Item label="Name :">
+                <Form.Item label="Name :" className="da-mb-16">
                   <Input
-                    id="error"
+                    id="name"
                     name="name"
                     value={formData.name}
                     onChange={handleFormChange}
@@ -96,7 +106,7 @@ const Signup = ({ history }) => {
 
                 <Form.Item label="E-mail :">
                   <Input
-                    id="validating"
+                    id="email"
                     name="email"
                     value={formData.email}
                     onChange={handleFormChange}
@@ -157,7 +167,7 @@ const Signup = ({ history }) => {
                   clientId={`${process.env.REACT_APP_GOOGLE_OAUTH_ID}`}
                   render={(renderProps) => (
                     <span>
-                      <GoogleContainer
+                      <GoogleButton
                         onClick={renderProps.onClick}
                         disabled={renderProps.disabled}
                       >
@@ -187,7 +197,7 @@ const Signup = ({ history }) => {
                           />
                         </svg>
                         <p>Sign up with Google</p>
-                      </GoogleContainer>
+                      </GoogleButton>
                     </span>
                   )}
                   onSuccess={handleGoogleSuccess}
@@ -220,7 +230,7 @@ const Signup = ({ history }) => {
           </Row>
         </Col>
       </Row>
-    </FullLayout>
+    </>
   );
 };
 
