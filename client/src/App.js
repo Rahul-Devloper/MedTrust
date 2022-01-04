@@ -3,21 +3,22 @@ import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import {
-  Home,
   // Auth
   Signup,
   AccountActivation,
   Login,
   ForgotPassword,
   NewPassword,
-  // Admin
+  // Super Admin Routes
+  SuperAdminDashboard,
+  // Admin Routes
   AdminDashboard,
-  Dashboard,
-  CreateCoupon,
+  // Member Routes
+  MemberDashboard,
   // -------------- Wildcard --------------
   RandomPageRedirect,
 } from "./views";
-import { MemberRoute, AdminRoute } from "./routes";
+import { MemberRoute, AdminRoute, SuperAdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import { ConfigProvider } from "antd";
 import { ToastContainer } from "react-toastify";
@@ -61,7 +62,6 @@ const App = () => {
       <ConfigProvider direction={customize.direction}>
         <Switch>
           {/**************** Common Routes ****************/}
-          <Route exact path="/" component={Home} />
           <Route exact path="/login" component={!user && Login} />
           <Route exact path="/signup" component={!user && Signup} />
           <Route
@@ -75,18 +75,24 @@ const App = () => {
             component={!user && ForgotPassword}
           />
           <Route exact path="/new-password" component={!user && NewPassword} />
-          {/**************** Member Routes ****************/}
-          <MemberRoute exact path="/member/dashboard" component={Dashboard} />
+          {/**************** Super Admin Routes ****************/}
+          <SuperAdminRoute
+            exact
+            path="/super-admin/dashboard"
+            component={SuperAdminDashboard}
+          />
+
           {/**************** Admin Routes ****************/}
           <AdminRoute
             exact
             path="/admin/dashboard"
             component={AdminDashboard}
           />
-          <AdminRoute
+          {/**************** Member Routes ****************/}
+          <MemberRoute
             exact
-            path="/admin/coupon/create"
-            component={CreateCoupon}
+            path="/member/dashboard"
+            component={MemberDashboard}
           />
 
           {/* Wildcard */}

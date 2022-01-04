@@ -6,12 +6,14 @@ export { default as AccountActivation } from "./auth/accountActivation/AccountAc
 export { default as ForgotPassword } from "./auth/forgotPassword/ForgotPassword";
 export { default as NewPassword } from "./auth/newPassword/NewPassword";
 
-// User views
-export { default as Dashboard } from "./user/Dashboard";
+// SuperAdmin views
+export { default as SuperAdminDashboard } from "./superAdmin/dashboard/SuperAdminDashboard";
 
 // Admin views
 export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
-export { default as CreateCoupon } from "./admin/coupons/createCoupon";
+
+// Member views
+export { default as MemberDashboard } from "./member/dashboard/MemberDashboard";
 
 // Random Redirect
 export { default as RandomPageRedirect } from "./404";
