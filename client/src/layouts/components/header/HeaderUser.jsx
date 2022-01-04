@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 
-import { useSelector } from "react-redux";
-
+import { useDispatch } from "react-redux";
+import { logoutAction } from "../../../redux/actions/authActions";
 import { Menu, Dropdown, Col, Avatar } from "antd";
 import {
   User,
@@ -15,10 +15,15 @@ import {
 import avatarImg from "../../../assets/images/memoji/memoji-1.png";
 
 const HeaderUser = () => {
-  const customize = useSelector((state) => state.customize);
+  const dispatch = useDispatch();
+
+  const handleLogout = () => {
+    // Dispatch logout action
+    dispatch(logoutAction());
+  };
 
   const menu = (
-    <Menu theme={customize.theme === "light" ? "light" : "dark"}>
+    <Menu theme={"light"}>
       <Menu.Item
         key={0}
         icon={
@@ -99,8 +104,9 @@ const HeaderUser = () => {
           />
         }
         className="da-text-color-dark-0"
+        onClick={handleLogout}
       >
-        <Link to="/pages/authentication/login">Logout</Link>
+        <a>Logout</a>
       </Menu.Item>
     </Menu>
   );

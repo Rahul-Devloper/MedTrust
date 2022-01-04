@@ -62,6 +62,7 @@ const App = () => {
       <ConfigProvider direction={customize.direction}>
         <Switch>
           {/**************** Common Routes ****************/}
+          <Route exact path="/" component={!user && Login} />
           <Route exact path="/login" component={!user && Login} />
           <Route exact path="/signup" component={!user && Signup} />
           <Route
