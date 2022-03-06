@@ -203,6 +203,11 @@ export const refreshTokenAction = () => async (dispatch) => {
           user: res.data.user,
         },
       });
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: { loading: false },
+      });
     } catch (error) {
       // Dispatch a error notify
       dispatch({
@@ -210,6 +215,11 @@ export const refreshTokenAction = () => async (dispatch) => {
         payload: {
           message: "REFRESH_TOKEN_ACTION_ERROR",
         },
+      });
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: { loading: false },
       });
     }
   }
@@ -243,6 +253,11 @@ export const logoutAction = () => async (dispatch) => {
         message: res.data.message,
       },
     });
+
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
+    });
   } catch (error) {
     // Dispatch a error notify
     dispatch({
@@ -250,6 +265,11 @@ export const logoutAction = () => async (dispatch) => {
       payload: {
         message: "REFRESH_TOKEN_ACTION_ERROR",
       },
+    });
+
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
     });
   }
 };
