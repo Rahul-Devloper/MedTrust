@@ -9,24 +9,27 @@ import {
   loginAction,
   googleLoginAction,
 } from "../../../redux/actions/authActions";
-import { toast } from "react-toastify";
+import { ErrorNotification } from "../../../components";
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState("abc@gmail.com");
-  const [password, setPassword] = useState("Abcd1234!");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   // Handle email password login
   const handleLoginSubmit = (e) => {
-    e.preventDefault();
-    // Validate email and password
-    if (!email || !password || password.length < 6) {
-      toast.error("Incorrect email or password");
+    // Validate email regex
+    const emailRegex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    if (!emailRegex.test(email)) {
+      ErrorNotification("Please enter a valid email");
       return;
     }
 
+    e.preventDefault();
     // Dispatch email, password and history to action
-    dispatch(loginAction({ email, password, history }));
+    dispatch(loginAction({ email, password, history, setLoading }));
   };
 
   // Handle google login success
@@ -116,6 +119,7 @@ const Login = ({ history }) => {
                     type="primary"
                     htmlType="submit"
                     onClick={handleLoginSubmit}
+                    loading={loading}
                   >
                     Sign in
                   </Button>
@@ -194,13 +198,13 @@ const Login = ({ history }) => {
                 }}
               >
                 <Link
-                  href="/privacy"
+                  to="/privacy"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Privacy Policy
                 </Link>
                 <Link
-                  href="/terms"
+                  to="/terms"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Term of use
