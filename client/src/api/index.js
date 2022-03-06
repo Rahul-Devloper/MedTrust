@@ -1,6 +1,6 @@
 import axios from "axios";
 import Cookies from "js-cookie";
-import { ACTION_TYPES } from "../redux/constants/actionTypes";
+import { AUTH_TYPES } from "../redux/constants/authTypes";
 import { store } from "../redux/store";
 
 // Set the base url of the backend api
@@ -30,7 +30,7 @@ api.interceptors.response.use(
     return res;
   },
   (err) => {
-    if (err.response.status === 401) {
+    if (err.response.status === 401 && localStorage.getItem("firstLogin")) {
       return api
         .post(
           "/refresh_token",
@@ -45,7 +45,7 @@ api.interceptors.response.use(
           Cookies.set("access", res.data.accessToken, { expires: 0.0125 }); // 14 minutes
           // Dispatch action to update user and token in the store
           store.dispatch({
-            type: ACTION_TYPES.AUTH,
+            type: AUTH_TYPES.AUTH,
             payload: {
               accessToken: res.data.accessToken,
               user: res.data.user,

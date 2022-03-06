@@ -1,26 +1,36 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { resetPassword } from "../../../api/auth";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
-import { toast } from "react-toastify";
+import { resetPassword } from "../../../api/auth";
+import { SuccessNotification, ErrorNotification } from "../../../components";
 
 const ForgotPassword = () => {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
 
   // Handle Reset Submit
   const handleSubmit = (e) => {
     e.preventDefault();
+    // Validate Email
+    if (!email) {
+      ErrorNotification("Please enter your email");
+      return;
+    }
+
+    setLoading(true);
     // Make the API call
     resetPassword(email)
       .then((res) => {
         if (res.data.error) {
-          toast.error(res.data.type[0].message);
+          ErrorNotification(res.data.type[0].message);
         }
-        toast.success(res.data.message);
+        SuccessNotification(res.data.message);
+        setLoading(false);
       })
       .catch((err) => {
-        toast.error(err.response.data.type[0].message);
+        setLoading(false);
+        ErrorNotification(err.response.data.type[0].message);
       });
   };
 
@@ -64,6 +74,7 @@ const ForgotPassword = () => {
                     type="primary"
                     htmlType="submit"
                     onClick={handleSubmit}
+                    loading={loading}
                   >
                     Reset Password
                   </Button>
@@ -91,13 +102,13 @@ const ForgotPassword = () => {
                 }}
               >
                 <Link
-                  href="/privacy"
+                  to="/privacy"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Privacy Policy
                 </Link>
                 <Link
-                  href="/terms"
+                  to="/terms"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Term of use

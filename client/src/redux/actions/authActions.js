@@ -9,6 +9,11 @@ import {
 } from "../../api/auth";
 import { toast } from "react-toastify";
 import { RoleBasedRedirect } from "../../utils/roleBasedRedirect";
+import {
+  SuccessNotification,
+  ErrorNotification,
+  InfoNotification,
+} from "../../components";
 
 /********************************************
   Sign up a user
@@ -19,6 +24,8 @@ export const signupAction = (data) => async (dispatch) => {
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
   });
+
+  data.setLoading(true);
 
   try {
     // Fetch response from server
@@ -32,17 +39,21 @@ export const signupAction = (data) => async (dispatch) => {
       },
     });
 
-    toast.success(res.data.message);
+    SuccessNotification(res.data.message);
+    InfoNotification("🥴 Check mail spam if not found 🥴");
+    // Clear the form on success
+    data.setFormData(data.initialFormData);
+    data.setLoading(false);
   } catch (error) {
-    toast.error(error.response.data.type[0].message);
+    ErrorNotification(error.response.data?.type[0].message);
+    data.setLoading(false);
     // Dispatch a error alert
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: error.response.data.type[0].message,
+        message: error.response.data?.type[0].message,
       },
     });
-    return;
   }
 };
 
@@ -56,16 +67,18 @@ export const loginAction = (data) => async (dispatch) => {
     payload: { loading: true },
   });
 
+  data.setLoading(true);
+
   try {
     let errorMessage = "";
 
     // Fetch response from server
     const res = await login(data.email, data.password);
 
-    // Error toast message
     if (res.data.error === true) {
-      toast.error(res.data.type[0].message);
+      ErrorNotification(res.data.type[0].message);
       errorMessage = res.data.type[0].message;
+      data.setLoading(false);
       return;
     }
 
@@ -88,15 +101,26 @@ export const loginAction = (data) => async (dispatch) => {
       },
     });
 
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
+    });
+
+    data.setLoading(false);
     // Redirect user based on role
     RoleBasedRedirect(res, data.history);
   } catch (error) {
+    data.setLoading(false);
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
         message: "LOGIN_AUTH_ACTION_ERROR",
       },
+    });
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
     });
   }
 };
@@ -179,6 +203,11 @@ export const refreshTokenAction = () => async (dispatch) => {
           user: res.data.user,
         },
       });
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: { loading: false },
+      });
     } catch (error) {
       // Dispatch a error notify
       dispatch({
@@ -186,6 +215,11 @@ export const refreshTokenAction = () => async (dispatch) => {
         payload: {
           message: "REFRESH_TOKEN_ACTION_ERROR",
         },
+      });
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: { loading: false },
       });
     }
   }
@@ -219,6 +253,11 @@ export const logoutAction = () => async (dispatch) => {
         message: res.data.message,
       },
     });
+
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
+    });
   } catch (error) {
     // Dispatch a error notify
     dispatch({
@@ -226,6 +265,11 @@ export const logoutAction = () => async (dispatch) => {
       payload: {
         message: "REFRESH_TOKEN_ACTION_ERROR",
       },
+    });
+
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: false },
     });
   }
 };

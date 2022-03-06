@@ -4,12 +4,13 @@ import { useLocation } from "react-router-dom";
 import { newPassword } from "../../../api/auth";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
-import { toast } from "react-toastify";
+import { SuccessNotification, ErrorNotification } from "../../../components";
 
 const NewPassword = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [success, setSuccess] = useState(false);
+  const [loading, setLoading] = useState(false);
   const search = useLocation().search;
   const token = new URLSearchParams(search).get("token");
 
@@ -19,17 +20,20 @@ const NewPassword = () => {
     try {
       // Check if both the passwords match
       if (password !== confirmPassword) {
-        toast.error("Passwords don't match");
+        ErrorNotification("Passwords don't match");
         return;
       } else {
+        setLoading(true);
         // Submit token & new password to the server
         newPassword(token, password)
           .then((res) => {
-            toast.success(res.data.message);
+            SuccessNotification(res.data.message);
             setSuccess(true);
+            setLoading(false);
           })
           .catch((err) => {
-            toast.error(err.response.data.type[0].message);
+            ErrorNotification(err.response.data.type[0].message);
+            setLoading(false);
           });
       }
     } catch (error) {
@@ -86,6 +90,7 @@ const NewPassword = () => {
                       type="primary"
                       htmlType="submit"
                       onClick={handleSubmit}
+                      loading={loading}
                     >
                       Change Password
                     </Button>
@@ -108,13 +113,13 @@ const NewPassword = () => {
                 }}
               >
                 <Link
-                  href="/privacy"
+                  to="/privacy"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Privacy Policy
                 </Link>
                 <Link
-                  href="/terms"
+                  to="/terms"
                   className="da-text-color-black-80 da-text-color-dark-40"
                 >
                   Term of use
