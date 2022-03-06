@@ -22,6 +22,7 @@ import {
 } from "./views";
 import { MemberRoute, AdminRoute, SuperAdminRoute } from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
+import "./App.scss";
 
 const App = () => {
   const dispatch = useDispatch();

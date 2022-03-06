@@ -1,0 +1,249 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:wght@500&display=swap');
+.App {
+  width:100vw;
+  height: 100vh;
+}
+
+body {
+  margin:0;
+  padding:0;
+}
+
+// Preloader
+$color: #5C8DF6;
+$colorRight: darken(#5C8DF6, 15%);
+$colorLeft: darken(#5C8DF6, 5%);
+$shadow: #DBE3F4;
+
+.boxes {
+    --size: 32px;
+    --duration: 800ms;
+    height: calc(var(--size) * 2);
+    width: calc(var(--size) * 3);
+    position: absolute;
+    top: calc(50% - var(--size));
+    left: calc(50% - var(--size));
+    transform-style: preserve-3d;
+    transform-origin: 50% 50%;
+    margin-top: calc(var(--size) * 1.5 * -1);
+    transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
+    .box {
+        width: var(--size);
+        height: var(--size);
+        top: 0;
+        left: 0;
+        position: absolute;
+        transform-style: preserve-3d;
+        &:nth-child(1) {
+            transform: translate(100%, 0);
+            animation: box1 var(--duration) linear infinite;
+        }
+        &:nth-child(2) {
+            transform: translate(0, 100%);
+            animation: box2 var(--duration) linear infinite;
+        }
+        &:nth-child(3) {
+            transform: translate(100%, 100%);
+            animation: box3 var(--duration) linear infinite;
+        }
+        &:nth-child(4) {
+            transform: translate(200%, 0);
+            animation: box4 var(--duration) linear infinite;
+        }
+        & > div {
+            --background: #{$color};
+            --top: auto;
+            --right: auto;
+            --bottom: auto;
+            --left: auto;
+            --translateZ: calc(var(--size) / 2);
+            --rotateY: 0deg;
+            --rotateX: 0deg;
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            background: var(--background);
+            top: var(--top);
+            right: var(--right);
+            bottom: var(--bottom);
+            left: var(--left);
+            transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
+            &:nth-child(1) {
+                --top: 0;
+                --left: 0;
+            }
+            &:nth-child(2) {
+                --background: #{$colorRight};
+                --right: 0;
+                --rotateY: 90deg;
+            }
+            &:nth-child(3) {
+                --background: #{$colorLeft};
+                --rotateX: -90deg;
+            }
+            &:nth-child(4) {
+                --background: #{$shadow};
+                --top: 0;
+                --left: 0;
+                --translateZ: calc(var(--size) * 3 * -1);
+            }
+        }
+    }
+}
+
+@keyframes box1 {
+    0%,
+    50% {
+        transform: translate(100%, 0);
+    }
+    100% {
+        transform: translate(200%, 0);
+    }
+}
+
+@keyframes box2 {
+    0%{
+        transform: translate(0, 100%);
+    }
+    50% {
+        transform: translate(0, 0);
+    }
+    100% {
+        transform: translate(100%, 0);
+    }
+}
+
+@keyframes box3 {
+    0%,
+    50% {
+        transform: translate(100%, 100%);
+    }
+    100% {
+        transform: translate(0, 100%);
+    }
+}
+
+@keyframes box4 {
+    0%{
+        transform: translate(200%, 0);
+    }
+    50% {
+        transform: translate(200%, 100%);
+    }
+    100% {
+        transform: translate(100%, 100%);
+    }
+}
+
+/**
+ * ==============================================
+ * Dot Flashing
+ * ==============================================
+ */
+ .dot-flashing {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgb(4, 55, 196);
+  color: rgb(4, 55, 196);
+  animation: dotFlashing 1s infinite linear alternate;
+  animation-delay: .5s;
+}
+
+.dot-flashing::before, .dot-flashing::after {
+  content: '';
+  display: inline-block;
+  position: absolute;
+  top: 0;
+}
+
+.dot-flashing::before {
+  left: -15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgb(4, 55, 196);
+  color: rgb(4, 55, 196);
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 0s;
+}
+
+.dot-flashing::after {
+  left: 15px;
+  width: 10px;
+  height: 10px;
+  border-radius: 5px;
+  background-color: rgb(4, 55, 196);
+  color: rgb(4, 55, 196);
+  animation: dotFlashing 1s infinite alternate;
+  animation-delay: 1s;
+}
+
+@keyframes dotFlashing {
+  0% {
+    background-color: rgb(4, 55, 196);
+  }
+  50%,
+  100% {
+    background-color: #ebe6ff;
+  }
+}
+
+/**
+ * ==============================================
+ * Subscription Ribbon
+ * ==============================================
+ */
+.ribbon {
+    width: 130px;
+    height: 130px;
+    overflow: hidden;
+    position: absolute;
+    transform: scale(0.97);
+  }
+  .ribbon::before,
+  .ribbon::after {
+    position: absolute;
+    z-index: -1;
+    content: '';
+    display: block;
+    border: 5px solid #0010F7;
+  }
+  .ribbon span {
+    position: absolute;
+    display: block;
+    width: 225px;
+    padding: 15px 0;
+    background-color: #0010F7;
+    box-shadow: 0 5px 10px rgba(0,0,0,.1);
+    color: #fff;
+    font: 700 14px/1 'Lato', sans-serif;
+    text-shadow: 0 1px 1px rgba(0,0,0,.2);
+    text-transform: uppercase;
+    text-align: center;
+  }
+  
+  /* top left*/
+  .ribbon-top-left {
+    top: -10px;
+    left: -10px;
+  }
+  .ribbon-top-left::before,
+  .ribbon-top-left::after {
+    border-top-color: transparent;
+    border-left-color: transparent;
+  }
+  .ribbon-top-left::before {
+    top: 0;
+    right: 0;
+  }
+  .ribbon-top-left::after {
+    bottom: 0;
+    left: 0;
+  }
+  .ribbon-top-left span {
+    right: -25px;
+    top: 30px;
+    transform: rotate(-45deg);
+  }
