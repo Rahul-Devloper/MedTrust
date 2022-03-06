@@ -9,7 +9,7 @@ import {
 } from "../../../redux/actions/authActions";
 import { Row, Col, Form, Input, Button } from "antd";
 import LeftContent from "../leftContent";
-import { toast } from "react-toastify";
+import { ErrorNotification } from "../../../components";
 
 const initialFormData = {
   name: "",
@@ -20,6 +20,7 @@ const initialFormData = {
 
 const Signup = ({ history }) => {
   const [formData, setFormData] = useState(initialFormData);
+  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
   // Handle form change
@@ -40,22 +41,31 @@ const Signup = ({ history }) => {
       password === "" ||
       confirmPassword === ""
     ) {
-      toast.error("Please fill in all fields");
+      ErrorNotification("Please fill in all fields");
       return;
     }
 
     try {
       // Check if passwords match
       if (password !== confirmPassword) {
-        toast.error("Passwords don't match");
+        ErrorNotification("Passwords don't match");
         return;
       } else {
         // Dispatch name, email, and password
-        dispatch(signupAction({ name, email, password }));
+        dispatch(
+          signupAction({
+            name,
+            email,
+            password,
+            setFormData,
+            initialFormData,
+            setLoading,
+          })
+        );
       }
     } catch (error) {
       console.log("SIGNUP_ERROR", error);
-      toast.error(error.response.data.type[0].message);
+      ErrorNotification(error.response.data.type[0].message);
     }
   };
 
@@ -137,6 +147,7 @@ const Signup = ({ history }) => {
                     type="primary"
                     htmlType="submit"
                     onClick={handleEmailSignup}
+                    loading={loading}
                   >
                     Sign up
                   </Button>
