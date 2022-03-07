@@ -10,183 +10,70 @@ body {
 }
 
 // Preloader
-$color: #5C8DF6;
-$colorRight: darken(#5C8DF6, 15%);
-$colorLeft: darken(#5C8DF6, 5%);
-$shadow: #DBE3F4;
-
-.boxes {
-    --size: 32px;
-    --duration: 800ms;
-    height: calc(var(--size) * 2);
-    width: calc(var(--size) * 3);
-    position: absolute;
-    top: calc(50% - var(--size));
-    left: calc(50% - var(--size));
-    transform-style: preserve-3d;
-    transform-origin: 50% 50%;
-    margin-top: calc(var(--size) * 1.5 * -1);
-    transform: rotateX(60deg) rotateZ(45deg) rotateY(0deg) translateZ(0px);
-    .box {
-        width: var(--size);
-        height: var(--size);
-        top: 0;
-        left: 0;
-        position: absolute;
-        transform-style: preserve-3d;
-        &:nth-child(1) {
-            transform: translate(100%, 0);
-            animation: box1 var(--duration) linear infinite;
-        }
-        &:nth-child(2) {
-            transform: translate(0, 100%);
-            animation: box2 var(--duration) linear infinite;
-        }
-        &:nth-child(3) {
-            transform: translate(100%, 100%);
-            animation: box3 var(--duration) linear infinite;
-        }
-        &:nth-child(4) {
-            transform: translate(200%, 0);
-            animation: box4 var(--duration) linear infinite;
-        }
-        & > div {
-            --background: #{$color};
-            --top: auto;
-            --right: auto;
-            --bottom: auto;
-            --left: auto;
-            --translateZ: calc(var(--size) / 2);
-            --rotateY: 0deg;
-            --rotateX: 0deg;
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            background: var(--background);
-            top: var(--top);
-            right: var(--right);
-            bottom: var(--bottom);
-            left: var(--left);
-            transform: rotateY(var(--rotateY)) rotateX(var(--rotateX)) translateZ(var(--translateZ));
-            &:nth-child(1) {
-                --top: 0;
-                --left: 0;
-            }
-            &:nth-child(2) {
-                --background: #{$colorRight};
-                --right: 0;
-                --rotateY: 90deg;
-            }
-            &:nth-child(3) {
-                --background: #{$colorLeft};
-                --rotateX: -90deg;
-            }
-            &:nth-child(4) {
-                --background: #{$shadow};
-                --top: 0;
-                --left: 0;
-                --translateZ: calc(var(--size) * 3 * -1);
-            }
-        }
-    }
-}
-
-@keyframes box1 {
-    0%,
-    50% {
-        transform: translate(100%, 0);
-    }
-    100% {
-        transform: translate(200%, 0);
-    }
-}
-
-@keyframes box2 {
-    0%{
-        transform: translate(0, 100%);
-    }
-    50% {
-        transform: translate(0, 0);
-    }
-    100% {
-        transform: translate(100%, 0);
-    }
-}
-
-@keyframes box3 {
-    0%,
-    50% {
-        transform: translate(100%, 100%);
-    }
-    100% {
-        transform: translate(0, 100%);
-    }
-}
-
-@keyframes box4 {
-    0%{
-        transform: translate(200%, 0);
-    }
-    50% {
-        transform: translate(200%, 100%);
-    }
-    100% {
-        transform: translate(100%, 100%);
-    }
-}
-
-/**
- * ==============================================
- * Dot Flashing
- * ==============================================
- */
- .dot-flashing {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: rgb(4, 55, 196);
-  color: rgb(4, 55, 196);
-  animation: dotFlashing 1s infinite linear alternate;
-  animation-delay: .5s;
-}
-
-.dot-flashing::before, .dot-flashing::after {
-  content: '';
-  display: inline-block;
+.loader {
+  margin: 0 auto;
+  width: 60px;
+  height: 50px;
+  text-align: center;
+  font-size: 10px;
   position: absolute;
-  top: 0;
-}
-
-.dot-flashing::before {
-  left: -15px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: rgb(4, 55, 196);
-  color: rgb(4, 55, 196);
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 0s;
-}
-
-.dot-flashing::after {
-  left: 15px;
-  width: 10px;
-  height: 10px;
-  border-radius: 5px;
-  background-color: rgb(4, 55, 196);
-  color: rgb(4, 55, 196);
-  animation: dotFlashing 1s infinite alternate;
-  animation-delay: 1s;
-}
-
-@keyframes dotFlashing {
-  0% {
-    background-color: rgb(4, 55, 196);
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translateY(-50%) translateX(-50%);
+  
+  > div {
+    height: 100%;
+    width: 8px;
+    display: inline-block;
+    float: left;
+    margin-left: 2px;
+    -webkit-animation: delay 0.8s infinite ease-in-out;
+    animation: delay 0.8s infinite ease-in-out;
   }
-  50%,
-  100% {
-    background-color: #ebe6ff;
+  
+  .bar1{
+    background-color: #754fa0 ;
+  }
+  .bar2{
+    background-color: #09b7bf;
+    -webkit-animation-delay: -0.7s;
+    animation-delay: -0.7s;
+  }
+  .bar3{
+    background-color: #90d36b;
+    -webkit-animation-delay: -0.6s;
+    animation-delay: -0.6s;
+  }
+  .bar4{
+    background-color: #f2d40d;
+    -webkit-animation-delay: -0.5s;
+    animation-delay: -0.5s;
+  }
+  .bar5{
+    background-color: #fcb12b;
+    -webkit-animation-delay: -0.4s;
+    animation-delay: -0.4s;
+  }
+  .bar6{
+    background-color: #ed1b72;
+    -webkit-animation-delay: -0.3s;
+    animation-delay: -0.3s;
+  }
+}
+
+
+@-webkit-keyframes delay {
+  0%, 40%, 100% { -webkit-transform: scaleY(0.05) }  
+  20% { -webkit-transform: scaleY(1.0) }
+}
+
+@keyframes delay {
+  0%, 40%, 100% { 
+    transform: scaleY(0.05);
+    -webkit-transform: scaleY(0.05);
+  }  20% { 
+    transform: scaleY(1.0);
+    -webkit-transform: scaleY(1.0);
   }
 }
 
