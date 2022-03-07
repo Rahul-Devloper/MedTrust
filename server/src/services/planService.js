@@ -36,7 +36,6 @@ class PlanService {
   };
 
   // Find all plans
-
   static findAllPlans = async () => {
     try {
       const plans = await Plan.find().exec();

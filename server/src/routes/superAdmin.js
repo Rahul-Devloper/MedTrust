@@ -5,7 +5,10 @@ const router = express.Router();
 const { authCheck, superAdminCheck } = require("../middlewares/auth");
 
 // Controllers
-const { currentSuperAdmin } = require("../controllers/superAdminController");
+const {
+  currentSuperAdmin,
+  getAllAdmins,
+} = require("../controllers/superAdminController");
 
 // Routes
 router.post(
@@ -14,6 +17,6 @@ router.post(
   superAdminCheck,
   currentSuperAdmin
 );
-// router.get("/admins", authCheck, superAdminCheck, getAllAdmins); // Get all the admins //TODO: Add get all admins
+router.get("/admins", authCheck, superAdminCheck, getAllAdmins);
 
 module.exports = router;
