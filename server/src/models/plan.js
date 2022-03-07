@@ -5,12 +5,12 @@ const planSchema = new mongoose.Schema(
     name: {
       type: String,
       required: true,
-      maxlength: 50,
+      maxlength: 20,
       unique: true,
     },
-    description: {
+    metaDescription: {
       type: String,
-      maxlength: 200,
+      maxlength: 30,
       required: true,
     },
     monthlyPrice: {
@@ -23,8 +23,24 @@ const planSchema = new mongoose.Schema(
     },
     currency: {
       type: String,
-      enum: ["$", "€", "£", "¥"],
-      default: "$",
+      enum: ["usd", "inr"],
+      default: "usd",
+    },
+    stripeProductId: {
+      type: String,
+      required: true,
+    },
+    stripeMonthlyPriceId: {
+      type: String,
+      required: true,
+    },
+    stripeAnnualPriceId: {
+      type: String,
+      required: true,
+    },
+    seatType: {
+      type: String,
+      required: true,
     },
     trialDays: {
       type: Number,
@@ -36,6 +52,14 @@ const planSchema = new mongoose.Schema(
     },
     maxProjects: {
       type: Number,
+      required: true,
+    },
+    maxStorage: {
+      type: Number,
+      required: true,
+    },
+    features: {
+      type: [String],
       required: true,
     },
   },

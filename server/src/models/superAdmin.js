@@ -7,13 +7,12 @@ const superAdminSchema = new mongoose.Schema(
       type: ObjectId,
       ref: "User",
     },
-    // List of admins
-    admins: [
-      {
-        type: ObjectId,
-        ref: "Admin",
-      },
-    ],
+    name: {
+      type: String,
+    },
+    email: {
+      type: String,
+    },
     // List of plans
     plans: [
       {

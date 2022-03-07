@@ -13,14 +13,26 @@ const adminSchema = new mongoose.Schema(
     email: {
       type: String,
     },
-    // Organization name
-    organization: {
-      type: String,
-    },
     // Current subscription plan
     currentPlan: {
       type: ObjectId,
       ref: "Plan",
+    },
+    subscriptionsHistory: {
+      type: Array,
+      default: [],
+    },
+    currentSubscription: {
+      type: Object,
+      default: {},
+    },
+    subscriptionStatus: {
+      type: String,
+      default: "",
+    },
+    // Stripe customer id
+    stripeCustomerId: {
+      type: String,
     },
     // Team invites
     invitations: [

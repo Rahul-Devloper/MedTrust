@@ -22,15 +22,16 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
     },
-    // Organization name
-    organization: {
-      type: String,
-    },
     // Normal or admin
     role: {
       type: String,
       enum: ["member", "admin", "superadmin"],
       default: "admin",
+    },
+    // Current plan
+    currentPlan: {
+      type: String,
+      default: "Free",
     },
     // Account activation fields
     activated: {
@@ -48,6 +49,9 @@ const userSchema = new mongoose.Schema(
     gender: {
       type: String,
       enum: ["Male", "Female"],
+    },
+    lastActive: {
+      type: Date,
     },
   },
   { timestamps: true }
