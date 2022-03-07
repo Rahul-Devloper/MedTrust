@@ -7,25 +7,52 @@ const fs = require("fs");
 const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
+const rateLimit = require("express-rate-limit");
+
 require("dotenv").config();
 
 // Initiate the express app
 const app = express();
 
 // Middlewares
-app.use(compression());
-app.use(
-  express.json({
-    limit: "5mb",
-  })
-);
-app.use(express.urlencoded({ extended: true }));
+var allowedDomains = process.env.CORS_ORIGIN;
 app.use(
   cors({
-    origin: process.env.CORS_ORIGIN,
+    origin: function (origin, callback) {
+      // bypass the requests with no origin (like curl requests, mobile apps, etc )
+      if (!origin) return callback(null, true);
+
+      if (allowedDomains.indexOf(origin) === -1) {
+        var msg = `This site ${origin} does not have an access. Only specific domains are allowed to access it.`;
+        return callback(new Error(msg), false);
+      }
+      return callback(null, true);
+    },
     credentials: true,
   })
 );
+// Rate Limiting
+app.use(
+  rateLimit({
+    windowMs: 1 * 60 * 1000, // 1 minute
+    max: 100, // limit each IP to 100 requests per windowMs
+    message: "You exceeded 100 requests in a minute limit!",
+    headers: true,
+  })
+);
+
+app.use(compression());
+app.use(
+  express.json({
+    verify: function (req, res, buf) {
+      var url = req.originalUrl;
+      if (url.startsWith("/api/webhook")) {
+        req.rawBody = buf.toString();
+      }
+    },
+  })
+);
+app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev")); // output colored by response status for development use
 app.use(
   session({
@@ -43,12 +70,6 @@ require("./src//middlewares/passport")(passport);
 fs.readdirSync("./src/routes").map((route) =>
   app.use("/api", require("./src/routes/" + route))
 );
-
-// Error handling
-app.use((err, req, res, next) => {
-  console.error(err.stack);
-  res.status(500).send("Something broke!");
-});
 
 // Export the app
 module.exports = app;
