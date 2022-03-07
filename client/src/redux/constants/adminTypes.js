@@ -1,0 +1,4 @@
+// Admin Actions
+export const ADMIN_TYPES = {
+  GET_ADMIN_SUBSCRIPTION: "GET_ADMIN_SUBSCRIPTION",
+};

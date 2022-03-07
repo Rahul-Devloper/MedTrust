@@ -9,3 +9,8 @@ export const currentAdmin = async () => {
 export const getAllPlans = async () => {
   return await api.get("/plans");
 };
+
+// Get admin subscription
+export const getAdminSubscription = async () => {
+  return await api.get("/admin/subscription");
+};
