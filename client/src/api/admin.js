@@ -4,3 +4,8 @@ import api from "./index";
 export const currentAdmin = async () => {
   return await api.post("/currentAdmin", {});
 };
+
+// Get all plans
+export const getAllPlans = async () => {
+  return await api.get("/plans");
+};
