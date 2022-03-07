@@ -15,26 +15,26 @@ export { default as MyPassword } from "./profile/MyPassword";
 
 /************************************************ Super Admin Views ************************************************************/
 export { default as SuperAdminDashboard } from "./superAdmin/dashboard/SuperAdminDashboard";
-/* Admins View */
+/* Admin List View */
 export { default as AdminList } from "./superAdmin/admins/AdminList";
-/* Visitor View */
+/* Visitor List View */
 export { default as VisitorList } from "./superAdmin/visitor/VisitorList";
-/* Leads View */
+/* Leads List View */
 export { default as LeadsList } from "./superAdmin/leads/LeadsList";
-/* Plan View */
+/* Plan List View */
 export { default as PlansList } from "./superAdmin/plan/PlansList";
 export { default as PlanCreate } from "./superAdmin/plan/PlanCreate";
 export { default as PlanUpdate } from "./superAdmin/plan/PlanUpdate";
-/* Coupon View */
+/* Coupon List View */
 export { default as CouponsList } from "./superAdmin/coupon/CouponsList";
 export { default as CouponCreate } from "./superAdmin/coupon/CouponCreate";
 export { default as CouponUpdate } from "./superAdmin/coupon/CouponUpdate";
 
-// Admin views
+/************************************************ Admin Views ************************************************************/
 export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
 
-// Member views
+/************************************************ Member Views ************************************************************/
 export { default as MemberDashboard } from "./member/dashboard/MemberDashboard";
 
-// Random Redirect
+/************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

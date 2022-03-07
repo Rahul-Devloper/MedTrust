@@ -15,8 +15,8 @@ const adminSchema = new mongoose.Schema(
     },
     // Current subscription plan
     currentPlan: {
-      type: ObjectId,
-      ref: "Plan",
+      type: String,
+      default: "Free",
     },
     subscriptionsHistory: {
       type: Array,

@@ -19,8 +19,31 @@ const LoadingToRedirect = () => {
   }, [count, history, user]);
 
   return (
-    <div className="">
-      <p>Redirecting you in {count} seconds</p>
+    <div className="boxes">
+      <div className="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div className="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div className="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
+      <div className="box">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };
