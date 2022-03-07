@@ -11,6 +11,12 @@ import {
   NewPassword,
   Terms,
   Privacy,
+  // -------------- Profile Views --------------
+  // Profile
+  MyProfile,
+  MySubscription,
+  MySecurity,
+  MyPassword,
   // Super Admin Routes
   SuperAdminDashboard,
   // Admin Routes
@@ -20,7 +26,12 @@ import {
   // -------------- Wildcard --------------
   RandomPageRedirect,
 } from "./views";
-import { MemberRoute, AdminRoute, SuperAdminRoute } from "./routes";
+import {
+  MemberRoute,
+  AdminRoute,
+  SuperAdminRoute,
+  ProfileRoute,
+} from "./routes";
 import { refreshTokenAction } from "./redux/actions/authActions";
 import "./App.scss";
 
@@ -87,12 +98,23 @@ const App = () => {
 
         {/**************** Admin Routes ****************/}
         <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+
         {/**************** Member Routes ****************/}
         <MemberRoute
           exact
           path="/member/dashboard"
           component={MemberDashboard}
         />
+
+        {/*************** Profile Routes ***************/}
+        <ProfileRoute exact path="/profile/information" component={MyProfile} />
+        <ProfileRoute
+          exact
+          path="/profile/subscription"
+          component={MySubscription}
+        />
+        <ProfileRoute exact path="/profile/security" component={MySecurity} />
+        <ProfileRoute exact path="/profile/password" component={MyPassword} />
 
         {/* Wildcard */}
         <Route path={"*"} component={RandomPageRedirect} />

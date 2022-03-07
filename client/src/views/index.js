@@ -7,6 +7,12 @@ export { default as NewPassword } from "./auth/newPassword/NewPassword";
 export { default as Terms } from "./auth/terms/Terms";
 export { default as Privacy } from "./auth/privacy/Privacy";
 
+/************************************************ Profile views ************************************************************/
+export { default as MyProfile } from "./profile/MyProfile";
+export { default as MySubscription } from "./profile/MySubscription";
+export { default as MySecurity } from "./profile/MySecurity";
+export { default as MyPassword } from "./profile/MyPassword";
+
 // SuperAdmin views
 export { default as SuperAdminDashboard } from "./superAdmin/dashboard/SuperAdminDashboard";
 
