@@ -15,7 +15,7 @@ exports.createCoupon = async (req, res) => {
   }
 
   // If coupon code already exists, return error
-  const coupon = await CouponService.FindOneCoupon({ code });
+  const coupon = await CouponService.findOneCoupon({ code });
 
   if (coupon) {
     return res.status(400).json({
@@ -25,7 +25,7 @@ exports.createCoupon = async (req, res) => {
   }
 
   try {
-    const newCoupon = await CouponService.CreateCoupon(req.body);
+    const newCoupon = await CouponService.createCoupon(req.body);
 
     res.status(201).json(newCoupon);
   } catch (error) {
@@ -38,7 +38,7 @@ exports.createCoupon = async (req, res) => {
 ***********************************/
 exports.getAllCoupons = async (req, res) => {
   try {
-    const coupons = await CouponService.FindAllCoupons();
+    const coupons = await CouponService.findAllCoupons();
 
     // If no coupons found return 404
     if (coupons.length === 0) {
@@ -59,7 +59,7 @@ exports.getAllCoupons = async (req, res) => {
 ***********************************/
 exports.getCouponById = async (req, res) => {
   try {
-    const coupon = await CouponService.FindCouponById(req.params.id);
+    const coupon = await CouponService.findCouponById(req.params.id);
 
     // If no coupon found return 404
     if (!coupon) {
@@ -80,7 +80,7 @@ exports.getCouponById = async (req, res) => {
 ***********************************/
 exports.updateCouponById = async (req, res) => {
   try {
-    const coupon = await CouponService.FindOneCouponAndUpdate(
+    const coupon = await CouponService.findCouponByIdAndUpdate(
       req.params.id,
       req.body
     );
@@ -104,10 +104,33 @@ exports.updateCouponById = async (req, res) => {
 ***********************************/
 exports.deleteCouponById = async (req, res) => {
   try {
-    const coupon = await CouponService.DeleteCouponById(req.params.id);
+    const coupon = await CouponService.deleteCouponById(req.params.id);
 
     res.status(200).json(coupon);
   } catch (error) {
     console.log("DELETE_COUPON_BY_ID_ERROR", error);
+  }
+};
+
+/**********************************
+  Check if the coupon is valid
+***********************************/
+exports.validateCoupon = async (req, res) => {
+  const { code } = req.body;
+
+  // Validate request
+  if (!code) {
+    return res.status(400).json({
+      message: "Coupon not provided",
+      status: "error",
+    });
+  }
+
+  try {
+    const validCoupon = await CouponService.validateCoupon(code);
+
+    res.status(200).json(validCoupon);
+  } catch (error) {
+    console.log("VALIDATE_COUPON_ERROR", error);
   }
 };

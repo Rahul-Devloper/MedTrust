@@ -4,7 +4,6 @@ const router = express.Router();
 // Middlewares
 const {
   authCheck,
-  adminCheck,
   superAdminCheck,
   superOrAdminCheck,
 } = require("../middlewares/auth");
@@ -16,6 +15,7 @@ const {
   getCouponById,
   updateCouponById,
   deleteCouponById,
+  validateCoupon,
 } = require("../controllers/couponController");
 
 // Routes
@@ -24,5 +24,6 @@ router.get("/coupons", authCheck, superOrAdminCheck, getAllCoupons);
 router.get("/coupon/:id", authCheck, superOrAdminCheck, getCouponById);
 router.put("/coupon/:id", authCheck, superAdminCheck, updateCouponById);
 router.delete("/coupon/:id", authCheck, superAdminCheck, deleteCouponById);
+router.post("/coupon/validate", validateCoupon);
 
 module.exports = router;

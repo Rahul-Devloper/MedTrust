@@ -5,9 +5,20 @@ const router = express.Router();
 const { authCheck, adminCheck } = require("../middlewares/auth");
 
 // Controllers
-const { currentAdmin } = require("../controllers/adminController");
+const {
+  currentAdmin,
+  teamInvite,
+  teamAccountActivate,
+  getTeamMembers,
+  getAdminSubscription,
+} = require("../controllers/adminController");
 
 // Routes
 router.post("/currentAdmin", authCheck, adminCheck, currentAdmin);
+router.post("/admin/team/invite", authCheck, adManCheck, teamInvite); // Invite a new account to the team
+router.post("/admin/team/account/activate", teamAccountActivate); // Team account activation
+router.get("/admin/team/members", authCheck, adminCheck, getTeamMembers);
+// Subscription
+router.get("/admin/subscription", authCheck, adminCheck, getAdminSubscription);
 
 module.exports = router;
