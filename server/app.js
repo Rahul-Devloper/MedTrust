@@ -66,7 +66,7 @@ app.use(
 app.use(cookieParser(process.env.SESSION_SECRET));
 app.use(passport.initialize());
 app.use(passport.session());
-require("./src//middlewares/passport")(passport);
+require("./src/middlewares/passport")(passport);
 
 // Routes (read routes in the "routes" dir and prepend "/api" to all routes)
 fs.readdirSync("./src/routes").map((route) =>
