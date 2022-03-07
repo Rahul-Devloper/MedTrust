@@ -17,8 +17,22 @@ import {
   MySubscription,
   MySecurity,
   MyPassword,
-  // Super Admin Routes
+  // -------------- Super Admin views --------------
   SuperAdminDashboard,
+  // Admins
+  AdminList,
+  // Visitors
+  VisitorList,
+  // Leads
+  LeadsList,
+  // Plans
+  PlansList,
+  PlanCreate,
+  PlanUpdate,
+  // Coupons
+  CouponsList,
+  CouponCreate,
+  CouponUpdate,
   // Admin Routes
   AdminDashboard,
   // Member Routes
@@ -89,11 +103,61 @@ const App = () => {
         <Route exact path="/new-password" component={!user && NewPassword} />
         <Route exact path="/privacy" component={!user && Privacy} />
         <Route exact path="/terms" component={!user && Terms} />
-        {/**************** Super Admin Routes ****************/}
+        {/*************** Super Admin Routes ***************/}
         <SuperAdminRoute
           exact
           path="/super-admin/dashboard"
           component={SuperAdminDashboard}
+        />
+        {/* Admins */}
+        <SuperAdminRoute
+          exact
+          path="/super-admin/admins"
+          component={AdminList}
+        />
+        {/* Visitors */}
+        <SuperAdminRoute
+          exact
+          path="/super-admin/visitors"
+          component={VisitorList}
+        />
+        {/* Leads */}
+        <SuperAdminRoute
+          exact
+          path="/super-admin/leads"
+          component={LeadsList}
+        />
+        {/* Plans */}
+        <SuperAdminRoute
+          exact
+          path="/super-admin/plans"
+          component={PlansList}
+        />
+        <SuperAdminRoute
+          exact
+          path="/super-admin/plans/create"
+          component={PlanCreate}
+        />
+        <SuperAdminRoute
+          exact
+          path="/super-admin/plans/update/:id"
+          component={PlanUpdate}
+        />
+        {/* Coupons */}
+        <SuperAdminRoute
+          exact
+          path="/super-admin/coupons"
+          component={CouponsList}
+        />
+        <SuperAdminRoute
+          exact
+          path="/super-admin/coupons/create"
+          component={CouponCreate}
+        />
+        <SuperAdminRoute
+          exact
+          path="/super-admin/coupons/update/:id"
+          component={CouponUpdate}
         />
 
         {/**************** Admin Routes ****************/}

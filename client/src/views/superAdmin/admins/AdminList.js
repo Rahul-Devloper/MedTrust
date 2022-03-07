@@ -52,30 +52,32 @@ const AdminList = () => {
               <tbody>
                 {admins &&
                   admins?.map((admin) => (
-                    <tr key={admin._id}>
+                    <tr key={admin?._id}>
                       <td
-                        onClick={() => handleAdminView(admin._id)}
+                        onClick={() => handleAdminView(admin?._id)}
                         style={{ cursor: "pointer" }}
                       >
-                        {admin.name}
+                        {admin?.name}
                       </td>
                       <td>
-                        <Tag color="blue">{admin.email}</Tag>
+                        <Tag color="blue">{admin?.email}</Tag>
                       </td>
-                      <td>{admin.createdAt.split("T")[0]}</td>
-                      <td>{admin.currentPlan}</td>
-                      <td>{admin.projects.length}</td>
-                      <td>{admin.members.length + admin.managers.length}</td>
+                      <td>{admin?.createdAt.split("T")[0]}</td>
+                      <td>{admin?.currentPlan}</td>
+                      <td>{admin?.projects?.length}</td>
+                      <td>
+                        {admin?.members?.length + admin?.managers?.length}
+                      </td>
                       <td style={{ cursor: "pointer" }}>
                         {/* View Icon */}
                         <TiEyeOutline
                           size={19}
-                          onClick={() => handleAdminView(admin._id)}
+                          onClick={() => handleAdminView(admin?._id)}
                         />
                         <span style={{ margin: "0 10px" }} />
                         {/* Edit Icon */}
                         <RiEditFill
-                          onClick={() => handleAdminEdit(admin._id)}
+                          onClick={() => handleAdminEdit(admin?._id)}
                         />
                       </td>
                     </tr>

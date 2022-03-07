@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-import { useDispatch } from "react-redux";
+import { useSelector, useDispatch } from "react-redux";
 import { logoutAction } from "../../../redux/actions/authActions";
 import { Menu, Dropdown, Col, Avatar } from "antd";
 import { User, Logout, Discount } from "react-iconly";
@@ -9,6 +9,7 @@ import avatarImg from "../../../assets/images/memoji/user1.png";
 
 const HeaderUser = () => {
   const dispatch = useDispatch();
+  const { user } = useSelector((state) => state.auth);
 
   // Handle logout
   const handleLogout = () => {
@@ -33,19 +34,21 @@ const HeaderUser = () => {
       </Menu.Item>
 
       {/* My Subscription */}
-      <Menu.Item
-        key={0}
-        icon={
-          <Discount
-            set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
-            size={16}
-          />
-        }
-        className="da-text-color-dark-0"
-      >
-        <Link to="/profile/subscription">My Subscription</Link>
-      </Menu.Item>
+      {user.role === "admin" && (
+        <Menu.Item
+          key={0}
+          icon={
+            <Discount
+              set="curved"
+              className="remix-icon da-vertical-align-middle da-text-color-dark-0"
+              size={16}
+            />
+          }
+          className="da-text-color-dark-0"
+        >
+          <Link to="/profile/subscription">My Subscription</Link>
+        </Menu.Item>
+      )}
 
       <Menu.Item
         key={5}

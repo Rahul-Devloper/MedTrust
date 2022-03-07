@@ -5,7 +5,7 @@ const superAdmin = [
     id: "dashboard",
     title: "Dashboard",
     icon: <Home set="curved" className="remix-icon" />,
-    navLink: "/admin/dashboard",
+    navLink: "/super-admin/dashboard",
   },
   {
     id: "admins",
