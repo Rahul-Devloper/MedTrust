@@ -3,20 +3,14 @@ import { Link } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { logoutAction } from "../../../redux/actions/authActions";
 import { Menu, Dropdown, Col, Avatar } from "antd";
-import {
-  User,
-  People,
-  InfoSquare,
-  Calendar,
-  Discount,
-  Logout,
-} from "react-iconly";
+import { User, Logout, Discount } from "react-iconly";
 
-import avatarImg from "../../../assets/images/memoji/memoji-1.png";
+import avatarImg from "../../../assets/images/memoji/user1.png";
 
 const HeaderUser = () => {
   const dispatch = useDispatch();
 
+  // Handle logout
   const handleLogout = () => {
     // Dispatch logout action
     dispatch(logoutAction());
@@ -35,39 +29,12 @@ const HeaderUser = () => {
         }
         className="da-text-color-dark-0"
       >
-        <Link to="/pages/profile/personel-information">Profile</Link>
+        <Link to="/profile/information">My Profile</Link>
       </Menu.Item>
 
+      {/* My Subscription */}
       <Menu.Item
-        key={1}
-        icon={
-          <People
-            set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
-            size={16}
-          />
-        }
-        className="da-text-color-dark-0"
-      >
-        <Link to="/apps/contact">Contact</Link>
-      </Menu.Item>
-
-      <Menu.Item
-        key={2}
-        icon={
-          <Calendar
-            set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
-            size={16}
-          />
-        }
-        className="da-text-color-dark-0"
-      >
-        <Link to="/apps/calendar">Calendar</Link>
-      </Menu.Item>
-
-      <Menu.Item
-        key={3}
+        key={0}
         icon={
           <Discount
             set="curved"
@@ -77,21 +44,7 @@ const HeaderUser = () => {
         }
         className="da-text-color-dark-0"
       >
-        <Link to="/pages/pricing">Pricing</Link>
-      </Menu.Item>
-
-      <Menu.Item
-        key={4}
-        icon={
-          <InfoSquare
-            set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
-            size={16}
-          />
-        }
-        className="da-text-color-dark-0"
-      >
-        <Link to="/pages/faq">FAQ</Link>
+        <Link to="/profile/subscription">My Subscription</Link>
       </Menu.Item>
 
       <Menu.Item
@@ -106,7 +59,7 @@ const HeaderUser = () => {
         className="da-text-color-dark-0"
         onClick={handleLogout}
       >
-        <a>Logout</a>
+        Logout
       </Menu.Item>
     </Menu>
   );

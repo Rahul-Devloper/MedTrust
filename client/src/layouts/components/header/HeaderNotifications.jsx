@@ -3,7 +3,6 @@ import { useSelector } from "react-redux";
 
 import { Button, Badge, Row, Col, Dropdown, Divider, Avatar } from "antd";
 import { Notification, Message, Calendar } from "react-iconly";
-import { RiMoneyDollarCircleLine, RiTruckLine } from "react-icons/ri";
 
 const HeaderNotifications = () => {
   const direction = useSelector((state) => state.customize.direction);
@@ -17,14 +16,14 @@ const HeaderNotifications = () => {
           </Col>
 
           <Col className="da-bg-color-primary-1 da-border-radius-full da-badge-text da-text-color-black-0 da-py-4 da-px-6 da-ml-24">
-            4 New
+            0 New
           </Col>
         </Row>
       </div>
 
       <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
 
-      <div className="da-px-16">
+      {/* <div className="da-px-16">
         <Row align="middle">
           <Col className="da-mr-8">
             <Avatar
@@ -45,7 +44,7 @@ const HeaderNotifications = () => {
             </span>
 
             <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
-              24 unread messages.
+              8 unread messages.
             </span>
           </Col>
         </Row>
@@ -70,7 +69,7 @@ const HeaderNotifications = () => {
 
           <Col>
             <span className="da-d-block da-w-100 da-mb-4 da-badge-text da-font-weight-500 da-text-color-black-100 da-text-color-dark-10">
-              Incoming Events
+              Upcoming Events
             </span>
 
             <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
@@ -78,70 +77,12 @@ const HeaderNotifications = () => {
             </span>
           </Col>
         </Row>
-      </div>
+      </div> */}
 
-      <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
-
-      <div className="da-px-16">
-        <Row align="middle">
-          <Col className="da-mr-8">
-            <Avatar
-              size={32}
-              icon={
-                <RiMoneyDollarCircleLine
-                  size={17}
-                  className="da-text-color-primary-1 remix-icon"
-                />
-              }
-              className="da-d-flex-center-full"
-            />
-          </Col>
-
-          <Col>
-            <span className="da-d-block da-w-100 da-mb-4 da-badge-text da-font-weight-500 da-text-color-black-100 da-text-color-dark-10">
-              Congratulations🎉
-            </span>
-
-            <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
-              You have 12 new sales!
-            </span>
-          </Col>
-        </Row>
-      </div>
-
-      <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
+      {/* <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" /> */}
 
       <div className="da-px-16">
-        <Row align="middle">
-          <Col className="da-mr-8">
-            <Avatar
-              size={32}
-              icon={
-                <RiTruckLine
-                  size={17}
-                  className="da-text-color-primary-1 remix-icon"
-                />
-              }
-              className="da-d-flex-center-full"
-            />
-          </Col>
-
-          <Col>
-            <span className="da-d-block da-w-100 da-mb-4 da-badge-text da-font-weight-500 da-text-color-black-100 da-text-color-dark-10">
-              Deliveries
-            </span>
-
-            <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
-              Last 10 Orders has been delivered.
-            </span>
-          </Col>
-        </Row>
-      </div>
-
-      <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
-
-      <div className="da-px-16">
-        <Button type="primary" block>
+        <Button type="primary" block disabled={true}>
           Clear all notifications
         </Button>
       </div>

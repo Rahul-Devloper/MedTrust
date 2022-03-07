@@ -1,5 +1,5 @@
 import { Col } from "antd";
-import { Document, Upload } from "react-iconly";
+import { Document, Plus } from "react-iconly";
 
 const HeaderText = () => {
   return (
@@ -11,16 +11,21 @@ const HeaderText = () => {
       />
 
       <p className="da-header-left-text-item da-input-label da-text-color-black-100 da-text-color-dark-0 da-ml-16 da-mb-0">
-        Do you know the latest update of 2021? 🎉 &nbsp;
-        <span className="da-font-weight-300 da-text-color-danger-3">
-          Our roadmap is alive for future updates.
+        We are shipping new features every week 🎉 &nbsp;
+        <span className="da-font-weight-500 da-text-color-danger-1">
+          Contact us for any bugs or feature request 👉
         </span>
         <a
-          href="https://netraga.com"
-          className="da-ml-8 da-text-color-black-60"
+          href="https://www.netraga.com/contact"
+          className="da-text-color-black-80"
           target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            // Move to the right
+            marginLeft: "0.5rem",
+          }}
         >
-          <Upload set="curved" className="remix-icon da-text-color-dark-5" />
+          <Plus set="curved" className="remix-icon" />
         </a>
       </p>
     </Col>
