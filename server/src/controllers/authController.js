@@ -39,7 +39,7 @@ exports.signup = async (req, res) => {
 
   try {
     // Check if user already exists
-    const existingUser = await UserService.FindOneUser({ email });
+    const existingUser = await UserService.findOneUser({ email });
     if (existingUser) {
       const errorObject = {
         error: true,
@@ -65,7 +65,7 @@ exports.signup = async (req, res) => {
     // Hash the password
     const hashedPassword = await bcrypt.hash(password, 12);
     // Create the user
-    let newUser = await UserService.CreateUser({
+    let newUser = await UserService.createUser({
       name,
       email,
       role: role || "admin",
@@ -77,35 +77,79 @@ exports.signup = async (req, res) => {
 
     // If admin, create an admin account
     if (newUser.role === "admin") {
-      await AdminService.CreateAdmin({
+      await AdminService.createAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
-        organization: newUser.organization,
+      });
+    } else if (newUser.role === "superadmin") {
+      await SuperAdminService.createSuperAdmin({
+        user: newUser._id,
+        name: newUser.name,
+        email: newUser.email,
       });
     }
 
     // Send verification to the user email
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      host: "smtpout.secureserver.net",
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
       },
+      secure: true,
+    });
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
     });
 
     // Configure the message
-    var mailOptions = {
-      from: process.env.NODEMAILER_EMAIL,
+    let mailOptions = {
+      from: `Deepak from Netraga <${process.env.NODEMAILER_EMAIL}>`,
       to: email,
-      subject: "SaaS - Verification",
-      html: `<b>Welcome, ${newUser.name}! thank you for signing up on SaaS. Here is your account verification link
-      : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
-    </b>`,
+      subject: "You're in :) Plus, a quick question",
+      html: `Hi, ${newUser.name.split(" ")[0]}! <br>
+      <br>
+      <a href=${
+        process.env.APP_URL
+      }/account/activate?token=${verificationToken}>Click here</a> to activate your account
+      <br>
+      <p>I really appreciate you joining us at Netraga, and I know you'll love it when you see how easy it is to manage tasks, <br> collaborate and get your work done from anywhere.</p>
+      <p>We built Netraga to help small business improve their teams productivity, and I hope we can achieve that for you.
+      <br>
+      <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for Netraga?</p>
+      <p>I'm asking because knowing what made you sign up is really helpful for us in making sure that we're delivering <br> on what our users want. Just hit "reply" and let me know.</p>
+      <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from Netraga. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use Netraga to collaborate and improve their teams productivity.</p>
+      Cheers, <br>
+      Deepak, <br>
+      CEO, Netraga
+      `,
     };
 
     // Send the email
-    transporter.sendMail(mailOptions, async function (error, info) {});
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
 
     res.status(201).json({
       message: "Check your email, and verify your account",
@@ -113,7 +157,7 @@ exports.signup = async (req, res) => {
     });
   } catch (error) {
     res.status(500).json(error);
-    console.log("SIGNUP_ERROR", error);
+    console.log("SERVER_SIGNUP_ERROR", error);
   }
 };
 
@@ -144,7 +188,7 @@ exports.accountActivate = async (req, res, next) => {
         const { email } = user;
 
         // Check if already activated
-        const existingUser = await UserService.FindOneUser({ email });
+        const existingUser = await UserService.findOneUser({ email });
         if (existingUser.activated) {
           return res.status(409).json({
             error: true,
@@ -157,7 +201,7 @@ exports.accountActivate = async (req, res, next) => {
           });
         }
 
-        const updatedUser = await UserService.FindOneUserAndUpdate(
+        const updatedUser = await UserService.findOneUserAndUpdate(
           { email },
           { activated: true }
         );
@@ -198,6 +242,7 @@ exports.accountReverify = async (req, res) => {
     try {
       // Check if activated is false for the user
       const existingUser = await UserService.FindOneUser({ email });
+
       // Check if the user is already activated
       if (existingUser.activated === true) {
         return res.json({
@@ -225,7 +270,7 @@ exports.accountReverify = async (req, res) => {
       );
 
       // Update activation token sent at in the user model
-      await UserService.FindOneUserAndUpdate(
+      await UserService.findOneUserAndUpdate(
         { email },
         {
           activationToken: verificationToken,
@@ -234,26 +279,64 @@ exports.accountReverify = async (req, res) => {
       );
 
       // Re Send verification to the user email
-      var transporter = nodemailer.createTransport({
-        service: "gmail",
+      const transporter = nodemailer.createTransport({
+        port: 465,
+        host: "smtpout.secureserver.net",
         auth: {
           user: process.env.NODEMAILER_EMAIL,
           pass: process.env.NODEMAILER_PASSWORD,
         },
+        secure: true,
       });
 
-      // Configure the message
-      var mailOptions = {
-        from: process.env.NODEMAILER_EMAIL,
+      await new Promise((resolve, reject) => {
+        // verify connection configuration
+        transporter.verify(function (error, success) {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else {
+            console.log("Server is ready to take our messages");
+            resolve(success);
+          }
+        });
+      });
+
+      let mailOptions = {
+        from: `Deepak from Netraga <${process.env.NODEMAILER_EMAIL}>`,
         to: email,
-        subject: "SaaS - Verification",
-        html: `<b>Hi, thank you for registering. Here is your verification link 
-          : ${process.env.CORS_ORIGIN}/account/activate?token=${verificationToken}
-        </b>`,
+        subject: "Re-Verification :) Plus, a quick question",
+        html: `Hi, ${existingUser?.name?.split(" ")[0]}! <br>
+        <br>
+        <a href=${
+          process.env.APP_URL
+        }/account/activate?token=${verificationToken}>Click here</a> to activate your account
+        <br>
+        <p>I really appreciate you joining us at Netraga, and I know you'll love it when you see how easy it is to manage tasks, <br> collaborate and get your work done from anywhere.</p>
+        <p>We built Netraga to help small business improve their teams productivity, and I hope we can achieve that for you.
+        <br>
+        <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for Netraga?</p>
+        <p>I'm asking because knowing what made you sign up is really helpful for us in making sure that we're delivering <br> on what our users want. Just hit "reply" and let me know.</p>
+        <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from Netraga. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use Netraga to collaborate and improve their teams productivity.</p>
+        Cheers, <br>
+        Deepak, <br>
+        CEO, Netraga
+        `,
       };
 
       // Send the email
-      transporter.sendMail(mailOptions, function (error, info) {});
+      await new Promise((resolve, reject) => {
+        // send mail
+        transporter.sendMail(mailOptions, (err, info) => {
+          if (err) {
+            console.error(err);
+            reject(err);
+          } else {
+            console.log(info);
+            resolve(info);
+          }
+        });
+      });
 
       return res.json({
         message:
@@ -291,7 +374,7 @@ exports.passwordResetEmail = async (req, res) => {
 
   try {
     // Check if the user exists
-    const existingUser = await UserService.FindOneUser({ email });
+    const existingUser = await UserService.findOneUser({ email });
 
     // If the user doesn't exist, don't send
     if (!existingUser) {
@@ -317,26 +400,59 @@ exports.passwordResetEmail = async (req, res) => {
     });
 
     // Send password reset email to the user
-    var transporter = nodemailer.createTransport({
-      service: "gmail",
+    const transporter = nodemailer.createTransport({
+      port: 465,
+      host: "smtpout.secureserver.net",
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
       },
+      secure: true,
+    });
+
+    await new Promise((resolve, reject) => {
+      // verify connection configuration
+      transporter.verify(function (error, success) {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else {
+          console.log("Server is ready to take our messages");
+          resolve(success);
+        }
+      });
     });
 
     // Configure the message
-    var mailOptions = {
-      from: process.env.NODEMAILER_EMAIL,
+    let mailOptions = {
+      from: `Netraga <${process.env.SUPPORT_EMAIL}>`,
       to: email,
-      subject: "SaaS - Password Reset",
-      html: `<b>Hi, here is your password reset link 
-          : ${process.env.CORS_ORIGIN}/new-password?token=${resetToken}
-        </b>`,
+      subject: "Password Reset",
+      html: `Hi, ${existingUser?.name?.split(" ")[0]}! <br>
+      <br>
+      <a href=${
+        process.env.APP_URL
+      }/new-password?token=${resetToken}>Click here</a> to reset your password
+      <br>
+      <p>If you didn't request a password reset, please ignore this email.</p>
+      Customer Success Team, <br>
+      Netraga
+      `,
     };
 
     // Send the email
-    transporter.sendMail(mailOptions, function (error, info) {});
+    await new Promise((resolve, reject) => {
+      // send mail
+      transporter.sendMail(mailOptions, (err, info) => {
+        if (err) {
+          console.error(err);
+          reject(err);
+        } else {
+          console.log(info);
+          resolve(info);
+        }
+      });
+    });
 
     return res.status(200).json({
       message: "Password reset link sent to your email",
@@ -582,7 +698,7 @@ exports.newAccessToken = async (req, res) => {
     const decodedToken = jwt.verify(refToken, process.env.JWT_REFRESH_SECRET);
 
     // Get the user from the refresh token
-    const user = await UserService.FindUserById(decodedToken._id);
+    const user = await UserService.findUserById(decodedToken._id);
     if (!user) {
       return res.status(401).json({
         error: true,
@@ -595,6 +711,9 @@ exports.newAccessToken = async (req, res) => {
         ],
       });
     }
+
+    // Update user's last active time
+    await UserService.updateUserLastActiveTime(user._id);
 
     // If the current access token is not expired, return the current access token
     const currentAccessToken =
