@@ -1,12 +1,15 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useSelector } from "react-redux";
 
 import { Divider, Avatar, Row, Col } from "antd";
 import { RiSettings3Line } from "react-icons/ri";
 
-import avatar from "../../../../assets/images/memoji/memoji-1.png";
+import avatar from "../../../../assets/images/memoji/user1.png";
 
 const MenuFooter = (props) => {
+  const { user } = useSelector((state) => state.auth);
+
   return props.collapsed === false ? (
     <Row
       className="da-sidebar-footer da-pb-24 da-px-24 da-bg-color-dark-100"
@@ -17,19 +20,19 @@ const MenuFooter = (props) => {
 
       <Col>
         <Row align="middle">
-          <Avatar size={36} src={avatar} className="da-mr-8" />
+          <Avatar size={38} src={avatar} className="da-mr-8" />
 
           <div
             style={{
-              margin: "1px 0 0 8px",
+              margin: "0 0 0 14px",
             }}
           >
             <span className="da-d-block da-text-color-black-100 da-text-color-dark-0 da-p1-body">
-              Jane Doe
+              {user?.name}
             </span>
 
             <Link
-              to="/pages/profile/personel-information"
+              to="/profile/information"
               className="da-badge-text da-text-color-dark-30"
               onClick={props.onClose}
             >
@@ -40,7 +43,7 @@ const MenuFooter = (props) => {
       </Col>
 
       <Col>
-        <Link to="/pages/profile/security" onClick={props.onClose}>
+        <Link to="/profile/security" onClick={props.onClose}>
           <RiSettings3Line
             className="remix-icon da-text-color-black-100 da-text-color-dark-0"
             size={24}
@@ -55,8 +58,8 @@ const MenuFooter = (props) => {
       justify="center"
     >
       <Col>
-        <Link to="/pages/profile/personel-information" onClick={props.onClose}>
-          <Avatar size={36} src={avatar} />
+        <Link to={`/profile/information`} onClick={props.onClose}>
+          <Avatar size={38} src={avatar} />
         </Link>
       </Col>
     </Row>

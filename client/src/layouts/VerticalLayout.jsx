@@ -6,7 +6,6 @@ import { Layout, Row, Col } from "antd";
 
 import Sidebar from "./components/menu/Sidebar";
 import MenuHeader from "./components/header";
-import MenuFooter from "./components/footer";
 import ScrollTop from "./components/scroll-to-top";
 
 const { Content } = Layout;
@@ -39,8 +38,6 @@ const VerticalLayout = (props) => {
             )}
           </Row>
         </Content>
-
-        <MenuFooter />
       </Layout>
 
       <ScrollTop />

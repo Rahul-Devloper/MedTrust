@@ -31,3 +31,13 @@ export const RoleBasedRedirectWithUser = (user, history) => {
     }
   }
 };
+
+export const redirectToDashboard = (user) => {
+  if (user?.role === "superadmin") {
+    return "/super-admin/dashboard";
+  } else if (user?.role === "admin") {
+    return "/admin/dashboard";
+  } else if (user?.role === "member") {
+    return "/member/dashboard";
+  }
+};

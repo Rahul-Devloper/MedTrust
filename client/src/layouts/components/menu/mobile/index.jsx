@@ -13,7 +13,7 @@ const MenuMobile = (props) => {
   return (
     <Drawer
       title={<MenuLogo onClose={onClose} />}
-      className="da-mobile-sidebar"
+      className="da-profile-mobile-menu"
       placement="left"
       closable={true}
       onClose={onClose}
