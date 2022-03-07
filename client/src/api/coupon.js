@@ -24,3 +24,8 @@ export const updateCouponById = async (id, values) => {
 export const deleteCouponById = async (id) => {
   return await api.delete(`/coupon/${id}`);
 };
+
+// Validate a coupon
+export const validateCoupon = async (code) => {
+  return await api.post(`/coupon/validate`, code);
+};
