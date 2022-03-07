@@ -90,7 +90,7 @@ const PricingItem = (props) => {
             className="da-pricing-item-contact-sales-button da-caption da-py-4 da-px-16 da-bg-color-primary-4 da-text-color-primary-1"
           >
             <a
-              href="https://www.taskyphi.com/contact"
+              href="https://www.netraga.com/contact"
               target="_blank"
               rel="noopener noreferrer"
             >
@@ -145,7 +145,7 @@ const PricingItem = (props) => {
           className="da-mt-32 da-pricing-item-contact-sales-button da-caption da-py-4 da-px-16 da-bg-color-primary-4 da-text-color-primary-1"
         >
           <a
-            href="https://www.taskyphi.com/contact"
+            href="https://www.netraga.com/contact"
             target="_blank"
             rel="noopener noreferrer"
           >

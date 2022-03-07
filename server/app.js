@@ -8,6 +8,7 @@ const cors = require("cors");
 const session = require("express-session");
 const passport = require("passport");
 const rateLimit = require("express-rate-limit");
+const logger = require("./src/utils/logger");
 
 require("dotenv").config();
 
@@ -53,7 +54,8 @@ app.use(
   })
 );
 app.use(express.urlencoded({ extended: true }));
-app.use(morgan("dev")); // output colored by response status for development use
+// Logger
+app.use(morgan("combined", { stream: logger.stream }));
 app.use(
   session({
     secret: process.env.SESSION_SECRET,
