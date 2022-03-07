@@ -2,7 +2,7 @@ const Plan = require("../models/plan");
 
 class PlanService {
   // Create a new plan
-  static CreatePlan = async (plan) => {
+  static createPlan = async (plan) => {
     try {
       const newPlan = new Plan(plan);
       await newPlan.save();
@@ -14,7 +14,7 @@ class PlanService {
   };
 
   // Find one plan
-  static FindOnePlan = async (query) => {
+  static findOnePlan = async (query) => {
     try {
       const plan = await Plan.findOne(query).exec();
 
@@ -25,7 +25,7 @@ class PlanService {
   };
 
   // Find plan by id
-  static FindPlanById = async (id) => {
+  static findPlanById = async (id) => {
     try {
       const plan = await Plan.findById(id).exec();
 
@@ -36,7 +36,8 @@ class PlanService {
   };
 
   // Find all plans
-  static FindAllPlans = async () => {
+
+  static findAllPlans = async () => {
     try {
       const plans = await Plan.find().exec();
 
@@ -47,9 +48,9 @@ class PlanService {
   };
 
   // Find plan by id and update
-  static FindPlanByIdAndUpdate = async (query, update) => {
+  static findPlanByIdAndUpdate = async (id, update) => {
     try {
-      const plan = await Plan.findByIdAndUpdate(query, update, {
+      const plan = await Plan.findByIdAndUpdate(id, update, {
         new: true,
       }).exec();
 
@@ -60,9 +61,11 @@ class PlanService {
   };
 
   // Delete plan by id
-  static DeletePlanById = async (id) => {
+  static deletePlanById = async (id) => {
     try {
-      await Plan.findByIdAndDelete(id).exec();
+      const plan = await Plan.findByIdAndDelete(id).exec();
+
+      return plan;
     } catch (error) {
       throw error;
     }

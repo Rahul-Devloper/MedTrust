@@ -4,34 +4,8 @@ const PlanService = require("../services/planService");
   Create a plan
 ***********************************/
 exports.createPlan = async (req, res) => {
-  const {
-    name,
-    description,
-    monthlyPrice,
-    annualPrice,
-    trialDays,
-    maxUsers,
-    maxProjects,
-  } = req.body;
-
-  // Validate required fields
-  if (
-    !name ||
-    !description ||
-    !monthlyPrice ||
-    !annualPrice ||
-    !trialDays ||
-    !maxUsers ||
-    !maxProjects
-  ) {
-    return res.status(400).json({
-      message: "Please fill in all required fields",
-      status: "error",
-    });
-  }
-
   // Check if plan name already exists
-  const plan = await PlanService.FindOnePlan({ name });
+  const plan = await PlanService.findOnePlan({ name: req.body.name });
 
   // If plan name already exists, return error
   if (plan) {
@@ -42,7 +16,7 @@ exports.createPlan = async (req, res) => {
   }
 
   try {
-    const newPlan = await PlanService.CreatePlan(req.body);
+    const newPlan = await PlanService.createPlan(req.body);
 
     res.status(201).json(newPlan);
   } catch (error) {
@@ -55,15 +29,7 @@ exports.createPlan = async (req, res) => {
 ***********************************/
 exports.getAllPlans = async (req, res) => {
   try {
-    const allPlans = await PlanService.FindAllPlans();
-
-    // If no plans return 404 error
-    if (allPlans.length === 0) {
-      return res.status(404).json({
-        message: "No plans found",
-        status: "error",
-      });
-    }
+    const allPlans = await PlanService.findAllPlans();
 
     res.status(200).json(allPlans);
   } catch (error) {
@@ -76,7 +42,7 @@ exports.getAllPlans = async (req, res) => {
 ***********************************/
 exports.getPlanById = async (req, res) => {
   try {
-    const plan = await PlanService.FindPlanById(req.params.id);
+    const plan = await PlanService.findPlanById(req.params.id);
 
     // If no plan, return 404 error
     if (!plan) {
@@ -97,7 +63,7 @@ exports.getPlanById = async (req, res) => {
 ***********************************/
 exports.updatePlanById = async (req, res) => {
   try {
-    const updatedPlan = await PlanService.FindPlanByIdAndUpdate(
+    const updatedPlan = await PlanService.findPlanByIdAndUpdate(
       req.params.id,
       req.body
     );
@@ -121,7 +87,7 @@ exports.updatePlanById = async (req, res) => {
 ***********************************/
 exports.deletePlanById = async (req, res) => {
   try {
-    await PlanService.DeletePlanById(req.params.id);
+    await PlanService.deletePlanById(req.params.id);
     res.status(200).json({ message: "Plan deleted" });
   } catch (error) {
     console.log("DELETE_PLAN_BY_ID_ERROR", error);
