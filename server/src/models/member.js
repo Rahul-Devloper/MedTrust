@@ -18,10 +18,6 @@ const memberSchema = new mongoose.Schema(
     email: {
       type: String,
     },
-    // Organization name
-    organization: {
-      type: String,
-    },
   },
   { timestamps: true }
 );

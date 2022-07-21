@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const UserService = require("../services/userService");
 const AdminService = require("../services/adminService");
 const { passwordValidator } = require("../utils/validations");
@@ -17,6 +18,7 @@ exports.currentAdmin = async (req, res) => {
     res.status(200).json({
       admin: true,
       message: "Welcome admin!",
+      user: User.toClientObject(user),
     });
   } else {
     res.status(403).json({

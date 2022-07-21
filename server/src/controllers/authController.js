@@ -1,6 +1,8 @@
 const { emailValidator, passwordValidator } = require("../utils/validations");
+const User = require("../models/user");
 const UserService = require("../services/userService");
 const AdminService = require("../services/adminService");
+const SuperAdminService = require("../services/superAdminService");
 const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
@@ -13,6 +15,7 @@ const nodemailer = require("nodemailer");
 exports.signup = async (req, res) => {
   const { name, email, password, role } = req.body;
 
+  // Validate the input fields
   const validationErrors = [];
 
   // Validate the email and password with utils
@@ -603,13 +606,28 @@ exports.googleCreateOrLogin = async (req, res) => {
 
     // If user doesn't exist
     if (!user) {
-      await CreateUser({
+      let user = new User({
         name: name,
         email: email,
-        role: "admin",
         accountType: "google",
         activated: true,
-      }).then((user) => {
+        role: "admin",
+      });
+      await user.save().then(async (user) => {
+        // If admin, create an admin account
+        if (user.role === "admin") {
+          await AdminService.createAdmin({
+            user: user._id,
+            name: user.name,
+            email: user.email,
+          });
+        } else if (user.role === "superadmin") {
+          await SuperAdminService.createSuperAdmin({
+            user: user._id,
+            name: user.name,
+            email: user.email,
+          });
+        }
         // Generate JWT for the Google ID
         // Use only the user ID to create JWT token
         const idObject = { _id: user._id };
@@ -629,7 +647,7 @@ exports.googleCreateOrLogin = async (req, res) => {
         // Set a http only cookie for refresh token
         res.cookie("refreshToken", refreshToken, {
           httpOnly: true,
-          path: "/api/refresh_token",
+          path: `/api/refresh_token`,
           maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
         });
 
@@ -656,7 +674,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       // Set a http only cookie for refresh token
       res.cookie("refreshToken", refreshToken, {
         httpOnly: true,
-        path: "/api/refresh_token",
+        path: `/api/refresh_token`,
         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
       });
 
@@ -668,8 +686,7 @@ exports.googleCreateOrLogin = async (req, res) => {
       });
     }
   } catch (error) {
-    res.status(500).json(error);
-    console.log("GOOGLE_LOGIN_ERROR", error);
+    console.log("SERVER_GOOGLE_LOGIN_ERROR", error);
   }
 };
 
