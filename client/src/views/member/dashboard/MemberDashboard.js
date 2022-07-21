@@ -1,9 +1,23 @@
 import React from "react";
+import { Row, Col } from "antd";
+import { useSelector } from "react-redux";
 
 const MemberDashboard = () => {
+  const { user } = useSelector((state) => state.auth);
+
   return (
     <>
-      <h1>Member Dashboard</h1>
+      <Row gutter={[32, 0]}>
+        <Col span={24}>
+          <h2
+            style={{
+              marginLeft: "10px",
+            }}
+          >
+            Welcome back, {user?.name.split(" ")[0]} 👋
+          </h2>
+        </Col>
+      </Row>
     </>
   );
 };

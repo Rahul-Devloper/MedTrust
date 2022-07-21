@@ -1,12 +1,6 @@
 import { ACTION_TYPES } from "../constants/actionTypes";
 import { AUTH_TYPES } from "../constants/authTypes";
-import {
-  signUp,
-  login,
-  googleCreateOrLogin,
-  refreshAccessToken,
-  logout,
-} from "../../api/auth";
+import { signUp, login, googleCreateOrLogin, logout } from "../../api/auth";
 import { currentUser } from "../../api/user";
 import { currentAdmin } from "../../api/admin";
 import { currentSuperAdmin } from "../../api/superAdmin";
@@ -384,51 +378,6 @@ export const isMemberAction = (data) => async (dispatch) => {
         message: "IS_MEMBER_ACTION_ERROR",
       },
     });
-  }
-};
-
-/********************************************
-  Update access token using refresh token
-*********************************************/
-export const refreshTokenAction = () => async (dispatch) => {
-  const firstLogin = localStorage.getItem("firstLogin");
-  if (firstLogin) {
-    // Dispatch a loading alert
-    dispatch({
-      type: ACTION_TYPES.ALERT,
-      payload: { loading: true },
-    });
-    try {
-      // Fetch response from server
-      const res = await refreshAccessToken();
-
-      // Dispatch token and user
-      dispatch({
-        type: AUTH_TYPES.AUTH,
-        payload: {
-          accessToken: res.data.accessToken,
-          user: res.data.user,
-        },
-      });
-
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: { loading: false },
-      });
-    } catch (error) {
-      // Dispatch a error notify
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: {
-          message: "REFRESH_TOKEN_ACTION_ERROR",
-        },
-      });
-
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: { loading: false },
-      });
-    }
   }
 };
 

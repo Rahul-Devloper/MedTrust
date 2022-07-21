@@ -28,7 +28,10 @@ const AdminList = () => {
     <>
       <Card
         className="da-border-color-black-40 da-mb-32 da-analytics-project-table-card da-project-table-card"
-        style={{ height: "100%" }}
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 150px)",
+        }}
       >
         <Row>
           <Col span={24}>
@@ -44,30 +47,30 @@ const AdminList = () => {
                   <th scope="col">Email</th>
                   <th scope="col">Join Date</th>
                   <th scope="col">Plan</th>
-                  <th scope="col">No. of Projects</th>
+                  <th scope="col">No. of Chatbots</th>
                   <th scope="col">Team Size</th>
                   <th scope="col">Action</th>
                 </tr>
               </ParentTableHead>
               <tbody>
-                {admins &&
+                {admins?.length > 0 &&
                   admins?.map((admin) => (
                     <tr key={admin?._id}>
                       <td
                         onClick={() => handleAdminView(admin?._id)}
                         style={{ cursor: "pointer" }}
                       >
-                        {admin?.name}
+                        {admin?.name && admin?.name}
                       </td>
                       <td>
-                        <Tag color="blue">{admin?.email}</Tag>
+                        <Tag color="blue">{admin?.email && admin?.email}</Tag>
                       </td>
-                      <td>{admin?.createdAt.split("T")[0]}</td>
+                      <td>
+                        {admin?.createdAt && admin?.createdAt.split("T")[0]}
+                      </td>
                       <td>{admin?.currentPlan}</td>
-                      <td>{admin?.projects?.length}</td>
-                      <td>
-                        {admin?.members?.length + admin?.managers?.length}
-                      </td>
+                      <td>{admin?.chatbots.length}</td>
+                      <td>{admin?.team.length}</td>
                       <td style={{ cursor: "pointer" }}>
                         {/* View Icon */}
                         <TiEyeOutline

@@ -20,7 +20,10 @@ const VisitorList = () => {
     <>
       <Card
         className="da-border-color-black-40 da-mb-32 da-analytics-project-table-card da-project-table-card"
-        style={{ height: "100%" }}
+        style={{
+          overflowY: "auto",
+          height: "calc(100vh - 150px)",
+        }}
       >
         <Row>
           <Col span={24}>
@@ -33,6 +36,7 @@ const VisitorList = () => {
               <ParentTableHead>
                 <tr>
                   <th scope="col">Country</th>
+                  <th scope="col">Source</th>
                   <th scope="col">State</th>
                   <th scope="col">City</th>
                   <th scope="col">Visit Date</th>
@@ -46,6 +50,11 @@ const VisitorList = () => {
                     <tr key={visitor?._id} style={{ cursor: "pointer" }}>
                       <td>
                         <Tag color="blue">{visitor?.meta?.country_name}</Tag>
+                      </td>
+                      <td>
+                        {visitor?.utm_source?.split("utm_source=")[1]
+                          ? visitor?.utm_source?.split("utm_source=")[1]
+                          : visitor?.utm_source}
                       </td>
                       <td>{visitor?.meta?.state}</td>
                       <td>

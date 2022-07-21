@@ -3,6 +3,14 @@ import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
 import {
+  MemberRoute,
+  AdminRoute,
+  SuperAdminRoute,
+  ProfileRoute,
+} from "./routes";
+import { isUserAction } from "./redux/actions/authActions";
+
+import {
   // -------------- Auth views --------------
   Signup,
   AccountActivation,
@@ -40,18 +48,12 @@ import {
   // -------------- Wildcard --------------
   RandomPageRedirect,
 } from "./views";
-import {
-  MemberRoute,
-  AdminRoute,
-  SuperAdminRoute,
-  ProfileRoute,
-} from "./routes";
-import { refreshTokenAction } from "./redux/actions/authActions";
+
 import "./App.scss";
 
 const App = () => {
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
   const [spinner, setSpinner] = useState(true);
 
@@ -59,11 +61,6 @@ const App = () => {
   useEffect(() => {
     setTimeout(() => setSpinner(false), 2000);
   }, []);
-
-  // Update access token on every refresh
-  useEffect(() => {
-    dispatch(refreshTokenAction());
-  }, [dispatch]);
 
   // If user exists and is on the index page, redirect to dashboard
   useEffect(() => {
@@ -73,13 +70,8 @@ const App = () => {
         history.location.pathname === "/signup" ||
         history.location.pathname === "/login")
     ) {
-      if (user.role === "superadmin") {
-        history.push("/super-admin/dashboard");
-      } else if (user.role === "admin") {
-        history.push("/admin/dashboard");
-      } else if (user.role === "member") {
-        history.push("/member/dashboard");
-      }
+      // Dispatch the user action
+      dispatch(isUserAction({ history }));
     }
   }, [user, history]);
 
