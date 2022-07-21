@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { ObjectId } = mongoose.Schema;
 
 const userSchema = new mongoose.Schema(
   {
@@ -21,6 +20,11 @@ const userSchema = new mongoose.Schema(
     },
     password: {
       type: String,
+    },
+    // Local account or Google
+    accountType: {
+      type: String,
+      default: "local",
     },
     // Normal or admin
     role: {
@@ -46,10 +50,6 @@ const userSchema = new mongoose.Schema(
     activatedAt: {
       type: Date,
     },
-    gender: {
-      type: String,
-      enum: ["Male", "Female"],
-    },
     lastActive: {
       type: Date,
     },
@@ -65,9 +65,9 @@ userSchema.statics.toClientObject = function (user) {
     _id: userObject._id,
     email: userObject.email,
     name: userObject.name,
-    organization: userObject.organization,
     role: userObject.role,
     activated: userObject.activated,
+    currentPlan: userObject.currentPlan,
     createdAt: userObject.createdAt,
     updatedAt: userObject.updatedAt,
   };

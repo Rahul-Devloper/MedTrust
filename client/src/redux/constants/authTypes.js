@@ -2,4 +2,8 @@
 export const AUTH_TYPES = {
   AUTH: "AUTH",
   LOGOUT: "LOGOUT",
+  IS_USER: "IS_USER",
+  IS_SUPER_ADMIN: "IS_SUPER_ADMIN",
+  IS_ADMIN: "IS_ADMIN",
+  IS_MEMBER: "IS_MEMBER",
 };

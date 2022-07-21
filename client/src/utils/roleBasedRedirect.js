@@ -41,3 +41,15 @@ export const redirectToDashboard = (user) => {
     return "/member/dashboard";
   }
 };
+
+export const RedirectOnLogout = (res) => {
+  if (!res.data.user) {
+    window.location.href = "/";
+  } else if (res.data.user?.role === "superadmin") {
+    window.location.href = "/super-admin/dashboard";
+  } else if (res.data.user?.role === "admin") {
+    window.location.href = "/admin/chatbots";
+  } else if (res.data.user?.role === "member") {
+    window.location.href = "/member/dashboard";
+  }
+};

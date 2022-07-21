@@ -1,14 +1,14 @@
 import { ACTION_TYPES } from "../constants/actionTypes";
 import { AUTH_TYPES } from "../constants/authTypes";
+import { signUp, login, googleCreateOrLogin, logout } from "../../api/auth";
+import { currentUser } from "../../api/user";
+import { currentAdmin } from "../../api/admin";
+import { currentSuperAdmin } from "../../api/superAdmin";
+import { currentMember } from "../../api/member";
 import {
-  signUp,
-  login,
-  googleCreateOrLogin,
-  refreshAccessToken,
-  logout,
-} from "../../api/auth";
-import { toast } from "react-toastify";
-import { RoleBasedRedirect } from "../../utils/roleBasedRedirect";
+  RoleBasedRedirect,
+  RedirectOnLogout,
+} from "../../utils/roleBasedRedirect";
 import {
   SuccessNotification,
   ErrorNotification,
@@ -91,8 +91,6 @@ export const loginAction = (data) => async (dispatch) => {
       },
     });
 
-    localStorage.setItem("firstLogin", true);
-
     // Dispatch a success/error login notify
     dispatch({
       type: ACTION_TYPES.ALERT,
@@ -143,7 +141,7 @@ export const googleLoginAction = (data) => async (dispatch) => {
 
     // Error toast message
     if (res.data.error === true) {
-      toast.error(res.data.type[0].message);
+      ErrorNotification(res.data.type[0].message);
       errorMessage = res.data.type[0].message;
       return;
     }
@@ -156,8 +154,6 @@ export const googleLoginAction = (data) => async (dispatch) => {
         user: res.data.user,
       },
     });
-
-    localStorage.setItem("firstLogin", true);
 
     // Dispatch a success/error login notify
     dispatch({
@@ -181,47 +177,207 @@ export const googleLoginAction = (data) => async (dispatch) => {
 };
 
 /********************************************
-  Update access token using refresh token
+  Is user action to check if user is logged in
 *********************************************/
-export const refreshTokenAction = () => async (dispatch) => {
-  const firstLogin = localStorage.getItem("firstLogin");
-  if (firstLogin) {
-    // Dispatch a loading alert
+export const isUserAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  });
+
+  try {
+    let errorMessage = "";
+
+    // Fetch response from server
+    const res = await currentUser();
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      data.setSpinner(false);
+      return;
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_USER,
+      payload: {
+        user: res.data.user,
+      },
+    });
+
+    // Dispatch a success/error login notify
     dispatch({
       type: ACTION_TYPES.ALERT,
-      payload: { loading: true },
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
     });
-    try {
-      // Fetch response from server
-      const res = await refreshAccessToken();
 
-      // Dispatch token and user
-      dispatch({
-        type: AUTH_TYPES.AUTH,
-        payload: {
-          accessToken: res.data.accessToken,
-          user: res.data.user,
-        },
-      });
+    // Redirect user based on role
+    RoleBasedRedirect(res, data.history);
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: "IS_USER_ACTION_ERROR",
+      },
+    });
+  }
+};
 
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: { loading: false },
-      });
-    } catch (error) {
-      // Dispatch a error notify
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: {
-          message: "REFRESH_TOKEN_ACTION_ERROR",
-        },
-      });
+/********************************************
+  Is user super admin action
+*********************************************/
+export const isSuperAdminAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  });
 
-      dispatch({
-        type: ACTION_TYPES.ALERT,
-        payload: { loading: false },
-      });
+  try {
+    let errorMessage = "";
+
+    // Fetch response from server
+    const res = await currentSuperAdmin();
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      data.setOk(false);
+      return;
     }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_SUPER_ADMIN,
+      payload: {
+        user: res.data.user,
+      },
+    });
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
+    });
+
+    data.setOk(true);
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: "IS_SUPER_ADMIN_ACTION_ERROR",
+      },
+    });
+  }
+};
+
+/********************************************
+  Is user admin action
+*********************************************/
+export const isAdminAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  });
+
+  try {
+    let errorMessage = "";
+
+    // Fetch response from server
+    const res = await currentAdmin();
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      data.setOk(false);
+      return;
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_ADMIN,
+      payload: {
+        user: res.data.user,
+      },
+    });
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
+    });
+
+    data.setOk(true);
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: "IS_ADMIN_ACTION_ERROR",
+      },
+    });
+  }
+};
+
+/********************************************
+  Is user member action
+*********************************************/
+export const isMemberAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  });
+
+  try {
+    let errorMessage = "";
+
+    // Fetch response from server
+    const res = await currentMember();
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message);
+      errorMessage = res.data.type[0].message;
+      data.setOk(false);
+      return;
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_MEMBER,
+      payload: {
+        user: res.data.user,
+      },
+    });
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
+    });
+
+    data.setOk(true);
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: "IS_MEMBER_ACTION_ERROR",
+      },
+    });
   }
 };
 
@@ -244,8 +400,6 @@ export const logoutAction = () => async (dispatch) => {
       payload: {},
     });
 
-    localStorage.removeItem("firstLogin");
-
     // Dispatch a success/error logout alert
     dispatch({
       type: ACTION_TYPES.ALERT,
@@ -258,12 +412,15 @@ export const logoutAction = () => async (dispatch) => {
       type: ACTION_TYPES.ALERT,
       payload: { loading: false },
     });
+
+    // Redirect user to login page
+    RedirectOnLogout(res);
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "REFRESH_TOKEN_ACTION_ERROR",
+        message: "LOGOUT_ACTION_ERROR",
       },
     });
 

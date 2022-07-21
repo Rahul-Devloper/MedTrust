@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const UserService = require("../services/userService");
 const AdminService = require("../services/adminService");
 const { passwordValidator } = require("../utils/validations");
@@ -17,6 +18,7 @@ exports.currentAdmin = async (req, res) => {
     res.status(200).json({
       admin: true,
       message: "Welcome admin!",
+      user: User.toClientObject(user),
     });
   } else {
     res.status(403).json({
@@ -31,7 +33,7 @@ exports.currentAdmin = async (req, res) => {
 ***********************************/
 exports.teamInvite = async (req, res) => {
   // Check if user is already present
-  const { email, role, isAdmin } = req.body;
+  const { email, role } = req.body;
 
   const user = await UserService.findOneUser({ email });
 
@@ -57,7 +59,6 @@ exports.teamInvite = async (req, res) => {
 
     // Update invitation in admins invitations array
     const admin = await AdminService.adminTeamInvitation(
-      isAdmin,
       req.user._id,
       invitation
     );

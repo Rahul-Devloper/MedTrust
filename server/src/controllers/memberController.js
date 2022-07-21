@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const UserService = require("../services/userService");
 
 /**********************************
@@ -12,6 +13,7 @@ exports.currentMember = async (req, res) => {
     res.status(200).json({
       user: true,
       message: "Welcome member!",
+      user: User.toClientObject(user),
     });
   } else {
     res.status(403).json({

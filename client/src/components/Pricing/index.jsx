@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Divider, Row, Col, Switch, Button, Tag } from "antd";
 import PricingItem from "./item";
-import { getAllPlans } from "../../api/admin";
+import { getAllPlans } from "../../api/plan";
 import { useSelector } from "react-redux";
 import { manageSubscription } from "../../api/stripe";
 

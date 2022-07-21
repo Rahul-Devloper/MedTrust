@@ -1,3 +1,4 @@
+const User = require("../models/user");
 const UserService = require("../services/userService");
 const SuperAdminService = require("../services/superAdminService");
 
@@ -13,6 +14,7 @@ exports.currentSuperAdmin = async (req, res) => {
     res.status(200).json({
       superadmin: true,
       message: "Welcome Super admin!",
+      user: User.toClientObject(user),
     });
   } else {
     res.status(403).json({
