@@ -3,7 +3,6 @@ const User = require("../models/user");
 const UserService = require("../services/userService");
 const AdminService = require("../services/adminService");
 const SuperAdminService = require("../services/superAdminService");
-const User = require("../models/user");
 const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");

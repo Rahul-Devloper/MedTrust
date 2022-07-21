@@ -21,7 +21,7 @@ exports.currentUser = async (req, res) => {
 
   if (user) {
     res.status(200).json({
-      user: true,
+      user: User.toClientObject(user),
       message: "Oh yes!",
       subData,
     });

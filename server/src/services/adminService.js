@@ -54,19 +54,11 @@ class AdminService {
   };
 
   // Admin team invite
-  static adminTeamInvitation = async (isAdmin, userId, invitation) => {
+  static adminTeamInvitation = async (userId, invitation) => {
     try {
-      let admin;
-      if (!isAdmin) {
-        const manager = await Manager.findOne({ user: userId }).exec();
-        admin = await Admin.findOne({ _id: manager.invitedBy }).exec();
-        admin.invitations.push(invitation);
-        await admin.save();
-      } else {
-        admin = await Admin.findOne({ user: userId }).exec();
-        admin.invitations.push(invitation);
-        await admin.save();
-      }
+      const admin = await Admin.findOne({ user: userId }).exec();
+      admin.invitations.push(invitation);
+      await admin.save();
 
       return admin;
     } catch (error) {
