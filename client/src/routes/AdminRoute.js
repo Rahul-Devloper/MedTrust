@@ -1,31 +1,22 @@
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
 import VerticalLayout from "../layouts/VerticalLayout";
-import { currentAdmin } from "../api/admin";
+import { useDispatch } from "react-redux";
+import { isAdminAction } from "../redux/actions/authActions";
 
 const AdminRoute = ({ children, ...restProps }) => {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [ok, setOk] = useState(false);
 
   // Check if current user is admin
   useEffect(() => {
-    if (user) {
-      currentAdmin()
-        .then(() => {
-          setOk(true);
-        })
-        .catch((error) => {
-          setOk(false);
-          console.log("ADMIN_ROUTE_ERROR", error);
-        });
-    }
-  }, [user]);
+    dispatch(isAdminAction({ setOk }));
+  }, []);
 
   return (
     <>
-      {ok && user !== undefined ? (
+      {ok ? (
         <VerticalLayout>
           <Route {...restProps} render={children} />
         </VerticalLayout>

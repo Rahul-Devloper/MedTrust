@@ -1,31 +1,22 @@
 import React, { useState, useEffect } from "react";
 import { Route } from "react-router-dom";
-import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
 import VerticalLayout from "../layouts/VerticalLayout";
-import { currentMember } from "../api/member";
+import { useDispatch } from "react-redux";
+import { isMemberAction } from "../redux/actions/authActions";
 
 const MemberRoute = ({ children, ...restProps }) => {
-  const { user } = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
   const [ok, setOk] = useState(false);
 
-  // Check if current user is user
+  // Check if current user is a member
   useEffect(() => {
-    if (user) {
-      currentMember()
-        .then(() => {
-          setOk(true);
-        })
-        .catch((error) => {
-          setOk(false);
-          console.log("USER_ROUTE_ERROR", error);
-        });
-    }
-  }, [user]);
+    dispatch(isMemberAction({ setOk }));
+  }, []);
 
   return (
     <>
-      {ok && user !== undefined ? (
+      {ok ? (
         <VerticalLayout>
           <Route {...restProps} render={children} />
         </VerticalLayout>
