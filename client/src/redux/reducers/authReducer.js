@@ -10,6 +10,14 @@ const authReducer = (state = initialState, action) => {
     case AUTH_TYPES.AUTH:
       Cookies.set("access", action?.payload.accessToken, { expires: 0.0125 }); // 18 minutes
       return action?.payload;
+    case AUTH_TYPES.IS_USER:
+      return action?.payload;
+    case AUTH_TYPES.IS_SUPER_ADMIN:
+      return action?.payload;
+    case AUTH_TYPES.IS_ADMIN:
+      return action?.payload;
+    case AUTH_TYPES.IS_MEMBER:
+      return action?.payload;
     case AUTH_TYPES.LOGOUT:
       Cookies.remove("access");
       return action.payload;

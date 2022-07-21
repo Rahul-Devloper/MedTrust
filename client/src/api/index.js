@@ -29,32 +29,27 @@ api.interceptors.response.use(
   (res) => {
     return res;
   },
-  (err) => {
-    if (err.response.status === 401 && localStorage.getItem("firstLogin")) {
-      return api
-        .post(
-          "/refresh_token",
-          {},
-          {
-            withCredentials: true,
-            credentials: "include",
-          }
-        )
-        .then((res) => {
-          // Save the new token to the browser cookie
-          Cookies.set("access", res.data.accessToken, { expires: 0.0125 }); // 14 minutes
-          // Dispatch action to update user and token in the store
-          store.dispatch({
-            type: AUTH_TYPES.AUTH,
-            payload: {
-              accessToken: res.data.accessToken,
-              user: res.data.user,
-            },
-          });
-
-          // Retry the request
-          return api.request(err.config);
-        });
+  async (err) => {
+    if (err?.response.status === 401) {
+      const res = await api.post(
+        "/refresh_token",
+        {},
+        {
+          withCredentials: true,
+          credentials: "include",
+        }
+      );
+      // Save the new token to the browser cookie
+      Cookies.set("access", res.data.accessToken, { expires: 0.0125 }); // 14 minutes
+      // Dispatch action to update user and token in the store
+      store.dispatch({
+        type: AUTH_TYPES.AUTH,
+        payload: {
+          accessToken: res.data.accessToken,
+          user: res.data.user,
+        },
+      });
+      return await api.request(err.config);
     }
     return Promise.reject(err);
   }
