@@ -7,7 +7,7 @@ export default function ActionButton() {
   return (
     <Col>
       <Row align="middle">
-        <Button type="primary" className="da-mr-sm-8 da-mr-16" ghost="true">
+        <Button type="primary" className="hp-mr-sm-8 hp-mr-16" ghost="true">
           Action
         </Button>
 

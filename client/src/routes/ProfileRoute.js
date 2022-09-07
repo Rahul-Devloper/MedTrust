@@ -50,7 +50,7 @@ const ProfileRoute = ({ children, ...restProps }) => {
           type="text"
           icon={
             <RiMore2Line
-              className="da-text-color-black-100 da-text-color-dark-0"
+              className="hp-text-color-black-100 hp-text-color-dark-0"
               size={24}
             />
           }
@@ -63,17 +63,17 @@ const ProfileRoute = ({ children, ...restProps }) => {
     <>
       {ok && user !== undefined ? (
         <VerticalLayout>
-          <Row gutter={[32, 32]} className="da-mb-32">
+          <Row gutter={[32, 32]} className="hp-mb-32">
             <Drawer
               title={moreBtn()}
-              className="da-profile-mobile-menu"
+              className="hp-profile-mobile-menu"
               placement="left"
               closable={true}
               onClose={onClose}
               visible={visible}
               closeIcon={
                 <RiCloseFill
-                  className="remix-icon da-text-color-black-80"
+                  className="remix-icon hp-text-color-black-80"
                   size={24}
                 />
               }
@@ -96,26 +96,26 @@ const ProfileRoute = ({ children, ...restProps }) => {
             </Col>
 
             <Col span={24}>
-              <Row className="da-profile-mobile-menu-btn da-bg-color-black-0 da-bg-color-dark-100 da-border-radius da-py-12 da-px-sm-8 da-px-24 da-mb-16">
+              <Row className="hp-profile-mobile-menu-btn hp-bg-color-black-0 hp-bg-color-dark-100 hp-border-radius hp-py-12 hp-px-sm-8 hp-px-24 hp-mb-16">
                 <Button
-                  className="da-p-0"
+                  className="hp-p-0"
                   type="text"
                   icon={
                     <RiMenuFill
                       size={24}
-                      className="remix-icon da-text-color-black-80 da-text-color-dark-30"
+                      className="remix-icon hp-text-color-black-80 hp-text-color-dark-30"
                     />
                   }
                   onClick={showDrawer}
                 ></Button>
               </Row>
 
-              <Row className="da-bg-color-black-0 da-bg-color-dark-100 da-border-radius da-pr-sm-16 da-pr-32">
+              <Row className="hp-bg-color-black-0 hp-bg-color-dark-100 hp-border-radius hp-pr-sm-16 hp-pr-32">
                 <MenuProfile moreBtn={moreBtn} />
 
                 <Col
                   flex="1 1"
-                  className="da-pl-sm-16 da-pl-32 da-py-sm-24 da-py-32 da-pb-24 da-overflow-hidden"
+                  className="hp-pl-sm-16 hp-pl-32 hp-py-sm-24 hp-py-32 hp-pb-24 hp-overflow-hidden"
                 >
                   {/* Children */}
                   <Route {...restProps} render={children} />

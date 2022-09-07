@@ -18,11 +18,11 @@ const HeaderSearch = (props) => {
         {...props.inputFocusProp}
         placeholder="Search..."
         prefix={
-          <RiSearchLine className="site-form-item-icon da-text-color-black-80 da-text-color-dark-20" />
+          <RiSearchLine className="site-form-item-icon hp-text-color-black-80 hp-text-color-dark-20" />
         }
       />
 
-      <div className="da-header-search-result">
+      <div className="hp-header-search-result">
         {autocompleteState.isOpen &&
           autocompleteState.collections.map((collection, index) => {
             const { source, items } = collection;
@@ -33,7 +33,7 @@ const HeaderSearch = (props) => {
                   {items.map(
                     (item, index) =>
                       index < 4 && (
-                        <li key={index} className="da-font-weight-500">
+                        <li key={index} className="hp-font-weight-500">
                           <Link to={item.url} onClick={linkHandleClick}>
                             {item.title}
                           </Link>

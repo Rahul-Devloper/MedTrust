@@ -18,14 +18,14 @@ const VerticalLayout = (props) => {
   const customize = useSelector((state) => state.customize);
 
   return (
-    <Layout className="da-app-layout">
+    <Layout className="hp-app-layout">
       {/* Sidebar */}
       <Sidebar visible={visible} setVisible={setVisible} />
 
-      <Layout className="da-bg-color-dark-90">
+      <Layout className="hp-bg-black-20 hp-bg-color-dark-90">
         <MenuHeader setVisible={setVisible} />
 
-        <Content className="da-content-main">
+        <Content className="hp-content-main">
           <Row justify="center">
             {customize.contentWidth === "full" && (
               <Col span={24}>{children}</Col>

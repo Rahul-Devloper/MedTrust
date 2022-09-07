@@ -10,12 +10,12 @@ import { useSelector } from "react-redux";
 
 const MenuProfile = (props) => {
   const { user } = useSelector((state) => state.auth);
-  const menuIconClass = "remix-icon da-mr-8";
+  const menuIconClass = "remix-icon hp-mr-8";
 
   const menuFooterItem = () => {
     if (props.footer !== "none") {
       return (
-        <div className="da-profile-menu-footer">
+        <div className="hp-profile-menu-footer">
           <img src={menuImg} alt="Profile Image" />
         </div>
       );
@@ -25,7 +25,7 @@ const MenuProfile = (props) => {
   const moreBtn = () => {
     if (props.moreBtnCheck !== "none") {
       return (
-        <Col className="da-menu-header-btn da-pr-16 da-mb-12 da-text-right">
+        <Col className="hp-menu-header-btn hp-pr-16 hp-mb-12 hp-text-right">
           {props.moreBtn()}
         </Col>
       );
@@ -37,24 +37,24 @@ const MenuProfile = (props) => {
   const splitLocation = pathname.split("/");
 
   return (
-    <Col flex="240px" className="da-profile-menu da-py-24">
-      <div className="da-w-100">
-        <div className="da-profile-menu-header da-mt-md-16 da-text-center">
+    <Col flex="240px" className="hp-profile-menu hp-py-24">
+      <div className="hp-w-100">
+        <div className="hp-profile-menu-header hp-mt-md-16 hp-text-center">
           {moreBtn()}
 
           <Badge>
             <Avatar size={80} src={avatar} />
           </Badge>
 
-          <h3 className="da-mt-24 da-mb-4">{user?.name}</h3>
-          <a href={`mailto:${user?.email}`} className="da-p1-body">
+          <h3 className="hp-mt-24 hp-mb-4">{user?.name}</h3>
+          <a href={`mailto:${user?.email}`} className="hp-p1-body">
             {user?.email}
           </a>
         </div>
 
         <Menu
           mode="inline"
-          className="da-w-100 da-profile-menu-body"
+          className="hp-w-100 hp-profile-menu-body"
           theme={"light"}
         >
           {/* Personal Information */}
@@ -62,7 +62,7 @@ const MenuProfile = (props) => {
             key="1"
             icon={<User set="curved" className={menuIconClass} />}
             className={`
-              da-mb-16 da-pl-24 da-pr-32
+              hp-mb-16 hp-pl-24 hp-pr-32
               ${
                 splitLocation[splitLocation.length - 1] === "information"
                   ? "ant-menu-item-selected"
@@ -80,7 +80,7 @@ const MenuProfile = (props) => {
               key="2"
               icon={<Discount set="curved" className={menuIconClass} />}
               className={`
-              da-mb-16 da-pl-24 da-pr-32
+              hp-mb-16 hp-pl-24 hp-pr-32
               ${
                 splitLocation[splitLocation.length - 1] === "subscription"
                   ? "ant-menu-item-selected"
@@ -98,7 +98,7 @@ const MenuProfile = (props) => {
             key="3"
             icon={<Setting set="curved" className={menuIconClass} />}
             className={`
-              da-mb-16 da-pl-24 da-pr-32
+              hp-mb-16 hp-pl-24 hp-pr-32
               ${
                 splitLocation[splitLocation.length - 1] === "security"
                   ? "ant-menu-item-selected"
@@ -115,7 +115,7 @@ const MenuProfile = (props) => {
             key="4"
             icon={<Password set="curved" className={menuIconClass} />}
             className={`
-              da-mb-16 da-pl-24 da-pr-32
+              hp-mb-16 hp-pl-24 hp-pr-32
               ${
                 splitLocation[splitLocation.length - 1] === "password"
                   ? "ant-menu-item-selected"

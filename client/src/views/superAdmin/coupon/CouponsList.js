@@ -54,13 +54,13 @@ const CouponsList = ({ history }) => {
   return (
     <>
       <Card
-        className="da-border-color-black-40 da-mb-32 da-analytics-project-table-card da-project-table-card"
+        className="hp-border-color-black-40 hp-mb-32 hp-analytics-project-table-card hp-project-table-card"
         style={{ height: "100%" }}
       >
         <Row>
           <Col span={24}>
             <Row justify="space-between">
-              <h3 className="da-mb-16">Coupons List</h3>
+              <h3 className="hp-mb-16">Coupons List</h3>
               <Button type="primary" onClick={handleCouponCreate}>
                 Create Coupon
               </Button>

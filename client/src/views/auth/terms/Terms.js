@@ -4,11 +4,11 @@ import { Row, Col, Button } from "antd";
 
 const Terms = () => {
   return (
-    <Row className="da-bg-color-primary-4 da-bg-color-dark-100">
-      <Col className="da-error-content da-py-32" span={24}>
-        <Row className="da-h-100" align="middle" justify="center">
+    <Row className="hp-bg-color-primary-4 hp-bg-color-dark-100">
+      <Col className="hp-error-content hp-py-32" span={24}>
+        <Row className="hp-h-100" align="middle" justify="center">
           <Col xxl={11} xl={15} lg={20} md={20} sm={24}>
-            <h1 className="da-mb-sm-0">Terms of use</h1>
+            <h1 className="hp-mb-sm-0">Terms of use</h1>
             {/* Divider Line */}
             <br />
             <h3>Introduction</h3>
@@ -171,7 +171,7 @@ const Terms = () => {
             <br />
             <br />
             <Col
-              className="da-other-links da-mt-24"
+              className="hp-other-links hp-mt-24"
               style={{
                 justifyContent: "center",
                 display: "flex",
@@ -179,7 +179,7 @@ const Terms = () => {
             >
               <Link
                 to="/login"
-                className="da-text-color-black-80 da-text-color-dark-40"
+                className="hp-text-color-black-80 hp-text-color-dark-40"
               >
                 <Button type="primary">Go back</Button>
               </Link>

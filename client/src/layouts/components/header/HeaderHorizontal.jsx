@@ -29,9 +29,9 @@ const HeaderHorizontal = (props) => {
 
   useEffect(() => {
     if (customize.navigationFull) {
-      setHeaderClass(" da-header-full");
+      setHeaderClass(" hp-header-full");
     } else if (customize.navigationBg) {
-      setHeaderClass(" da-header-bg");
+      setHeaderClass(" hp-header-bg");
     } else {
       setHeaderClass("");
     }
@@ -71,22 +71,22 @@ const HeaderHorizontal = (props) => {
   const headerChildren = () => {
     return (
       <Row
-        className="da-w-100 da-position-relative"
+        className="hp-w-100 hp-position-relative"
         align="middle"
         justify="space-between"
       >
         <Col>
           <MenuLogo />
 
-          <Col className="da-mobile-sidebar-button">
+          <Col className="hp-mobile-sidebar-button">
             <Button
-              className="da-mobile-sidebar-button"
+              className="hp-mobile-sidebar-button"
               type="text"
               onClick={showDrawer}
               icon={
                 <RiMenuFill
                   size={24}
-                  className="remix-icon da-text-color-black-80"
+                  className="remix-icon hp-text-color-black-80"
                 />
               }
             />
@@ -94,8 +94,8 @@ const HeaderHorizontal = (props) => {
         </Col>
 
         {!searchHeader && (
-          <Col flex="1 0 0" className="da-mx-24">
-            <Row justify="center" className="da-w-100">
+          <Col flex="1 0 0" className="hp-mx-24">
+            <Row justify="center" className="hp-w-100">
               <Col span={24}>
                 <MenuHorizontal />
               </Col>
@@ -106,8 +106,8 @@ const HeaderHorizontal = (props) => {
         <Col
           flex="1"
           style={{ display: !searchHeader ? "none" : "block" }}
-          className={`da-pl-md-0 da-pr-md-0 da-pl-32 da-pr-16 da-header-search ${
-            searchActive && "da-header-search-active"
+          className={`hp-pl-md-0 hp-pr-md-0 hp-pl-32 hp-pr-16 hp-header-search ${
+            searchActive && "hp-header-search-active"
           }`}
         >
           <HeaderSearch
@@ -118,12 +118,12 @@ const HeaderHorizontal = (props) => {
 
         <Col>
           <Row align="middle">
-            <Col className="da-d-flex-center da-mr-4">
+            <Col className="hp-d-flex-center hp-mr-4">
               {!searchHeader ? (
                 <Button
                   type="text"
                   icon={
-                    <Search set="curved" className="da-text-color-black-60" />
+                    <Search set="curved" className="hp-text-color-black-60" />
                   }
                   onClick={() => searchClick()}
                 />
@@ -131,7 +131,7 @@ const HeaderHorizontal = (props) => {
                 <Button
                   type="text"
                   icon={
-                    <RiCloseLine size={24} className="da-text-color-black-60" />
+                    <RiCloseLine size={24} className="hp-text-color-black-60" />
                   }
                   onClick={() => setSearchHeader(false)}
                 />
@@ -148,8 +148,8 @@ const HeaderHorizontal = (props) => {
   };
 
   return (
-    <Header className={"da-header-horizontal" + headerClass}>
-      <Row justify="center" className="da-w-100">
+    <Header className={"hp-header-horizontal" + headerClass}>
+      <Row justify="center" className="hp-w-100">
         {customize.contentWidth == "full" && (
           <Col span={24}>{headerChildren()}</Col>
         )}

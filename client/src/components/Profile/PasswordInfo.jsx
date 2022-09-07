@@ -4,13 +4,13 @@ import { Row, Col, Divider, Form, Input, Button } from "antd";
 import { InfoNotification } from "../Notification/ToastNotification";
 
 const PasswordInfo = () => {
-  const dividerClass = "da-border-color-black-40 da-border-color-dark-80";
+  const dividerClass = "hp-border-color-black-40 hp-border-color-dark-80";
 
   return (
     <Row>
       <Col span={24}>
         <h2>Change Password</h2>
-        <p className="da-p1-body da-mb-0">
+        <p className="hp-p1-body hp-mb-0">
           Set a unique password to protect your account.
         </p>
 
@@ -21,7 +21,7 @@ const PasswordInfo = () => {
         <Form layout="vertical" name="basic">
           <Form.Item
             label="Old Password :"
-            className="da-mb-8"
+            className="hp-mb-8"
             rules={[{ required: true, message: "Please enter your password" }]}
             name="old-password"
           >
@@ -30,7 +30,7 @@ const PasswordInfo = () => {
 
           <Form.Item
             label="New Password :"
-            className="da-mb-8"
+            className="hp-mb-8"
             rules={[{ required: true, message: "Please enter password" }]}
             name="new-password"
           >
@@ -39,7 +39,7 @@ const PasswordInfo = () => {
 
           <Form.Item
             label="Confirm Password :"
-            className="da-mb-8"
+            className="hp-mb-8"
             rules={[{ required: true, message: "Please enter your password" }]}
             name="confirm-new-password"
           >

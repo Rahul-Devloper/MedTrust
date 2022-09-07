@@ -8,80 +8,80 @@ const HeaderNotifications = () => {
   const direction = useSelector((state) => state.customize.direction);
 
   const notificationMenu = (
-    <div className="da-py-16 da-bg-color-black-0 da-bg-color-dark-100 da-border-color-black-40 da-border-color-dark-80 da-border-radius da-border-1">
-      <div className="da-px-16">
+    <div className="hp-py-16 hp-bg-color-black-0 hp-bg-color-dark-100 hp-border-color-black-40 hp-border-color-dark-80 hp-border-radius hp-border-1">
+      <div className="hp-px-16">
         <Row align="middle" justify="space-between">
-          <Col className="da-p1-body da-font-weight-500 da-text-color-black-100 da-text-color-dark-10 da-text-color-dark-0 da-mr-64">
+          <Col className="hp-p1-body hp-font-weight-500 hp-text-color-black-100 hp-text-color-dark-10 hp-text-color-dark-0 hp-mr-64">
             Notifications
           </Col>
 
-          <Col className="da-bg-color-primary-1 da-border-radius-full da-badge-text da-text-color-black-0 da-py-4 da-px-6 da-ml-24">
+          <Col className="hp-bg-color-primary-1 hp-border-radius-full hp-badge-text hp-text-color-black-0 hp-py-4 hp-px-6 hp-ml-24">
             0 New
           </Col>
         </Row>
       </div>
 
-      <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
+      <Divider className="hp-my-16 hp-mx-0 hp-bg-color-black-40 hp-bg-color-dark-80" />
 
-      {/* <div className="da-px-16">
+      {/* <div className="hp-px-16">
         <Row align="middle">
-          <Col className="da-mr-8">
+          <Col className="hp-mr-8">
             <Avatar
               size={32}
               icon={
                 <Message
                   size={17}
-                  className="da-text-color-primary-1 remix-icon"
+                  className="hp-text-color-primary-1 remix-icon"
                 />
               }
-              className="da-d-flex-center-full"
+              className="hp-d-flex-center-full"
             />
           </Col>
 
           <Col>
-            <span className="da-d-block da-w-100 da-mb-4 da-badge-text da-font-weight-500 da-text-color-black-100 da-text-color-dark-10">
+            <span className="hp-d-block hp-w-100 hp-mb-4 hp-badge-text hp-font-weight-500 hp-text-color-black-100 hp-text-color-dark-10">
               New message received
             </span>
 
-            <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
+            <span className="hp-d-block hp-input-description hp-font-weight-500 hp-text-color-black-80 hp-text-color-dark-40">
               8 unread messages.
             </span>
           </Col>
         </Row>
       </div>
 
-      <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" />
+      <Divider className="hp-my-16 hp-mx-0 hp-bg-color-black-40 hp-bg-color-dark-80" />
 
-      <div className="da-px-16">
+      <div className="hp-px-16">
         <Row align="middle">
-          <Col className="da-mr-8">
+          <Col className="hp-mr-8">
             <Avatar
               size={32}
               icon={
                 <Calendar
                   size={17}
-                  className="da-text-color-primary-1 remix-icon"
+                  className="hp-text-color-primary-1 remix-icon"
                 />
               }
-              className="da-d-flex-center-full"
+              className="hp-d-flex-center-full"
             />
           </Col>
 
           <Col>
-            <span className="da-d-block da-w-100 da-mb-4 da-badge-text da-font-weight-500 da-text-color-black-100 da-text-color-dark-10">
+            <span className="hp-d-block hp-w-100 hp-mb-4 hp-badge-text hp-font-weight-500 hp-text-color-black-100 hp-text-color-dark-10">
               Upcoming Events
             </span>
 
-            <span className="da-d-block da-input-description da-font-weight-500 da-text-color-black-80 da-text-color-dark-40">
+            <span className="hp-d-block hp-input-description hp-font-weight-500 hp-text-color-black-80 hp-text-color-dark-40">
               You have 4 events this week.
             </span>
           </Col>
         </Row>
       </div> */}
 
-      {/* <Divider className="da-my-16 da-mx-0 da-bg-color-black-40 da-bg-color-dark-80" /> */}
+      {/* <Divider className="hp-my-16 hp-mx-0 hp-bg-color-black-40 hp-bg-color-dark-80" /> */}
 
-      <div className="da-px-16">
+      <div className="hp-px-16">
         <Button type="primary" block disabled={true}>
           Clear all notifications
         </Button>
@@ -90,14 +90,14 @@ const HeaderNotifications = () => {
   );
 
   return (
-    <Col className="da-d-flex-center da-mr-sm-12 da-mr-16">
+    <Col className="hp-d-flex-center hp-mr-sm-12 hp-mr-16">
       <Button
         type="text"
         icon={
           <Dropdown overlay={notificationMenu} placement="bottomRight">
-            <div className="da-position-relative">
+            <div className="hp-position-relative">
               <div
-                className="da-position-absolute"
+                className="hp-position-absolute"
                 style={
                   direction === "rtl"
                     ? { left: -5, top: -5 }
@@ -107,7 +107,7 @@ const HeaderNotifications = () => {
                 <Badge dot status="processing" />
               </div>
 
-              <Notification set="curved" className="da-text-color-black-60" />
+              <Notification set="curved" className="hp-text-color-black-60" />
             </div>
           </Dropdown>
         }

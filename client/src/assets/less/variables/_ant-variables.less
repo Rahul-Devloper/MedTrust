@@ -1,26 +1,5 @@
 @import "../../../../node_modules/antd/lib/style/themes/default.less";
 
-// Sidebar Tooltip Text Color
-.ant-tooltip-inner {
-    a {
-        color: #0010f7;
-    }
-}
-
-// Sidebar title menu button
-.ant-drawer-header-title {
-    button {
-        margin-top: 30px;
-        
-       svg {
-            &:hover {
-                // Enlarge the button
-                transform: scale(1.3);
-            }
-        }
-    }
-}
-
 // ANT DESIGN VARIABLES-For full variable list you can visit https://github.com/ant-design/ant-design/blob/master/components/style/themes/default.less
 @font-family: @font-family;
 @primary-color: @primary-1;
@@ -38,6 +17,8 @@
 
 @font-size-base: 14px; // major text font size
 
+@border-radius-xxl: 24px;
+@border-radius-xl: 15px;
 @border-radius-lg: 10px;
 @border-radius-base: 7px;
 @border-radius-sm: 4px;
@@ -56,11 +37,11 @@
 @link-active-color: @primary-2;
 
 // Borders
-@border-color-base: @b-40;
+@border-color-base: @b-60;
 
 // Disabled states
 @disabled-color: @b-60;
-@disabled-bg: @b-40;
+@disabled-bg: @b-20;
 @disabled-color-dark: fade(#fff, 35%);
 
 // Button
@@ -94,11 +75,11 @@
 @input-icon-color: @primary-1;
 @input-addon-bg: @b-20;
 
-//Input Number
+// Input Number
 @input-number-handler-hover-bg: @primary-2;
 @input-number-handler-active-bg: @b-0;
 
-//Icon class
+// Icon class
 @iconfont-css-prefix: remix-icon;
 
 // Header
@@ -110,10 +91,12 @@
 @menu-highlight-color: @primary-2;
 @menu-inline-submenu-bg: @b-0;
 @menu-item-active-bg: @primary-4;
+@menu-item-active-border-width: 2px;
 @menu-item-group-title-font-size: @caption;
 @menu-item-group-title-color: @b-80;
 @menu-item-color: @b-80;
-@menu-item-active-border-width: 2px;
+
+@menu-dark-item-active-bg: @primary-1;
 
 // Breadcrumb
 @breadcrumb-base-color: @primary-1;
@@ -203,6 +186,9 @@
 // Rate
 @rate-star-color: @warning-1;
 @rate-star-bg: @b-40;
+
+// Card
+@card-radius: @border-radius-xxl;
 
 // Avatar
 @avatar-color: @primary-1;

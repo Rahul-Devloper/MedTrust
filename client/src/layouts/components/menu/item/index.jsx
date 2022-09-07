@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { Menu } from "antd";
+import { Menu, Tag } from "antd";
 
 import { superAdminNav, adminNav, memberNav } from "../../../navigation";
 
@@ -32,7 +32,7 @@ const MenuItem = (props) => {
     return (
       // Level 1
       <Menu.Item
-        key={item.id}
+        key={index}
         icon={item.icon}
         onClick={onClose}
         className={
@@ -46,7 +46,22 @@ const MenuItem = (props) => {
             : "ant-menu-item-selected-in-active"
         }
       >
-        <Link to={item.navLink}>{item.title}</Link>
+        {item.tag ? (
+          <a
+            href="#"
+            className="hp-d-flex hp-align-items-center hp-d-flex-between"
+          >
+            <span>{item.title}</span>
+            <Tag
+              className="hp-mr-0 hp-border-none hp-text-color-black-100 hp-bg-success-3 hp-border-radius-full hp-px-8"
+              style={{ marginRight: -14 }}
+            >
+              {item.tag}
+            </Tag>
+          </a>
+        ) : (
+          <Link to={item.navLink}>{item.title}</Link>
+        )}
       </Menu.Item>
     );
   });

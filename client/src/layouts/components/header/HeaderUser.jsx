@@ -24,27 +24,27 @@ const HeaderUser = () => {
         icon={
           <User
             set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
+            className="remix-icon hp-vertical-align-middle hp-text-color-dark-0"
             size={16}
           />
         }
-        className="da-text-color-dark-0"
+        className="hp-text-color-dark-0"
       >
         <Link to="/profile/information">My Profile</Link>
       </Menu.Item>
 
       {/* My Subscription */}
-      {user.role === "admin" && (
+      {user?.role === "admin" && (
         <Menu.Item
           key={0}
           icon={
             <Discount
               set="curved"
-              className="remix-icon da-vertical-align-middle da-text-color-dark-0"
+              className="remix-icon hp-vertical-align-middle hp-text-color-dark-0"
               size={16}
             />
           }
-          className="da-text-color-dark-0"
+          className="hp-text-color-dark-0"
         >
           <Link to="/profile/subscription">My Subscription</Link>
         </Menu.Item>
@@ -55,11 +55,11 @@ const HeaderUser = () => {
         icon={
           <Logout
             set="curved"
-            className="remix-icon da-vertical-align-middle da-text-color-dark-0"
+            className="remix-icon hp-vertical-align-middle hp-text-color-dark-0"
             size={16}
           />
         }
-        className="da-text-color-dark-0"
+        className="hp-text-color-dark-0"
         onClick={handleLogout}
       >
         Logout
@@ -70,7 +70,7 @@ const HeaderUser = () => {
   return (
     <Col>
       <Dropdown overlay={menu} placement="bottomLeft">
-        <Col className="da-d-flex-center" onClick={(e) => e.preventDefault()}>
+        <Col className="hp-d-flex-center" onClick={(e) => e.preventDefault()}>
           <Avatar src={avatarImg} size={40} />
         </Col>
       </Dropdown>

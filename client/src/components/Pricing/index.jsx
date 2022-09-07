@@ -44,47 +44,47 @@ const Pricing = () => {
   };
 
   return (
-    <Row gutter={[32, 32]} className="da-mb-32">
+    <Row gutter={[32, 32]} className="hp-mb-32">
       <Col span={24}>
         <Row>
           {/* Header  */}
           <Col span={24}>
             <h2>Subscription Details</h2>
-            <p className="da-p1-body da-mb-0">
+            <p className="hp-p1-body hp-mb-0">
               Upgrade your plan to get more features and support
             </p>
           </Col>
 
-          <Divider className="da-border-color-black-40 da-border-color-dark-80" />
+          <Divider className="hp-border-color-black-40 hp-border-color-dark-80" />
 
           {/* Plans */}
           <Col span={24}>
-            <Row align="middle" justify="center" className="da-mt-32 da-mb-24">
+            <Row align="middle" justify="center" className="hp-mt-32 hp-mb-24">
               <span
-                className={`da-caption ${
+                className={`hp-caption ${
                   billCycle
-                    ? "da-text-color-black-60"
-                    : "da-text-color-primary-1"
+                    ? "hp-text-color-black-60"
+                    : "hp-text-color-primary-1"
                 }`}
               >
                 Billed monthly
               </span>
 
-              <Switch className="da-mx-8" defaultChecked onChange={onChange} />
+              <Switch className="hp-mx-8" defaultChecked onChange={onChange} />
 
               <span
-                className={`da-caption ${
+                className={`hp-caption ${
                   billCycle
-                    ? "da-text-color-primary-1"
-                    : "da-text-color-black-60"
+                    ? "hp-text-color-primary-1"
+                    : "hp-text-color-black-60"
                 }`}
               >
                 Billed Annually
               </span>
             </Row>
 
-            <Row align="middle" justify="center" className="da-mt-32 da-mb-24">
-              <h5 className="da-text-color-primary-1">
+            <Row align="middle" justify="center" className="hp-mt-32 hp-mb-24">
+              <h5 className="hp-text-color-primary-1">
                 Save 30% on annual plan
               </h5>
             </Row>
@@ -100,7 +100,7 @@ const Pricing = () => {
         </Row>
       </Col>
 
-      <Divider className={"da-border-color-black-40 da-border-color-dark-80"} />
+      <Divider className={"hp-border-color-black-40 hp-border-color-dark-80"} />
 
       {/* Admin Subscription Details*/}
       <Row align="middle" justify="space-between">
@@ -109,13 +109,13 @@ const Pricing = () => {
         </Col>
         <Col
           span={24}
-          className="da-profile-content-list da-mt-8 da-pb-sm-0 da-pb-120"
+          className="hp-profile-content-list hp-mt-8 hp-pb-sm-0 hp-pb-120"
         >
           <ul>
             <li>
-              <span className="da-p1-body">Plan Name</span>
+              <span className="hp-p1-body">Plan Name</span>
               <span
-                className="da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0"
+                className="hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0"
                 style={{
                   // Bold
                   fontWeight: "bold",
@@ -125,18 +125,18 @@ const Pricing = () => {
               </span>
             </li>
 
-            <li className="da-mt-18">
-              <span className="da-p1-body">Status</span>
-              <span className="da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0">
+            <li className="hp-mt-18">
+              <span className="hp-p1-body">Status</span>
+              <span className="hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0">
                 <Tag color="blue">
                   {currentSubscription?.subscriptionStatus}
                 </Tag>
               </span>
             </li>
 
-            <li className="da-mt-18">
-              <span className="da-p1-body">Start Date</span>
-              <span className="da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0">
+            <li className="hp-mt-18">
+              <span className="hp-p1-body">Start Date</span>
+              <span className="hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0">
                 {currentSubscription?.subscription?.startPeriod
                   ? new Date(
                       currentSubscription?.subscription?.startPeriod * 1000
@@ -145,10 +145,10 @@ const Pricing = () => {
               </span>
             </li>
 
-            <li className="da-mt-18">
-              <span className="da-p1-body">Bill Cycle</span>
+            <li className="hp-mt-18">
+              <span className="hp-p1-body">Bill Cycle</span>
               <span
-                className="da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0"
+                className="hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0"
                 style={{
                   // Capitalize first letter
                   textTransform: "capitalize",
@@ -162,9 +162,9 @@ const Pricing = () => {
               </span>
             </li>
 
-            <li className="da-mt-18">
-              <span className="da-p1-body">Next Billing</span>
-              <span className="da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0">
+            <li className="hp-mt-18">
+              <span className="hp-p1-body">Next Billing</span>
+              <span className="hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0">
                 {currentSubscription?.subscription?.startPeriod
                   ? new Date(
                       currentSubscription?.subscription.endPeriod * 1000
@@ -175,7 +175,7 @@ const Pricing = () => {
           </ul>
         </Col>
       </Row>
-      <Col md={12} span={24} className="da-profile-action-btn da-text-right">
+      <Col md={12} span={24} className="hp-profile-action-btn hp-text-right">
         <Button
           type="primary"
           ghost

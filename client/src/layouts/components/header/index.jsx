@@ -51,19 +51,19 @@ const MenuHeader = (props) => {
   const headerChildren = () => {
     return (
       <Row
-        className="da-w-100 da-position-relative"
+        className="hp-w-100 hp-position-relative"
         align="middle"
         justify="space-between"
       >
-        <Col className="da-mobile-sidebar-button da-mr-24">
+        <Col className="hp-mobile-sidebar-button hp-mr-24">
           <Button
-            className="da-mobile-sidebar-button"
+            className="hp-mobile-sidebar-button"
             type="text"
             onClick={showDrawer}
             icon={
               <RiMenuFill
                 size={24}
-                className="remix-icon da-text-color-black-80 da-text-color-dark-30"
+                className="remix-icon hp-text-color-black-80 hp-text-color-dark-30"
               />
             }
           />
@@ -72,8 +72,8 @@ const MenuHeader = (props) => {
         <Col
           flex="1"
           style={{ display: !searchHeader ? "none" : "block" }}
-          className={`da-pr-md-0 da-pr-16 da-header-search ${
-            searchActive && "da-header-search-active"
+          className={`hp-pr-md-0 hp-pr-16 hp-header-search ${
+            searchActive && "hp-header-search-active"
           }`}
         >
           <HeaderSearch
@@ -86,12 +86,12 @@ const MenuHeader = (props) => {
 
         <Col>
           <Row align="middle">
-            <Col className="da-d-flex-center da-mr-4">
+            <Col className="hp-d-flex-center hp-mr-4">
               {!searchHeader ? (
                 <Button
                   type="text"
                   icon={
-                    <Search set="curved" className="da-text-color-black-60" />
+                    <Search set="curved" className="hp-text-color-black-60" />
                   }
                   onClick={() => searchClick()}
                 />
@@ -99,7 +99,7 @@ const MenuHeader = (props) => {
                 <Button
                   type="text"
                   icon={
-                    <RiCloseLine size={24} className="da-text-color-black-60" />
+                    <RiCloseLine size={24} className="hp-text-color-black-60" />
                   }
                   onClick={() => setSearchHeader(false)}
                 />
@@ -117,7 +117,7 @@ const MenuHeader = (props) => {
 
   return (
     <Header>
-      <Row justify="center" className="da-w-100">
+      <Row justify="center" className="hp-w-100">
         {customize.contentWidth === "full" && (
           <Col span={24}>{headerChildren()}</Col>
         )}

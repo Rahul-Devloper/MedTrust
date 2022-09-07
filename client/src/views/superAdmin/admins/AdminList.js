@@ -27,7 +27,7 @@ const AdminList = () => {
   return (
     <>
       <Card
-        className="da-border-color-black-40 da-mb-32 da-analytics-project-table-card da-project-table-card"
+        className="hp-border-color-black-40 hp-mb-32 hp-analytics-project-table-card hp-project-table-card"
         style={{
           overflowY: "auto",
           height: "calc(100vh - 150px)",
@@ -36,7 +36,7 @@ const AdminList = () => {
         <Row>
           <Col span={24}>
             <Row justify="space-between">
-              <h3 className="da-mb-16">All Admins</h3>
+              <h3 className="hp-mb-16">All Admins</h3>
             </Row>
 
             {/* All admins table */}

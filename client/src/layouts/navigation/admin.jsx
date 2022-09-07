@@ -4,31 +4,31 @@ const admin = [
   {
     id: "dashboard",
     title: "Dashboard",
-    icon: <Home set="curved" className="remix-icon" />,
+    icon: <Home size={18} />,
     navLink: "/admin/dashboard",
   },
   {
     id: "project",
     title: "Projects",
-    icon: <Document set="curved" className="remix-icon" />,
+    icon: <Document size={18} />,
     navLink: "/admin/projects",
   },
   {
     id: "calendar",
     title: "Calendar",
-    icon: <Calendar set="curved" className="remix-icon" />,
+    icon: <Calendar size={18} />,
     navLink: "/admin/calendar",
   },
   {
     id: "chat",
     title: "Chat",
-    icon: <Chat set="curved" className="remix-icon" />,
+    icon: <Chat size={18} />,
     navLink: "/admin/chat",
   },
   {
     id: "team",
     title: "Team",
-    icon: <People set="curved" className="remix-icon" />,
+    icon: <People size={18} />,
     navLink: "/admin/team",
   },
 ];

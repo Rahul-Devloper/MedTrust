@@ -76,7 +76,7 @@ const CouponCreateForm = ({ history }) => {
           {/* Expiry date */}
           <Form.Item label="Expiry Date">
             <DatePicker
-              className="da-mb-16 da-mr-16"
+              className="hp-mb-16 hp-mr-16"
               onChange={(date, dateString) =>
                 setValues({ ...values, expiry: dateString })
               }

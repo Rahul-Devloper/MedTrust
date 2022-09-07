@@ -9,11 +9,11 @@ export default function PageTitle(props) {
     <Col span={24}>
       <Row>
         <Col span={24}>
-          {pageTitle && <h1 className="da-mb-8">{pageTitle}</h1>}
+          {pageTitle && <h1 className="hp-mb-8">{pageTitle}</h1>}
         </Col>
 
         <Col span={24}>
-          {pageText && <p className="da-mb-0 da-p1-body">{pageText}</p>}
+          {pageText && <p className="hp-mb-0 hp-p1-body">{pageText}</p>}
         </Col>
       </Row>
     </Col>

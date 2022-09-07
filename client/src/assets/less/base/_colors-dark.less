@@ -251,7 +251,11 @@
 
     body.dark {
       .@{class-prefix}-@{prefix}-@{key} {
-        path {
+
+        path,
+        rect,
+        line,
+        circle {
           stroke: @value  !important;
         }
       }
@@ -274,7 +278,11 @@
     body.dark {
       .@{class-prefix}-hover-@{prefix}-@{key} {
         &:hover {
-          path {
+
+          path,
+          rect,
+          line,
+          circle {
             stroke: @value  !important;
           }
         }

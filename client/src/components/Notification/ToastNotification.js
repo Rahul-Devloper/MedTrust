@@ -12,7 +12,7 @@ export const SuccessNotification = (message) => {
     description: message,
     icon: <RiCheckboxCircleFill style={{ color: "#00F7BF" }} />,
     closeIcon: (
-      <RiCloseFill className="remix-icon da-text-color-black-80" size={24} />
+      <RiCloseFill className="remix-icon hp-text-color-black-80" size={24} />
     ),
     duration: 3,
   });
@@ -24,7 +24,7 @@ export const InfoNotification = (message) => {
     description: message,
     icon: <RiErrorWarningFill style={{ color: "#1BE7FF" }} />,
     closeIcon: (
-      <RiCloseFill className="remix-icon da-text-color-black-80" size={24} />
+      <RiCloseFill className="remix-icon hp-text-color-black-80" size={24} />
     ),
     duration: 3,
   });
@@ -36,7 +36,7 @@ export const WarningNotification = (message) => {
     description: message,
     icon: <RiErrorWarningFill style={{ color: "#FFC700" }} />,
     closeIcon: (
-      <RiCloseFill className="remix-icon da-text-color-black-80" size={24} />
+      <RiCloseFill className="remix-icon hp-text-color-black-80" size={24} />
     ),
     duration: 3,
   });
@@ -48,7 +48,7 @@ export const ErrorNotification = (message) => {
     description: message,
     icon: <RiErrorWarningFill style={{ color: "#FF0022" }} />,
     closeIcon: (
-      <RiCloseFill className="remix-icon da-text-color-black-80" size={24} />
+      <RiCloseFill className="remix-icon hp-text-color-black-80" size={24} />
     ),
     duration: 3,
   });

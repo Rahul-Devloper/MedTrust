@@ -19,10 +19,10 @@ const ProfileInfo = () => {
   const [preferenceModalVisible, setPreferenceModalVisible] = useState(false);
   const { user } = useSelector((state) => state.auth);
 
-  const listTitle = "da-p1-body";
+  const listTitle = "hp-p1-body";
   const listResult =
-    "da-mt-sm-4 da-p1-body da-text-color-black-100 da-text-color-dark-0";
-  const dividerClass = "da-border-color-black-40 da-border-color-dark-80";
+    "hp-mt-sm-4 hp-p1-body hp-text-color-black-100 hp-text-color-dark-0";
+  const dividerClass = "hp-border-color-black-40 hp-border-color-dark-80";
 
   const contactModalShow = () => {
     setContactModalVisible(true);
@@ -72,9 +72,9 @@ const ProfileInfo = () => {
 
           <Form.Item label="Date of Birth" name="dateofbirth">
             <DatePicker
-              className="da-w-100"
+              className="hp-w-100"
               suffixIcon={
-                <RiCalendarLine className="remix-icon da-text-color-black-60" />
+                <RiCalendarLine className="remix-icon hp-text-color-black-60" />
               }
             />
           </Form.Item>
@@ -84,7 +84,7 @@ const ProfileInfo = () => {
           </Form.Item>
 
           <Row>
-            <Col md={12} span={24} className="da-pr-sm-0 da-pr-12">
+            <Col md={12} span={24} className="hp-pr-sm-0 hp-pr-12">
               <Button
                 block
                 type="primary"
@@ -95,7 +95,7 @@ const ProfileInfo = () => {
               </Button>
             </Col>
 
-            <Col md={12} span={24} className="da-mt-sm-12 da-pl-sm-0 da-pl-12">
+            <Col md={12} span={24} className="hp-mt-sm-12 hp-pl-sm-0 hp-pl-12">
               <Button block onClick={contactModalCancel}>
                 Cancel
               </Button>
@@ -122,19 +122,19 @@ const ProfileInfo = () => {
 
           <Form.Item label="Date Format" name="dateformat">
             <DatePicker
-              className="da-w-100"
+              className="hp-w-100"
               suffixIcon={
-                <RiCalendarLine className="remix-icon da-text-color-black-60" />
+                <RiCalendarLine className="remix-icon hp-text-color-black-60" />
               }
             />
           </Form.Item>
 
           <Form.Item label="Timezone" name="timezone">
-            <TimePicker className="da-w-100" />
+            <TimePicker className="hp-w-100" />
           </Form.Item>
 
           <Row>
-            <Col md={12} span={24} className="da-pr-sm-0 da-pr-12">
+            <Col md={12} span={24} className="hp-pr-sm-0 hp-pr-12">
               <Button
                 block
                 type="primary"
@@ -145,7 +145,7 @@ const ProfileInfo = () => {
               </Button>
             </Col>
 
-            <Col md={12} span={24} className="da-mt-sm-12 da-pl-sm-0 da-pl-12">
+            <Col md={12} span={24} className="hp-mt-sm-12 hp-pl-sm-0 hp-pl-12">
               <Button block onClick={preferenceModalCancel}>
                 Cancel
               </Button>
@@ -165,7 +165,7 @@ const ProfileInfo = () => {
           <h3>Contact</h3>
         </Col>
 
-        <Col md={12} span={24} className="da-profile-action-btn da-text-right">
+        <Col md={12} span={24} className="hp-profile-action-btn hp-text-right">
           <Button
             type="primary"
             ghost
@@ -177,7 +177,7 @@ const ProfileInfo = () => {
 
         <Col
           span={24}
-          className="da-profile-content-list da-mt-8 da-pb-sm-0 da-pb-120"
+          className="hp-profile-content-list hp-mt-8 hp-pb-sm-0 hp-pb-120"
         >
           <ul>
             <li>
@@ -185,26 +185,26 @@ const ProfileInfo = () => {
               <span className={listResult}>{user?.name}</span>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Email</span>
               <span className={listResult}>{user?.email}</span>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Phone</span>
               <a className={listResult} href="#">
                 {user?.phone ? user?.phone : <i>Not set</i>}
               </a>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Date of Birth</span>
               <span className={listResult}>
                 {user?.dateOfBirth ? user?.dateOfBirth : <i>Not set</i>}
               </span>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Address</span>
               <span className={listResult}>
                 {user?.address ? user?.address : <i>Not set</i>}
@@ -221,7 +221,7 @@ const ProfileInfo = () => {
           <h3>Preferences</h3>
         </Col>
 
-        <Col md={12} span={24} className="da-profile-action-btn da-text-right">
+        <Col md={12} span={24} className="hp-profile-action-btn hp-text-right">
           <Button
             type="primary"
             ghost
@@ -231,19 +231,19 @@ const ProfileInfo = () => {
           </Button>
         </Col>
 
-        <Col span={24} className="da-profile-content-list da-mt-sm-8 da-mt-24">
+        <Col span={24} className="hp-profile-content-list hp-mt-sm-8 hp-mt-24">
           <ul>
             <li>
               <span className={listTitle}>Language</span>
               <span className={listResult}>English</span>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Date Format</span>
               <span className={listResult}>YYY/mm/dd</span>
             </li>
 
-            <li className="da-mt-18">
+            <li className="hp-mt-18">
               <span className={listTitle}>Timezone</span>
               <span className={listResult}>Dubai (GMT+4)</span>
             </li>

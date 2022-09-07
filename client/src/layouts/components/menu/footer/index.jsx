@@ -12,28 +12,27 @@ const MenuFooter = (props) => {
 
   return props.collapsed === false ? (
     <Row
-      className="da-sidebar-footer da-pb-24 da-px-24 da-bg-color-dark-100"
+      className="hp-sidebar-footer hp-bg-color-dark-90"
       align="middle"
       justify="space-between"
     >
-      <Divider className="da-border-color-black-20 da-border-color-dark-70 da-mt-0" />
+      <Divider className="hp-border-color-black-40 hp-border-color-dark-70 hp-mt-0" />
 
       <Col>
         <Row align="middle">
-          <Avatar size={38} src={avatar} className="da-mr-8" />
+          <Avatar size={38} src={avatar} className="hp-bg-info-4 hp-mr-8" />
 
-          <div
-            style={{
-              margin: "0 0 0 14px",
-            }}
-          >
-            <span className="da-d-block da-text-color-black-100 da-text-color-dark-0 da-p1-body">
+          <div className="hp-mt-6">
+            <span
+              className="hp-d-block hp-text-color-black-100 hp-text-color-dark-0 hp-p1-body"
+              style={{ lineHeight: 1 }}
+            >
               {user?.name}
             </span>
 
             <Link
               to="/profile/information"
-              className="da-badge-text da-text-color-dark-30"
+              className="hp-badge-text hp-text-color-dark-30 hp-font-weight-400"
               onClick={props.onClose}
             >
               View Profile
@@ -45,7 +44,7 @@ const MenuFooter = (props) => {
       <Col>
         <Link to="/profile/security" onClick={props.onClose}>
           <RiSettings3Line
-            className="remix-icon da-text-color-black-100 da-text-color-dark-0"
+            className="remix-icon hp-text-color-black-100 hp-text-color-dark-0"
             size={24}
           />
         </Link>
@@ -53,13 +52,13 @@ const MenuFooter = (props) => {
     </Row>
   ) : (
     <Row
-      className="da-sidebar-footer da-pt-16 da-mb-16 da-bg-color-dark-100"
+      className="hp-sidebar-footer hp-bg-color-dark-90"
       align="middle"
       justify="center"
     >
       <Col>
         <Link to={`/profile/information`} onClick={props.onClose}>
-          <Avatar size={38} src={avatar} />
+          <Avatar size={48} src={avatar} className="hp-bg-info-4" />
         </Link>
       </Col>
     </Row>

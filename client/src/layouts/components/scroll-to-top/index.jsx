@@ -9,7 +9,7 @@ const ScrollTop = () => {
     <div className="scroll-to-top">
       <ScrollToTop showUnder={300} style={{ bottom: "6%" }}>
         <Button
-          className="da-primary-shadow"
+          className="hp-primary-shadow"
           type="primary"
           shape="circle"
           icon={<RiArrowUpLine />}

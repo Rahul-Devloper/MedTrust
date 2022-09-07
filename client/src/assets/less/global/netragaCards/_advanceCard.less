@@ -9,8 +9,56 @@
   }
 }
 
+// Credit Card
+.@{class-prefix}-credit-card {
+  &[type="primary"] {
+    background: @primary-1;
+  }
+
+  &[type="danger"] {
+    background: @danger-1;
+  }
+
+  &[type="dark"] {
+    background: @dark-bg;
+  }
+
+  &[type="warning"] {
+    background: @warning-1;
+  }
+
+  .ant-progress-inner {
+    background: rgba(255, 255, 255, 0.3) !important;
+  }
+
+  .ant-progress-bg {
+    background: @b-0;
+  }
+
+  &-circle {
+    min-width: 158px;
+    height: 158px;
+    transform: translate(2px, -18px);
+    pointer-events: none;
+  }
+}
+
 // eCommerceCardOne
 .@{class-prefix}-eCommerceCardOne {
+  .@{class-prefix}-eCommerceCardOne-product-img {
+    img {
+      transition: 0.4s;
+    }
+  }
+
+  &:hover {
+    .@{class-prefix}-eCommerceCardOne-product-img {
+      img {
+        transform: scale(0.9);
+      }
+    }
+  }
+
   img {
     max-height: 200px;
   }
@@ -142,10 +190,6 @@
   width: 100%;
 
   @media @sm {
-    &-bg {
-      background-position: 530px center !important;
-    }
-
     .ant-col {
       flex: 0 0 100% !important;
     }
@@ -176,7 +220,6 @@
 
     @media @xs {
       left: -40%;
-
     }
   }
 
@@ -191,13 +234,11 @@
 
     @media @xl {
       right: -41%;
-
     }
 
     @media @xs {
       left: -40%;
       display: none;
-
     }
   }
 }
@@ -223,7 +264,7 @@
 
 .@{class-prefix}-project-table-card {
   &.@{class-prefix}-analytics-project-table-card {
-    .ant-table-tbody>tr>td {
+    .ant-table-tbody > tr > td {
       padding-top: 8px;
       padding-bottom: 8px;
     }
@@ -240,8 +281,8 @@
   }
 
   .ant-table-thead {
-    >tr {
-      >th {
+    > tr {
+      > th {
         text-align: left;
         background: none !important;
         border-bottom: none;
@@ -253,14 +294,14 @@
     }
   }
 
-  .ant-table-tbody>tr>td {
+  .ant-table-tbody > tr > td {
     border-bottom: none;
   }
 
   .ant-table-tbody {
-    >tr.ant-table-row {
+    > tr.ant-table-row {
       &:hover {
-        >td {
+        > td {
           background: #fff;
         }
       }
@@ -270,8 +311,8 @@
 
 .@{class-prefix}-project-ecommerce-table-card {
   .ant-table-thead {
-    >tr {
-      >th {
+    > tr {
+      > th {
         background: none !important;
         border-bottom: none;
 
@@ -286,8 +327,8 @@
     }
   }
 
-  .ant-table-tbody>tr {
-    >td {
+  .ant-table-tbody > tr {
+    > td {
       border-bottom: none;
       padding-top: 15px;
       padding-bottom: 15px;
@@ -298,22 +339,22 @@
     }
 
     &:first-child {
-      >td {
+      > td {
         padding-top: 0px;
       }
     }
 
     &:last-child {
-      >td {
+      > td {
         border: none;
       }
     }
   }
 
   .ant-table-tbody {
-    >tr.ant-table-row {
+    > tr.ant-table-row {
       &:hover {
-        >td {
+        > td {
           background: #fff;
         }
       }
@@ -338,7 +379,7 @@
   .ant-table-tbody {
     tr {
       &:hover {
-        >td {
+        > td {
           background: none;
         }
       }

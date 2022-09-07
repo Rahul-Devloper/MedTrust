@@ -58,7 +58,7 @@ const PricingItem = (props) => {
 
   const listMap = props.plans.map((item, index) => (
     <Col
-      className={`da-pricing-item da-p-24 da-mx-xl-8 da-mx-16 da-mb-sm-24 da-mb-16 da-border-1 da-border-radius ${"da-border-color-black-40 da-border-color-dark-80"}`}
+      className={`hp-pricing-item hp-p-24 hp-mx-xl-8 hp-mx-16 hp-mb-sm-24 hp-mb-16 hp-border-1 hp-border-radius ${"hp-border-color-black-40 hp-border-color-dark-80"}`}
       key={index}
       align="middle"
     >
@@ -72,14 +72,14 @@ const PricingItem = (props) => {
         <Row justify="space-between">
           <Col span={24}>
             <h4
-              className="da-mb-0 da-pricing-item-title"
+              className="hp-mb-0 hp-pricing-item-title"
               style={{
                 marginTop: "15px",
               }}
             >
               {item.name}
             </h4>
-            <p className="da-pricing-item-subtitle da-caption da-mb-sm-8 da-mb-32 da-text-color-black-60"></p>
+            <p className="hp-pricing-item-subtitle hp-caption hp-mb-sm-8 hp-mb-32 hp-text-color-black-60"></p>
           </Col>
         </Row>
         {/* If enterprise, show contact sales button, not price */}
@@ -87,7 +87,7 @@ const PricingItem = (props) => {
           <Button
             block
             type="secondary"
-            className="da-pricing-item-contact-sales-button da-caption da-py-4 da-px-16 da-bg-color-primary-4 da-text-color-primary-1"
+            className="hp-pricing-item-contact-sales-button hp-caption hp-py-4 hp-px-16 hp-bg-color-primary-4 hp-text-color-primary-1"
           >
             <a
               href="https://www.netraga.com/contact"
@@ -98,14 +98,14 @@ const PricingItem = (props) => {
             </a>
           </Button>
         ) : (
-          <span className="da-pricing-item-price h2">
+          <span className="hp-pricing-item-price h2">
             {props.billCycle
               ? `$ ${item.annualPrice}`
               : `$ ${item.monthlyPrice}`}
           </span>
         )}
         <p
-          className="da-pricing-item-billed da-caption da-mt-sm-0 da-mt-4 da-mb-0 da-text-color-black-60"
+          className="hp-pricing-item-billed hp-caption hp-mt-sm-0 hp-mt-4 hp-mb-0 hp-text-color-black-60"
           style={{
             // Space above
             paddingTop: "8px",
@@ -114,19 +114,19 @@ const PricingItem = (props) => {
           {item.metaDescription}
         </p>
 
-        <p className="da-pricing-item-billed da-caption da-mt-sm-0 da-mt-4 da-mb-0 da-text-color-black-60">
+        <p className="hp-pricing-item-billed hp-caption hp-mt-sm-0 hp-mt-4 hp-mb-0 hp-text-color-black-60">
           {props.billedText}
         </p>
 
-        <ul className="da-mt-24 da-mb-0 da-p-0">
+        <ul className="hp-mt-24 hp-mb-0 hp-p-0">
           {item.features.map((item, index) => (
             <li
               key={index}
-              className={`da-pricing-item-list da-d-flex-center da-mt-8`}
+              className={`hp-pricing-item-list hp-d-flex-center hp-mt-8`}
             >
               {listSVGTick}
               <span
-                className={`da-d-block da-ml-8 da-caption da-font-weight-400`}
+                className={`hp-d-block hp-ml-8 hp-caption hp-font-weight-400`}
                 style={{
                   paddingLeft: "8px",
                 }}
@@ -142,7 +142,7 @@ const PricingItem = (props) => {
         <Button
           block
           type="primary"
-          className="da-mt-32 da-pricing-item-contact-sales-button da-caption da-py-4 da-px-16 da-bg-color-primary-4 da-text-color-primary-1"
+          className="hp-mt-32 hp-pricing-item-contact-sales-button hp-caption hp-py-4 hp-px-16 hp-bg-color-primary-4 hp-text-color-primary-1"
         >
           <a
             href="https://www.netraga.com/contact"
@@ -154,7 +154,7 @@ const PricingItem = (props) => {
         </Button>
       ) : (
         <Button
-          className="da-mt-32"
+          className="hp-mt-32"
           block
           type="primary"
           onClick={(e) => {
@@ -182,7 +182,7 @@ const PricingItem = (props) => {
   return (
     <>
       <Row
-        className="da-mt-32"
+        className="hp-mt-32"
         justify="center"
         style={{
           height: "80%",

@@ -13,13 +13,13 @@ const MenuMobile = (props) => {
   return (
     <Drawer
       title={<MenuLogo onClose={onClose} />}
-      className="da-profile-mobile-menu"
+      className="hp-mobile-sidebar hp-sidebar"
       placement="left"
       closable={true}
       onClose={onClose}
       visible={visible}
       closeIcon={
-        <RiCloseFill className="remix-icon da-text-color-black-80" size={24} />
+        <RiCloseFill className="remix-icon hp-text-color-black-80" size={24} />
       }
     >
       <MenuItem onClose={onClose} />

@@ -13,7 +13,7 @@ const BreadCrumbs = (props) => {
 
   return (
     <Col>
-      <Breadcrumb className="da-d-flex da-flex-wrap">
+      <Breadcrumb className="hp-d-flex hp-flex-wrap">
         <Breadcrumb.Item>
           <Link to={rootLink}>{rootName}</Link>
         </Breadcrumb.Item>

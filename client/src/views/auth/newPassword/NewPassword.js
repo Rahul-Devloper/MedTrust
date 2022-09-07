@@ -43,18 +43,18 @@ const NewPassword = () => {
 
   return (
     <>
-      <Row gutter={[32, 0]} className="da-authentication-page">
+      <Row gutter={[32, 0]} className="hp-authentication-page">
         <LeftContent />
 
         <Col md={12}>
-          <Row className="da-h-100" align="middle" justify="center">
+          <Row className="hp-h-100" align="middle" justify="center">
             <Col
               xxl={11}
               xl={15}
               lg={20}
               md={20}
               sm={24}
-              className="da-px-sm-8 da-pt-24 da-pb-48"
+              className="hp-px-sm-8 hp-pt-24 hp-pb-48"
             >
               <h1>
                 {!success ? "Reset Password" : "Successfully changed password"}
@@ -64,7 +64,7 @@ const NewPassword = () => {
                 <Form
                   layout="vertical"
                   name="basic"
-                  className="da-mt-sm-16 da-mt-32"
+                  className="hp-mt-sm-16 hp-mt-32"
                 >
                   <Form.Item label="Password :">
                     <Input.Password
@@ -84,7 +84,7 @@ const NewPassword = () => {
                     />
                   </Form.Item>
 
-                  <Form.Item className="da-mt-16 da-mb-8">
+                  <Form.Item className="hp-mt-16 hp-mb-8">
                     <Button
                       block
                       type="primary"
@@ -97,7 +97,7 @@ const NewPassword = () => {
                   </Form.Item>
                 </Form>
               ) : (
-                <div className="da-mt-16 da-mb-8">
+                <div className="hp-mt-16 hp-mb-8">
                   <Link to="/login">
                     <Button block type="primary">
                       Login
@@ -106,7 +106,7 @@ const NewPassword = () => {
                 </div>
               )}
               <Col
-                className="da-other-links da-mt-24"
+                className="hp-other-links hp-mt-24"
                 style={{
                   justifyContent: "center",
                   display: "flex",
@@ -114,13 +114,13 @@ const NewPassword = () => {
               >
                 <Link
                   to="/privacy"
-                  className="da-text-color-black-80 da-text-color-dark-40"
+                  className="hp-text-color-black-80 hp-text-color-dark-40"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   to="/terms"
-                  className="da-text-color-black-80 da-text-color-dark-40"
+                  className="hp-text-color-black-80 hp-text-color-dark-40"
                 >
                   Term of use
                 </Link>

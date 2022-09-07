@@ -92,27 +92,27 @@ const Signup = ({ history }) => {
 
   return (
     <>
-      <Row gutter={[32, 0]} className="da-authentication-page">
+      <Row gutter={[32, 0]} className="hp-authentication-page">
         <LeftContent />
 
-        <Col lg={12} span={24} className="da-py-sm-0 da-py-md-64">
-          <Row className="da-h-100" align="middle" justify="center">
+        <Col lg={12} span={24} className="hp-py-sm-0 hp-py-md-64">
+          <Row className="hp-h-100" align="middle" justify="center">
             <Col
               xxl={11}
               xl={15}
               lg={20}
               md={20}
               sm={24}
-              className="da-px-sm-8 da-pt-24 da-pb-48"
+              className="hp-px-sm-8 hp-pt-24 hp-pb-48"
             >
-              <h1 className="da-mb-sm-0">Create Account</h1>
+              <h1 className="hp-mb-sm-0">Create Account</h1>
 
               <Form
                 layout="vertical"
                 name="basic"
-                className="da-mt-sm-16 da-mt-32"
+                className="hp-mt-sm-16 hp-mt-32"
               >
-                <Form.Item label="Name :" className="da-mb-16">
+                <Form.Item label="Name :" className="hp-mb-16">
                   <Input
                     id="name"
                     name="name"
@@ -159,14 +159,14 @@ const Signup = ({ history }) => {
                         I agree to the{" "}
                         <Link
                           to="/terms"
-                          className="da-text-color-blue-100 da-text-color-dark-80"
+                          className="hp-text-color-blue-100 hp-text-color-dark-80"
                         >
                           Term of use
                         </Link>{" "}
                         &{" "}
                         <Link
                           to="/privacy"
-                          className="da-text-color-blue-100 da-text-color-dark-80"
+                          className="hp-text-color-blue-100 hp-text-color-dark-80"
                         >
                           Privacy policy
                         </Link>
@@ -175,7 +175,7 @@ const Signup = ({ history }) => {
                   </Row>
                 </Form.Item>
 
-                <Form.Item className="da-mt-16 da-mb-8">
+                <Form.Item className="hp-mt-16 hp-mb-8">
                   <Button
                     block
                     type="primary"
@@ -188,27 +188,27 @@ const Signup = ({ history }) => {
                 </Form.Item>
               </Form>
 
-              <div className="da-form-info">
-                <span className="da-text-color-black-80 da-text-color-dark-40 da-caption da-mr-4">
+              <div className="hp-form-info">
+                <span className="hp-text-color-black-80 hp-text-color-dark-40 hp-caption hp-mr-4">
                   Already have an account?{" "}
                 </span>
 
                 <Link
                   to="/login"
-                  className="da-text-color-primary-1 da-text-color-dark-primary-2 da-caption"
+                  className="hp-text-color-primary-1 hp-text-color-dark-primary-2 hp-caption"
                 >
                   Login
                 </Link>
               </div>
 
-              <Col className="da-or-line da-text-center da-mt-32">
-                <span className="da-caption da-text-color-black-80 da-text-color-dark-30 da-px-16 da-bg-color-black-0 da-bg-color-dark-100">
+              <Col className="hp-or-line hp-text-center hp-mt-32">
+                <span className="hp-caption hp-text-color-black-80 hp-text-color-dark-30 hp-px-16 hp-bg-color-black-0 hp-bg-color-dark-100">
                   Or
                 </span>
               </Col>
 
               <Col
-                className="da-account-buttons da-mt-32"
+                className="hp-account-buttons hp-mt-32"
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -225,7 +225,7 @@ const Signup = ({ history }) => {
               </Col>
 
               <Col
-                className="da-other-links da-mt-24"
+                className="hp-other-links hp-mt-24"
                 style={{
                   justifyContent: "center",
                   display: "flex",
@@ -233,13 +233,13 @@ const Signup = ({ history }) => {
               >
                 <Link
                   to="/privacy"
-                  className="da-text-color-black-80 da-text-color-dark-40"
+                  className="hp-text-color-black-80 hp-text-color-dark-40"
                 >
                   Privacy Policy
                 </Link>
                 <Link
                   to="/terms"
-                  className="da-text-color-black-80 da-text-color-dark-40"
+                  className="hp-text-color-black-80 hp-text-color-dark-40"
                 >
                   Term of use
                 </Link>
