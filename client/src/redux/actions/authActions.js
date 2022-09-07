@@ -195,7 +195,6 @@ export const isUserAction = (data) => async (dispatch) => {
     if (res.data.error === true) {
       ErrorNotification(res.data.type[0].message);
       errorMessage = res.data.type[0].message;
-      data.setSpinner(false);
       return;
     }
 
@@ -207,6 +206,11 @@ export const isUserAction = (data) => async (dispatch) => {
       },
     });
 
+    // If data.setOk exists, set it to true
+    if (data?.setOk) {
+      data.setOk(true);
+    }
+
     // Dispatch a success/error login notify
     dispatch({
       type: ACTION_TYPES.ALERT,
@@ -215,8 +219,11 @@ export const isUserAction = (data) => async (dispatch) => {
       },
     });
 
-    // Redirect user based on role
-    RoleBasedRedirect(res, data.history);
+    // If data.history exists, redirect user based on role
+    if (data?.history) {
+      // Redirect user based on role
+      RoleBasedRedirect(res, data.history);
+    }
   } catch (error) {
     // Dispatch a error notify
     dispatch({

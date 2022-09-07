@@ -5,29 +5,21 @@ import { Route } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { LoadingToRedirect } from "../components";
 import VerticalLayout from "../layouts/VerticalLayout";
-import { currentUser } from "../api/user";
+import { isUserAction } from "../redux/actions/authActions";
+import { useDispatch } from "react-redux";
 import MenuProfile from "../components/Profile/menu";
 import Breadcrumbs from "../layouts/components/content/breadcrumbs";
 
 const ProfileRoute = ({ children, ...restProps }) => {
-  const { user } = useSelector((state) => state.auth);
-
+  const dispatch = useDispatch();
   const [ok, setOk] = useState(false);
   const [visible, setVisible] = useState(false);
 
   // Check if current user is user
   useEffect(() => {
-    if (user) {
-      currentUser()
-        .then(() => {
-          setOk(true);
-        })
-        .catch((error) => {
-          setOk(false);
-          console.log("USER_ROUTE_ERROR", error);
-        });
-    }
-  }, [user]);
+    // Dispatch the user action
+    dispatch(isUserAction({ setOk }));
+  }, []);
 
   const showDrawer = () => {
     setVisible(true);
@@ -61,7 +53,7 @@ const ProfileRoute = ({ children, ...restProps }) => {
 
   return (
     <>
-      {ok && user !== undefined ? (
+      {ok ? (
         <VerticalLayout>
           <Row gutter={[32, 32]} className="hp-mb-32">
             <Drawer

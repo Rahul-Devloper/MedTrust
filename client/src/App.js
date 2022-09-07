@@ -41,9 +41,9 @@ import {
   CouponsList,
   CouponCreate,
   CouponUpdate,
-  // Admin Routes
+  // -------------- Admin views --------------
   AdminDashboard,
-  // Member Routes
+  // -------------- Member views --------------
   MemberDashboard,
   // -------------- Wildcard --------------
   RandomPageRedirect,
@@ -56,10 +56,10 @@ const App = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
 
-  // If user exists and is on the index page, redirect to dashboard
+  // If local storage "allgin" is true and is on the auth pages page, redirect to dashboard
   useEffect(() => {
     if (
-      user?.role &&
+      localStorage.getItem("allgin") === "true" &&
       (history.location.pathname === "/" ||
         history.location.pathname === "/signup" ||
         history.location.pathname === "/login")

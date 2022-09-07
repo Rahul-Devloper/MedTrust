@@ -9,6 +9,8 @@ const authReducer = (state = initialState, action) => {
     // Save user to redux store & set google JWT to the browser cookie
     case AUTH_TYPES.AUTH:
       Cookies.set("access", action?.payload.accessToken, { expires: 0.0125 }); // 18 minutes
+      // Local storage set "allgin" to true
+      localStorage.setItem("allgin", true);
       return action?.payload;
     case AUTH_TYPES.IS_USER:
       return action?.payload;
@@ -20,6 +22,7 @@ const authReducer = (state = initialState, action) => {
       return action?.payload;
     case AUTH_TYPES.LOGOUT:
       Cookies.remove("access");
+      localStorage.removeItem("allgin");
       return action.payload;
     default:
       return state;
