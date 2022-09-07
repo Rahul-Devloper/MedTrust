@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { Suspense, useEffect } from "react";
 import { Switch, Route } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router";
@@ -55,12 +55,6 @@ const App = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { user } = useSelector((state) => state.auth);
-  const [spinner, setSpinner] = useState(true);
-
-  // If loading the app, we need to check if the user is already logged in
-  useEffect(() => {
-    setTimeout(() => setSpinner(false), 2000);
-  }, []);
 
   // If user exists and is on the index page, redirect to dashboard
   useEffect(() => {
@@ -73,10 +67,24 @@ const App = () => {
       // Dispatch the user action
       dispatch(isUserAction({ history }));
     }
-  }, [user, history]);
+  }, [dispatch, history]);
 
-  return !spinner ? (
+  return (
     <div className="App">
+      <Suspense
+        fallback={
+          <>
+            <div class="loader">
+              <div class="bar1"></div>
+              <div class="bar2"></div>
+              <div class="bar3"></div>
+              <div class="bar4"></div>
+              <div class="bar5"></div>
+              <div class="bar6"></div>
+            </div>
+          </>
+        }
+      ></Suspense>
       <Switch>
         {/*************** Common Routes ***************/}
         <Route exact path="/" component={!user && Login} />
@@ -175,15 +183,6 @@ const App = () => {
         {/* Wildcard */}
         <Route path={"*"} component={RandomPageRedirect} />
       </Switch>
-    </div>
-  ) : (
-    <div class="loader">
-      <div class="bar1"></div>
-      <div class="bar2"></div>
-      <div class="bar3"></div>
-      <div class="bar4"></div>
-      <div class="bar5"></div>
-      <div class="bar6"></div>
     </div>
   );
 };

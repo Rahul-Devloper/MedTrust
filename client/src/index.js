@@ -2,6 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom";
 import { createBrowserHistory } from "history";
 import { BrowserRouter } from "react-router-dom";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App";
 
 import "./assets/icons/remixicon.css";
@@ -14,9 +15,11 @@ const browserHistory = createBrowserHistory();
 
 ReactDOM.render(
   <DataProvider>
-    <BrowserRouter history={browserHistory}>
-      <App />
-    </BrowserRouter>
+    <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_OAUTH_ID}>
+      <BrowserRouter history={browserHistory}>
+        <App />
+      </BrowserRouter>
+    </GoogleOAuthProvider>
   </DataProvider>,
   document.getElementById("root")
 );

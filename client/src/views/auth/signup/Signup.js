@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Input, Button } from "antd";
+import { Row, Col, Form, Input, Button, Checkbox } from "antd";
 import { Link } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import jwt_decode from "jwt-decode";
@@ -20,6 +20,7 @@ const initialFormData = {
 
 const Signup = ({ history }) => {
   const [formData, setFormData] = useState(initialFormData);
+  const [agree, setAgree] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
@@ -42,6 +43,12 @@ const Signup = ({ history }) => {
       confirmPassword === ""
     ) {
       ErrorNotification("Please fill in all fields");
+      return;
+    }
+
+    // If not agreed, show error
+    if (!agree) {
+      ErrorNotification("You need to agree to the terms and conditions");
       return;
     }
 
@@ -139,6 +146,33 @@ const Signup = ({ history }) => {
                     value={formData.confirmPassword}
                     onChange={handleFormChange}
                   />
+                </Form.Item>
+
+                {/* Check box agreeing to terms and privacy */}
+                <Form.Item>
+                  <Row>
+                    <Col span={24}>
+                      <Checkbox
+                        checked={agree}
+                        onChange={() => setAgree(!agree)}
+                      >
+                        I agree to the{" "}
+                        <Link
+                          to="/terms"
+                          className="da-text-color-blue-100 da-text-color-dark-80"
+                        >
+                          Term of use
+                        </Link>{" "}
+                        &{" "}
+                        <Link
+                          to="/privacy"
+                          className="da-text-color-blue-100 da-text-color-dark-80"
+                        >
+                          Privacy policy
+                        </Link>
+                      </Checkbox>
+                    </Col>
+                  </Row>
                 </Form.Item>
 
                 <Form.Item className="da-mt-16 da-mb-8">
