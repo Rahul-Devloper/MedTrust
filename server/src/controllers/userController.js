@@ -1,5 +1,6 @@
 const UserService = require("../services/userService");
 const AdminService = require("../services/adminService");
+const User = require("../models/user");
 
 /**********************************
   Check if user is a logged in
