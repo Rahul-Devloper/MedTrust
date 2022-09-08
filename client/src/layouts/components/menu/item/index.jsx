@@ -32,7 +32,7 @@ const MenuItem = (props) => {
     return (
       // Level 1
       <Menu.Item
-        key={index}
+        key={item.id}
         icon={item.icon}
         onClick={onClose}
         className={
@@ -45,8 +45,10 @@ const MenuItem = (props) => {
             ? "ant-menu-item-selected"
             : "ant-menu-item-selected-in-active"
         }
+        style={item.tag && { pointerEvents: "none" }}
       >
         {item.tag ? (
+          // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
             href="#"
             className="hp-d-flex hp-align-items-center hp-d-flex-between"
@@ -76,6 +78,7 @@ const MenuItem = (props) => {
         splitLocation[splitLocation.length - 2],
       ]}
       theme={"light"}
+      className="hp-bg-black-20 hp-bg-dark-90"
     >
       {menuItem}
     </Menu>

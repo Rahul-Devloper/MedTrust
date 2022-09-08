@@ -49,8 +49,6 @@ import {
   RandomPageRedirect,
 } from "./views";
 
-import "./App.scss";
-
 const App = () => {
   const history = useHistory();
   const dispatch = useDispatch();

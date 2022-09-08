@@ -1,10 +1,9 @@
-import React, { useState, createElement, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
 import { useSelector } from "react-redux";
 
-import { Layout, Button, Row, Col } from "antd";
-import { RiMenuFoldLine, RiMenuUnfoldLine } from "react-icons/ri";
+import { Layout, Row, Col } from "antd";
 import { motion } from "framer-motion/dist/framer-motion";
 
 import logoSmall from "../../../assets/images/logo/logo.svg";
@@ -44,11 +43,6 @@ const Sidebar = (props) => {
   function toggle() {
     setCollapsed(!collapsed);
   }
-
-  const trigger = createElement(collapsed ? RiMenuUnfoldLine : RiMenuFoldLine, {
-    className: "trigger",
-    onClick: toggle,
-  });
 
   return (
     <>

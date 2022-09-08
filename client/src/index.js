@@ -5,6 +5,7 @@ import { BrowserRouter } from "react-router-dom";
 import { GoogleOAuthProvider } from "@react-oauth/google";
 import App from "./App";
 
+import "./App.scss";
 import "./assets/icons/remixicon.css";
 import "./assets/less/netraga-theme.less";
 
