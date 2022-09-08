@@ -201,14 +201,14 @@ const Signup = ({ history }) => {
                 </Link>
               </div>
 
-              <Col className="hp-or-line hp-text-center hp-mt-32">
+              <Col className="hp-or-line hp-text-center hp-mt-16">
                 <span className="hp-caption hp-text-color-black-80 hp-text-color-dark-30 hp-px-16 hp-bg-color-black-0 hp-bg-color-dark-100">
                   Or
                 </span>
               </Col>
 
               <Col
-                className="hp-account-buttons hp-mt-32"
+                className="hp-account-buttons hp-mt-16"
                 style={{
                   display: "flex",
                   justifyContent: "center",
@@ -234,6 +234,9 @@ const Signup = ({ history }) => {
                 <Link
                   to="/privacy"
                   className="hp-text-color-black-80 hp-text-color-dark-40"
+                  style={{
+                    marginRight: "8px",
+                  }}
                 >
                   Privacy Policy
                 </Link>

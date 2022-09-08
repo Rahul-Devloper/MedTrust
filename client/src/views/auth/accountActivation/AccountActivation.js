@@ -109,6 +109,9 @@ const AccountActivation = () => {
                 <Link
                   to="/privacy"
                   className="hp-text-color-black-80 hp-text-color-dark-40"
+                  style={{
+                    marginRight: "8px",
+                  }}
                 >
                   Privacy Policy
                 </Link>
