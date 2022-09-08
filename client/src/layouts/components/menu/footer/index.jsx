@@ -20,7 +20,16 @@ const MenuFooter = (props) => {
 
       <Col>
         <Row align="middle">
-          <Avatar size={38} src={avatar} className="hp-bg-info-4 hp-mr-8" />
+          <Avatar
+            size={38}
+            src={avatar}
+            className="hp-bg-info-4 hp-mr-8"
+            style={
+              props.mobileMenu
+                ? { marginLeft: "8px", marginRight: "8px" }
+                : { marginLeft: "-15px", marginRight: "8px" }
+            }
+          />
 
           <div className="hp-mt-6">
             <span
@@ -46,6 +55,7 @@ const MenuFooter = (props) => {
           <RiSettings3Line
             className="remix-icon hp-text-color-black-100 hp-text-color-dark-0"
             size={24}
+            style={props.mobileMenu ? { marginRight: "12px" } : null}
           />
         </Link>
       </Col>

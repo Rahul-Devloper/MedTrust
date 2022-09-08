@@ -13,7 +13,8 @@ const MenuMobile = (props) => {
   return (
     <Drawer
       title={<MenuLogo onClose={onClose} />}
-      className="hp-profile-mobile-menu"
+      width={256}
+      className="hp-profile-mobile-menu hp-sidebar"
       placement="left"
       closable={true}
       onClose={onClose}
@@ -24,7 +25,7 @@ const MenuMobile = (props) => {
     >
       <MenuItem onClose={onClose} />
 
-      <MenuFooter onClose={onClose} collapsed={false} />
+      <MenuFooter onClose={onClose} collapsed={false} mobileMenu={true} />
     </Drawer>
   );
 };
