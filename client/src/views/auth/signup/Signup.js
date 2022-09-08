@@ -15,7 +15,6 @@ const initialFormData = {
   name: "",
   email: "",
   password: "",
-  confirmPassword: "",
 };
 
 const Signup = ({ history }) => {
@@ -33,15 +32,10 @@ const Signup = ({ history }) => {
   // Handle custom email sign up
   const handleEmailSignup = (e) => {
     e.preventDefault();
-    const { name, email, password, confirmPassword } = formData;
+    const { name, email, password } = formData;
 
     // If fields are empty, throw error
-    if (
-      name === "" ||
-      email === "" ||
-      password === "" ||
-      confirmPassword === ""
-    ) {
+    if (name === "" || email === "" || password === "") {
       ErrorNotification("Please fill in all fields");
       return;
     }
@@ -53,23 +47,17 @@ const Signup = ({ history }) => {
     }
 
     try {
-      // Check if passwords match
-      if (password !== confirmPassword) {
-        ErrorNotification("Passwords don't match");
-        return;
-      } else {
-        // Dispatch name, email, and password
-        dispatch(
-          signupAction({
-            name,
-            email,
-            password,
-            setFormData,
-            initialFormData,
-            setLoading,
-          })
-        );
-      }
+      // Dispatch name, email, and password
+      dispatch(
+        signupAction({
+          name,
+          email,
+          password,
+          setFormData,
+          initialFormData,
+          setLoading,
+        })
+      );
     } catch (error) {
       console.log("SIGNUP_ERROR", error);
     }
@@ -135,15 +123,6 @@ const Signup = ({ history }) => {
                     id="password"
                     name="password"
                     value={formData.password}
-                    onChange={handleFormChange}
-                  />
-                </Form.Item>
-
-                <Form.Item label="Confirm Password :">
-                  <Input.Password
-                    id="confirm-password"
-                    name="confirmPassword"
-                    value={formData.confirmPassword}
                     onChange={handleFormChange}
                   />
                 </Form.Item>
