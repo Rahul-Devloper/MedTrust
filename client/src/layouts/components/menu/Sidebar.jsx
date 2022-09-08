@@ -138,9 +138,9 @@ const Sidebar = (props) => {
           <MenuItem onClose={onClose} />
 
           <MenuFooter onClose={onClose} collapsed={collapsed} />
-          <MenuMobile onClose={onClose} visible={visible} />
         </motion.div>
       </Sider>
+      <MenuMobile onClose={onClose} visible={visible} />
     </>
   );
 };
