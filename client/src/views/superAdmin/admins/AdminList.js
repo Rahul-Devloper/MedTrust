@@ -11,7 +11,7 @@ const AdminList = () => {
   useEffect(() => {
     getAllAdmins()
       .then((res) => {
-        setAdmins(res.data);
+        setAdmins(res.hpta);
       })
       .catch((err) => {
         console.log(err);
@@ -28,10 +28,7 @@ const AdminList = () => {
     <>
       <Card
         className="hp-border-color-black-40 hp-mb-32 hp-analytics-project-table-card hp-project-table-card"
-        style={{
-          overflowY: "auto",
-          height: "calc(100vh - 150px)",
-        }}
+        style={{ height: "100%" }}
       >
         <Row>
           <Col span={24}>
@@ -45,42 +42,40 @@ const AdminList = () => {
                 <tr>
                   <th scope="col">Name</th>
                   <th scope="col">Email</th>
-                  <th scope="col">Join Date</th>
+                  <th scope="col">Join hpte</th>
                   <th scope="col">Plan</th>
-                  <th scope="col">No. of Chatbots</th>
+                  <th scope="col">No. of Projects</th>
                   <th scope="col">Team Size</th>
                   <th scope="col">Action</th>
                 </tr>
               </ParentTableHead>
               <tbody>
-                {admins?.length > 0 &&
+                {admins &&
                   admins?.map((admin) => (
-                    <tr key={admin?._id}>
+                    <tr key={admin._id}>
                       <td
-                        onClick={() => handleAdminView(admin?._id)}
+                        onClick={() => handleAdminView(admin._id)}
                         style={{ cursor: "pointer" }}
                       >
-                        {admin?.name && admin?.name}
+                        {admin.name}
                       </td>
                       <td>
-                        <Tag color="blue">{admin?.email && admin?.email}</Tag>
+                        <Tag color="blue">{admin.email}</Tag>
                       </td>
-                      <td>
-                        {admin?.createdAt && admin?.createdAt.split("T")[0]}
-                      </td>
-                      <td>{admin?.currentPlan}</td>
-                      <td>{admin?.chatbots.length}</td>
-                      <td>{admin?.team.length}</td>
+                      <td>{admin.createhpt.split("T")[0]}</td>
+                      <td>{admin.currentPlan}</td>
+                      <td>{admin.projects.length}</td>
+                      <td>{admin.members.length + admin.managers.length}</td>
                       <td style={{ cursor: "pointer" }}>
                         {/* View Icon */}
                         <TiEyeOutline
                           size={19}
-                          onClick={() => handleAdminView(admin?._id)}
+                          onClick={() => handleAdminView(admin._id)}
                         />
                         <span style={{ margin: "0 10px" }} />
                         {/* Edit Icon */}
                         <RiEditFill
-                          onClick={() => handleAdminEdit(admin?._id)}
+                          onClick={() => handleAdminEdit(admin._id)}
                         />
                       </td>
                     </tr>
