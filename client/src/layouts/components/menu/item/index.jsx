@@ -78,7 +78,6 @@ const MenuItem = (props) => {
         splitLocation[splitLocation.length - 2],
       ]}
       theme={"light"}
-      className="hp-bg-black-20 hp-bg-dark-90"
     >
       {menuItem}
     </Menu>

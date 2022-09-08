@@ -52,7 +52,10 @@ const Sidebar = (props) => {
         collapsed={collapsed}
         showProgress={true}
         width={256}
-        className="hp-sidebar hp-bg-black-20 hp-bg-color-dark-90 hp-border-right-1 hp-border-color-black-40 hp-border-color-dark-80"
+        className="hp-sidebar hp-border-right-1 hp-border-color-black-40 hp-border-color-dark-80"
+        style={{
+          background: "#fff",
+        }}
       >
         <motion.div
           initial={{ opacity: 0, x: -50 }}
