@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 import { Layout, Row, Col } from "antd";
-import { motion } from "framer-motion/dist/framer-motion";
+import { motion } from 'framer-motion'
 
 import logoSmall from "../../../assets/images/logo/logo.svg";
 import { redirectToDashboard } from "../../../utils/roleBasedRedirect";

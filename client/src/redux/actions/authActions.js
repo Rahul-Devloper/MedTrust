@@ -29,7 +29,12 @@ export const signupAction = (data) => async (dispatch) => {
 
   try {
     // Fetch response from server
-    const res = await signUp(data.name, data.email, data.password);
+    const res = await signUp(
+      data.name,
+      data.email,
+      data.password,
+      data.nhsNumber
+    )
 
     // Dispatch a success/error login notify
     dispatch({

@@ -5,6 +5,7 @@
   "main": "server.js",
   "scripts": {
     "dev": "nodemon server.js",
+    "debug": "nodemon --inspect server.js",
     "start": "node server.js",
     "test": "jest --watchAll --no-cache --runInBand --coverage"
   },

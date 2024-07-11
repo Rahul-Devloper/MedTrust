@@ -70,18 +70,17 @@ const MenuItem = (props) => {
 
   return (
     <Menu
-      mode="inline"
+      mode='inline'
       defaultOpenKeys={[
         splitLocation.length === 5
           ? splitLocation[splitLocation.length - 3]
           : null,
         splitLocation[splitLocation.length - 2],
       ]}
-      theme={"light"}
-    >
-      {menuItem}
+      theme={'light'}>
+      {/* {menuItem} */}
     </Menu>
-  );
+  )
 };
 
 export default MenuItem;

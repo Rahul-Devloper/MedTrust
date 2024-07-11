@@ -1,0 +1,27 @@
+.changelog-container {
+    padding: 20px;
+    background-color: #f9f9f9; /* Light background to distinguish changelogs */
+    border-radius: 8px;
+    margin-bottom: 20px;
+    margin-top: 0px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1); /* Soft shadow for depth */
+  }
+  
+  .changelog-version {
+    font-size: 24px;
+    color: #333; /* Dark color for emphasis */
+    font-weight: bold;
+  }
+  
+  .changelog-date {
+    font-size: 14px;
+    color: #002cef; /* Subtle color for less emphasis */
+    margin-bottom: 10px;
+    font-style: italic;
+    font-weight: bold;
+  }
+  
+  .changelog-updates {
+    margin-top: 10px;
+  }
+  

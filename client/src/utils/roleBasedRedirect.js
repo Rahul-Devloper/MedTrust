@@ -4,13 +4,16 @@ export const RoleBasedRedirect = (res, history) => {
     history.push(intended.from);
   } else {
     if (!res.data.user) {
-      window.location.href = "/";
-    } else if (res.data.user.role === "superadmin") {
-      window.location.href = "/super-admin/dashboard";
-    } else if (res.data.user.role === "admin") {
-      window.location.href = "/admin/dashboard";
-    } else if (res.data.user.role === "member") {
-      window.location.href = "/member/dashboard";
+      window.location.href = '/'
+    } else if (res.data.user.role === 'superadmin') {
+      window.location.href = '/super-admin/dashboard'
+    } else if (res.data.user.role === 'admin') {
+      window.location.href = '/admin/dashboard'
+    } else if (
+      res.data.user.role === 'member' ||
+      res.data.user.role === 'patient'
+    ) {
+      window.location.href = '/member/dashboard'
     }
   }
 };

@@ -1,0 +1,180 @@
+/* CSS for custom scrollbar */
+.notification-container::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+/* Track */
+.notification-container::-webkit-scrollbar-track {
+  background: #ffffff; /* Color of the track */
+}
+
+/* Handle */
+.notification-container::-webkit-scrollbar-thumb {
+  background: #0b4eb8; /* Color of the scrollbar handle */
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+.notification-container::-webkit-scrollbar-thumb:hover {
+  background: #092f6a; /* Color of the scrollbar handle on hover */
+}
+
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20px 15px 20px;
+}
+
+.notification-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  align-items: center;
+  height: 250px;
+  width: 300px;
+  overflow-y: auto;
+}
+
+.notification-item {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  padding: 10px 5px 10px 10px;
+  cursor: pointer;
+  width: 100%;
+  transition: all 0.3s ease-out;
+  border: 1px solid transparent;
+}
+
+.notification-item:hover {
+  background-color: rgb(235, 235, 235) !important;
+  transition: all 0.3s ease-out;
+}
+
+.custom-popover .ant-popover-inner-content {
+  padding: 0 !important;
+}
+
+/* NOTIFICATION-DETAILS-PAGE-CSS */
+.notifications-details-main {
+  padding: 20px;
+  background-color: #ffffff;
+}
+
+.notifications-details {
+  height: calc(100vh - 240px);
+  overflow-y: auto;
+}
+
+.notifications-details-heading {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 10px;
+}
+.notifications-details-heading h4 {
+  color: #061db7;
+  transition: all 0.3s ease-out;
+  border-radius: 10px;
+  padding: 12px;
+  border: 1px solid transparent;
+}
+.notifications-details-heading h4:hover {
+  cursor: pointer;
+  color: #061db7;
+  border: 1px solid #061db7;
+}
+
+/* CSS for custom scrollbar */
+.notifications-details::-webkit-scrollbar {
+  width: 8px; /* Width of the scrollbar */
+}
+
+/* Track */
+.notifications-details::-webkit-scrollbar-track {
+  background: #ffffff; /* Color of the track */
+}
+
+/* Handle */
+.notifications-details::-webkit-scrollbar-thumb {
+  background: #0b4eb8; /* Color of the scrollbar handle */
+  border-radius: 8px;
+}
+
+/* Handle on hover */
+.notifications-details::-webkit-scrollbar-thumb:hover {
+  background: #092f6a; /* Color of the scrollbar handle on hover */
+}
+
+.notifications-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px;
+  cursor: pointer;
+  margin-bottom: 5px;
+  border-radius: 10px;
+  transition: all 0.3s ease-out;
+  background-color: aliceblue;
+  margin-right: 10px;
+  overflow: hidden;
+  border: 1px solid transparent;
+}
+
+.notifications-card:hover {
+  background-color: rgb(178, 217, 249);
+  box-shadow: rgb(178, 217, 249) 0px 2px 8px 0px;
+}
+
+.notifications-card .notifications-avatar {
+  background-color: #061db7;
+  margin-right: 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.notifications-card .notifications-title {
+  font-size: 16px;
+  font-weight: bold;
+  color: #000;
+  margin-bottom: 0px;
+}
+
+.notifications-card .notifications-desc {
+  font-size: 16px;
+  margin-bottom: 0px;
+}
+
+.notifications-card .notifications-date {
+}
+
+/* Empty Notifications */
+.empty-notifications {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  height: calc(70vh - 50px);
+}
+
+.empty-notifications .notification-img {
+  height: 200px;
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.empty-notifications h4 {
+  font-size: 25px;
+  color: #444444;
+  font-weight: bold;
+  text-align: center;
+}
+
+.empty-notifications p {
+  font-size: 20px;
+  color: #565656;
+  text-align: center;
+}

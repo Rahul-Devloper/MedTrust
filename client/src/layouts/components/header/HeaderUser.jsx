@@ -18,23 +18,22 @@ const HeaderUser = () => {
   };
 
   const menu = (
-    <Menu theme={"light"}>
-      <Menu.Item
+    <Menu theme={'light'}>
+      {/* <Menu.Item
         key={0}
         icon={
           <User
-            set="curved"
-            className="remix-icon hp-vertical-align-middle hp-text-color-dark-0"
+            set='curved'
+            className='remix-icon hp-vertical-align-middle hp-text-color-dark-0'
             size={16}
           />
         }
-        className="hp-text-color-dark-0"
-      >
-        <Link to="/profile/information">My Profile</Link>
-      </Menu.Item>
+        className='hp-text-color-dark-0'>
+        <Link to='/profile/information'>My Profile</Link>
+      </Menu.Item> */}
 
       {/* My Subscription */}
-      {user?.role === "admin" && (
+      {/* {user?.role === "admin" && (
         <Menu.Item
           key={0}
           icon={
@@ -48,24 +47,23 @@ const HeaderUser = () => {
         >
           <Link to="/profile/subscription">My Subscription</Link>
         </Menu.Item>
-      )}
+      )} */}
 
       <Menu.Item
         key={5}
         icon={
           <Logout
-            set="curved"
-            className="remix-icon hp-vertical-align-middle hp-text-color-dark-0"
+            set='curved'
+            className='remix-icon hp-vertical-align-middle hp-text-color-dark-0'
             size={16}
           />
         }
-        className="hp-text-color-dark-0"
-        onClick={handleLogout}
-      >
+        className='hp-text-color-dark-0'
+        onClick={handleLogout}>
         Logout
       </Menu.Item>
     </Menu>
-  );
+  )
 
   return (
     <Col>

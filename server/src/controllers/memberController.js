@@ -7,18 +7,18 @@ const UserService = require("../services/userService");
 exports.currentMember = async (req, res) => {
   const { _id } = req.user;
 
-  const user = await UserService.FindUserById(_id);
+  const user = await UserService.findUserById(_id)
 
-  if (user.role === "member") {
+  if (user.role === 'member' || user.role === 'patient') {
     res.status(200).json({
       user: true,
-      message: "Welcome member!",
+      message: 'Welcome member!',
       user: User.toClientObject(user),
-    });
+    })
   } else {
     res.status(403).json({
       admin: false,
-      error: "You are trying to access a restricted resource. Access Denied",
-    });
+      error: 'You are trying to access a restricted resource. Access Denied',
+    })
   }
 };

@@ -1,0 +1,185 @@
+.integration-container {
+  overflow-y: auto;
+  height: calc(100vh - 20px);
+  padding: 20px 20px 100px 2px;
+}
+.integration-card-main {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0px;
+  margin-top: 30px;
+  gap: 60px;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  background-color: #fff;
+}
+.integration-heading {
+  display: flex;
+  flex-direction: row;
+  -webkit-box-align: center;
+  align-items: center;
+  -webkit-box-pack: justify;
+  justify-content: space-between;
+}
+
+.integration-heading h1 {
+  font-size: 28px;
+  color: #000;
+  font-weight: 600;
+  margin-bottom: 0;
+}
+.integration-heading p {
+  font-size: 16px;
+  line-height: 1.36;
+  letter-spacing: 0px;
+  opacity: 1;
+  color: rgb(133, 133, 133);
+}
+
+.integration-heading span {
+  font-size: 14px;
+  letter-spacing: 0px;
+  color: rgb(42, 124, 255);
+  line-height: 1.43;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.int-search-bar {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.integration-card-inner {
+  display: flex;
+  position: relative;
+  flex-direction: column;
+  height: 176px;
+  width: 260px;
+  border-radius: 8px;
+  background-color: #fff;
+  box-shadow: rgb(232, 233, 239) 0px 2px 20px 0px;
+  padding: 20px;
+}
+.integration-card-inner img {
+  height: 45px;
+  width: 45px;
+  margin-bottom: 12px;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+}
+.integration-card-inner .heading {
+  font-size: 16px;
+  font-weight: normal;
+  color: rgb(16, 16, 16);
+  line-height: 1.36;
+  margin-bottom: 12px;
+}
+.integration-card-inner p {
+  width: 228px;
+  height: 50px;
+  position: relative;
+  font-size: 13px;
+  color: rgb(16, 16, 16);
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.43;
+  font-weight: 500;
+}
+
+.integration-card-inner:hover {
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  transition: transform 0.2s cubic-bezier(0.4, 1, 0.75, 0.9),
+    box-shadow 0.2s cubic-bezier(0.4, 1, 0.75, 0.9);
+  cursor: pointer;
+}
+
+.integration-card {
+  padding: 2px;
+  border-radius: 10px;
+  box-shadow: rgba(0, 0, 0, 0.1) 0px 12px 6px;
+  position: relative;
+}
+
+.integration-card:hover {
+  background-color: #0b4eb8;
+}
+.integration-card-details {
+  margin-top: 25px;
+}
+.integration-card-details .tabs-desc {
+  margin-top: 17px;
+  width: 800px;
+  font-size: 16px;
+  color: rgb(16, 16, 16);
+  white-space: pre-line;
+}
+
+.integration-card-details img {
+  height: 45px;
+  width: 45px;
+  margin-bottom: 12px;
+  aspect-ratio: 3/2;
+  object-fit: contain;
+}
+
+.integration-card-details-inner span {
+  font-size: 16px;
+  color: rgb(16, 16, 16);
+  line-height: 1.36;
+  font-weight: 600;
+}
+
+.integration-card-details-inner p {
+  width: 480px;
+  height: 38px;
+  font-size: 14px;
+  color: rgb(16, 16, 16);
+  line-height: 1.43;
+  margin-top: 6px;
+  margin-bottom: 11px;
+  font-weight: 500;
+}
+
+/* Integrations Tags*/
+.tag {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 12px;
+  padding: 1px 4px;
+  white-space: nowrap;
+  border-radius: 3px;
+  margin: 0px 4px 0px 4px;
+}
+
+.tag-starter {
+  background-color: rgba(241, 176, 0, 0.16);
+  color: rgb(241, 176, 0);
+}
+
+.tag-business {
+  background-color: rgba(19, 190, 102, 0.16);
+  color: rgb(19, 190, 102);
+}
+
+.tag-enterprise {
+  background-color: rgba(255, 0, 0, 0.16);
+  color: rgb(255, 0, 0);
+}
+
+.coming-soon-ribbon {
+  position: absolute;
+  padding: 0px 8px;
+  border-radius: 3px;
+  color: #fff;
+  font-weight: bold;
+  right: 0;
+  top: 0;
+  margin: 8px;
+  /* transform: translateY(35%) translateX(128%); */
+  box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+  z-index: 999;
+  background: red;
+}

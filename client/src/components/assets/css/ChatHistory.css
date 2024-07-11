@@ -1,0 +1,616 @@
+/* HR line  */
+.container-hr {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.hr-line {
+  width: 190px;
+  background-color: none;
+  color: #45496e;
+}
+
+.centered-text {
+  padding: 0 10px;
+  margin: 0 10px;
+  transition: background-color 0.3s ease;
+}
+.centered-text:hover {
+  background-color: #fff;
+}
+
+.filter-dropdown-button {
+  width: 100%;
+  padding: 10px;
+  background: #fff;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+}
+.filter-dropdown-button:hover {
+  background: #edecec;
+}
+
+.three-dots {
+  transform: rotate(90deg);
+  color: #fff;
+}
+.three-dots:hover {
+  color: #000;
+}
+
+.filter-select-option {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: rgb(229, 220, 215);
+  padding: 15px 20px 15px 23px;
+}
+
+/* BOTS LIST */
+.bots-list-container {
+  overflow: auto;
+  height: calc(100vh - 55px);
+  padding-bottom: 50px;
+  background-color: #fff;
+}
+
+/* Custom scrollbar styles */
+.bots-list-container::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.bots-list-container::-webkit-scrollbar-track {
+  background: none; /* color of the tracking area */
+}
+
+.bots-list-container::-webkit-scrollbar-thumb {
+  background-color: #0b4eb8; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid transparent; /* creates padding around scroll thumb */
+}
+
+/* CHATS LIST */
+.chats-list-container {
+  overflow: auto;
+  height: calc(100vh - 150px);
+  margin-bottom: 50px;
+  background-color: #fff;
+}
+
+/* Custom scrollbar styles */
+.chats-list-container::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.chats-list-container::-webkit-scrollbar-track {
+  background: none; /* color of the tracking area */
+}
+
+.chats-list-container::-webkit-scrollbar-thumb {
+  background-color: #0b4eb8; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid transparent; /* creates padding around scroll thumb */
+}
+
+.chats-list {
+  color: #000;
+  height: 60px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  transition: box-shadow 0.4s ease-out;
+  border: none;
+  border-radius: 2px;
+}
+.chats-list:hover {
+  background-color: #89acd9 !important;
+  color: #fff !important;
+  border: none;
+}
+
+.chats-list Button.chats-V-icon {
+  background-color: rgb(159, 159, 250);
+  margin-right: 5px;
+}
+
+.chat-text {
+  width: 160px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* AGENTS LIST */
+.agents-list-container {
+  overflow: auto;
+  height: calc(100vh - 55px);
+  padding-bottom: 50px;
+  background-color: #fff;
+}
+
+/* Reuse the same scrollbar styles as chats list */
+.agents-list-container::-webkit-scrollbar {
+  width: 8px;
+}
+
+.agents-list-container::-webkit-scrollbar-track {
+  background: none;
+}
+
+.agents-list-container::-webkit-scrollbar-thumb {
+  background-color: #0b4eb8;
+  border-radius: 20px;
+  border: 3px solid transparent;
+}
+
+.agent-item {
+  color: #000;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  padding: 0px 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  background-color: #fff;
+  transition: box-shadow 0.4s ease-out;
+  border: none;
+  border-radius: 2px;
+  padding-left: 10px;
+  margin-bottom: 5px;
+}
+
+.agent-item:hover {
+  background-color: #89acd9;
+  color: #fff;
+  border: none;
+}
+
+.initials {
+  background-color: #0b4eb8; /* Choose a background color */
+  color: #fff;
+  font-weight: bold;
+  font-size: 16px; /* Adjust font size as needed */
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.initials-and-indicator {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.online-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  z-index: 1;
+}
+.engaged-indicator {
+  position: absolute;
+  top: 0;
+  right: 0;
+  border-radius: 50%;
+  width: 10px;
+  height: 10px;
+  z-index: 1;
+}
+
+/* Style for the agent details */
+.agent-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px;
+}
+
+.agent-name,
+.agent-email {
+  margin: 0;
+  line-height: 1.2; /* Adjust line height for better readability */
+}
+
+/* ChatHistory Header Buttons */
+Button.end-btn {
+  background-color: #1861ff;
+  margin-right: 10px;
+  border-radius: 4px;
+  color: #fff;
+  padding: 10px;
+  margin-top: 5px;
+}
+
+Button.pause-btn {
+  background-color: #1890ff;
+  margin-right: 10px;
+  border-radius: 4px;
+  color: #fff;
+}
+
+Button.end-btn:hover {
+  background-color: #0b4eb8;
+  color: #fff;
+}
+
+Button.pause-btn:hover {
+  background-color: #0b4eb8;
+  color: #fff;
+}
+
+Button.end-btn:focus {
+  box-shadow: rgba(34, 0, 255, 0.19) 0px 10px 20px,
+    rgba(61, 3, 253, 0.23) 0px 6px 6px;
+  background-color: #0b4eb8;
+  color: #fff;
+}
+Button.pause-btn:focus {
+  box-shadow: rgba(34, 0, 255, 0.19) 0px 10px 20px,
+    rgba(61, 3, 253, 0.23) 0px 6px 6px;
+  background-color: #0b4eb8;
+  color: #fff;
+}
+
+/* HEADER */
+.chatbot-message-header {
+  display: flex;
+  background-color: #fff;
+  justify-content: space-between;
+  align-items: center;
+  padding: 15px;
+  height: 55px;
+}
+
+.header-details {
+  display: flex;
+  flex-direction: column;
+  margin-left: 10px; /* Add some space between the logo and the text */
+}
+
+.header-left,
+.header-right {
+  display: flex;
+  align-items: center;
+  font-weight: 600;
+}
+
+.chatbot-name {
+  font-size: 18px;
+  font-weight: bold;
+  color: #333;
+}
+
+.chatbot-logo {
+  width: 40px; /* Adjust size as needed */
+  height: 40px; /* Adjust size as needed */
+  border-radius: 50%;
+  background-color: #0b4eb8; /* Adjust background color as needed */
+  color: #fff; /* Adjust text color as needed */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-weight: bold;
+  font-size: 16px; /* Adjust font size as needed */
+}
+
+
+.chatbot-message-container {
+  height: calc(100vh - 188px);
+  overflow-y: auto;
+  overflow-x: hidden;
+  padding: 20px;
+  background-color: #ebedf1;
+}
+
+/* Custom scrollbar styles */
+.chatbot-message-container::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.chatbot-message-container::-webkit-scrollbar-track {
+  background: none; /* color of the tracking area */
+}
+
+.chatbot-message-container::-webkit-scrollbar-thumb {
+  background-color: #0b4eb8; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid transparent; /* creates padding around scroll thumb */
+}
+
+Button.send-btn {
+  background-color: #494141;
+  color: #fff;
+  border-radius: 4px;
+}
+Button.send-btn:hover {
+  background-color: #322e2e;
+  color: #fff;
+}
+Button.send-btn:focus {
+  background-color: #234fec;
+  color: #fff;
+}
+
+/* botChat messages */
+.agent_name__line {
+  width: 10%;
+  height: 1px;
+  margin-right: 2px;
+}
+.agent_name__bubble {
+  padding: 3px 10px; /* Adjust padding as needed */
+  display: inline-block; /* This makes the element's width fit its content */
+  margin-top: 0px;
+  margin-bottom: 0px;
+  border-radius: 4px; /* Adjust for a slightly angular look, consider more complex shapes as needed */
+  word-break: break-word;
+  font-size: 10px !important;
+  font-style: italic;
+  transform: skew(-6deg); /* Skew the element for an italic-like effect */
+}
+
+.agent_name__bubble::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+}
+
+.bot-message-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  width: 100%;
+  margin-top: 25px;
+}
+.bot-message-container p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #45496e;
+}
+.user-message-container {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  width: 100%;
+  margin-top: 10px;
+}
+.user-message-container p {
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #45496e;
+}
+.chatbot-message {
+  background-color: #0b4eb8;
+  padding: 0.7rem 0.8rem;
+  margin-bottom: 6px;
+  border-radius: 15px 15px 15px 0px;
+  display: inline-block;
+  font-size: 14px !important;
+  line-height: 1.34;
+  color: #fff;
+  word-break: break-word;
+  white-space: pre-wrap;
+  align-self: flex-start;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.chatbot-message p {
+  color: #fff;
+}
+.chatbot-message a {
+  color: #fff;
+  text-decoration: underline;
+  background-color: transparent !important;
+}
+.chatbot-message a:hover {
+  color: #fff;
+  text-decoration: none;
+}
+.chatbot-user-message {
+  background-color: #fff;
+  padding: 0.8rem 1rem;
+  margin-bottom: 6px;
+  border-radius: 15px 15px 0px 15px;
+  display: inline-block;
+  line-height: 1.34;
+  color: #000;
+  word-break: break-word;
+  white-space: pre-wrap;
+  align-self: flex-end;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+.chatbot-user-rating-message {
+  background-color: #fff;
+  padding: 0.8rem 1rem;
+  margin-bottom: 6px;
+  border-radius: 15px 15px 0px 15px;
+  display: inline-block;
+  line-height: 1.34;
+  color: #000;
+  word-break: break-word;
+  align-self: flex-end;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+}
+
+/* Visitor Section */
+.visitor-details-header {
+  height: 50px;
+  padding: 15px;
+  background-color: #fff;
+}
+
+.visitor-details-row {
+  display: flex;
+  justify-content: space-between;
+}
+
+.visitor-details-col {
+  margin-right: 10px;
+}
+
+.visitor-details-title {
+  font-weight: 600;
+  font-size: 18px; /* Adjust the size as needed */
+  color: #2c3e50; /* Dark grey for better readability */
+}
+
+.visitor-id {
+  width: 120px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Dropdown container styles */
+.dropdown-container {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  border-radius: 4px;
+  overflow: hidden;
+}
+.dropdown-container .dropdown-button .var__icon {
+  height: 20px;
+  width: 20px;
+  border-radius: 4px;
+  margin-right: 10px;
+}
+
+/* Dropdown button styles */
+.dropdown-button {
+  background-color: #fff;
+  color: #000;
+  padding: 10px 12px;
+  border: none;
+  cursor: pointer;
+  width: 100%;
+  max-width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.dropdown-button:hover {
+  background-color: lightskyblue;
+}
+
+/* Dropdown list styles */
+.dropdown-list {
+  background-color: #fff;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.dropdown-list li {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+/* Dropdown item hover styles */
+.dropdown-list li:hover {
+  background-color: lightskyblue;
+}
+
+@media screen and (max-width: 900px) {
+  .visitor-id {
+    width: 80px;
+  }
+}
+
+.visitor-details-container {
+  height: calc(100vh - 55px);
+  overflow: auto;
+  padding: 15px 15px 25px 15px;
+  background-color: #fff;
+}
+
+/* Custom scrollbar styles */
+.visitor-details-container::-webkit-scrollbar {
+  width: 8px; /* width of the entire scrollbar */
+}
+
+.visitor-details-container::-webkit-scrollbar-track {
+  background: none; /* color of the tracking area */
+}
+
+.visitor-details-container::-webkit-scrollbar-thumb {
+  background-color: #0b4eb8; /* color of the scroll thumb */
+  border-radius: 20px; /* roundness of the scroll thumb */
+  border: 3px solid transparent; /* creates padding around scroll thumb */
+}
+
+.visitor-three-dots {
+  transform: rotate(90deg);
+  color: #000;
+}
+
+.visitor-content-inner {
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  margin-bottom: 5px;
+}
+
+.visitor-content-inner Button {
+  border-radius: 4px;
+  background: #e9e9e9;
+  margin-right: 15px;
+  color: #666666;
+  font-size: 12px;
+}
+
+/* message for gif & rating */
+.message-wrapper {
+  background-color: #fff;
+  padding: 0.2rem;
+  margin-bottom: 6px;
+  display: inline-block;
+  line-height: 1.34;
+  color: #fff;
+  word-break: break-word;
+  white-space: pre-wrap;
+  align-self: flex-start;
+  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  border: 2px solid #0000ff;
+}
+
+/* session Data */
+.session-Data {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.answer-variables-list {
+  background-color: #fff;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.answer-variables-list li {
+  padding: 10px;
+  cursor: pointer;
+  background-color: #fff;
+}
+
+/* Chat Input */
+.custom-table-wrapper {
+  margin-top: -35px; /* Adjust the value as needed */
+}

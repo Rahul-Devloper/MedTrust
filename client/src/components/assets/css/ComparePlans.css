@@ -1,0 +1,236 @@
+/* Pricing Compare Plans CSS */
+.compare_plans_main {
+  padding: 80px;
+  text-align: center;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.compare_plans_main .heading {
+  font-size: 52px;
+  margin-bottom: 40px;
+  color: #061db7;
+}
+.compare_plans_main .compare_plan_table_main .plan_table_body {
+  background-color: #fff;
+}
+.compare_plans_main .compare_plan_table_main .plan_table_header {
+  background-color: #f9f9ff;
+  height: auto;
+  border-radius: 10px 10px 0px 0px;
+  font-weight: bold;
+}
+.compare_plans_main .plan_table_header ul li {
+  font-weight: 600;
+  border-bottom: 3px solid #d4d4d8;
+  color: #33405e;
+}
+
+.compare_plans_main .compare_plan_table_main .plan_table_header ul {
+  list-style: none;
+  display: grid;
+  height: auto;
+  grid-column-gap: 16px;
+  color: #ffffff !important;
+  background: linear-gradient(
+    to bottom,
+    #1e0687 10%,
+    rgb(92, 131, 238) 100%,
+    #000 100%
+  );
+  border-radius: 12px 12px 0 0;
+  grid-template: "."/1.75fr 1fr 1fr 1fr 1fr;
+  position: static;
+  justify-content: end;
+}
+
+.compare_plans_main .compare_plan_table_main .plan_table_body {
+  background-color: #fff;
+}
+.compare_plans_main
+  .compare_plan_table_main
+  .plan_table_header
+  ul
+  li:nth-child(1) {
+  visibility: hidden;
+}
+
+.header_wrapper {
+  width: 100%;
+  max-width: 1330px;
+}
+
+.header_wrapper.sticky {
+  background-color: #fff;
+  padding: 20px 0px;
+  position: fixed;
+  top: 0;
+  margin: 0 auto;
+  max-width: 740px;
+}
+
+@media (max-width: 1300px) {
+  .header_wrapper.sticky {
+    width: calc(100vw - 370px);
+    background-color: #fff;
+    padding: 10px 0px;
+    position: fixed;
+    top: 0;
+    margin: 0 auto;
+    max-width: 820px;
+  }
+}
+
+@media (max-width: 1300px) and (min-width: 1100px) {
+  .compare_plans_main {
+    padding: 60px;
+  }
+  .header_wrapper.sticky {
+    max-width: 690px;
+  }
+}
+@media (max-width: 1100px) {
+  .header_wrapper.sticky {
+    width: calc(100vw - 30%);
+  }
+}
+@media (max-width: 830px) {
+  .header_wrapper.sticky {
+    width: calc(100vw - 10%);
+  }
+}
+
+.compare_plans_main
+  .compare_plan_table_main
+  .plan_table_header
+  ul
+  li:nth-child(4) {
+  border-bottom: 4px solid #636bfc;
+  color: #636bfc;
+}
+
+.compare_plans_main .compare_plan_table_main .plan_table_header ul li span {
+  text-transform: uppercase;
+  color: #ffffff;
+  font-size: 10px;
+  font-weight: 600;
+}
+
+.compare_plans_main .compare_plan_table_main .plan_table_header ul li {
+  width: 100px;
+  border-bottom: 2px solid blue;
+  color: #ffffff;
+  letter-spacing: -0.5px;
+  letter-spacing: -0.5px;
+  text-transform: none;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Mabry Pro, sans-serif;
+  font-size: 1.25rem;
+  font-weight: 400;
+  line-height: 1.75rem;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-bottom: 4px solid #e4e6f6;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  padding-right: 0;
+  display: flex;
+}
+
+.compare_plans_main .compare_plan_table_main .table_body_heading {
+  color: #061db7;
+  margin-top: 0;
+  margin-bottom: 0;
+  font-family: Mabry Pro, sans-serif;
+  font-size: 1.5rem;
+  font-weight: 400;
+  line-height: 3rem;
+  text-align: start;
+  padding-top: 50px;
+  border-bottom: 2px solid #1f4ab6;
+}
+
+.table_body_heading .paragraph-base {
+  width: auto;
+  color: #33405e;
+  letter-spacing: 0;
+  margin-bottom: 0;
+  font-family: DM Sans, sans-serif;
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.5rem;
+}
+
+.compare_plans_main .compare_plan_table_main .table_body_content ul li {
+  list-style: none;
+  display: grid;
+  height: auto;
+  grid-column-gap: 16px;
+  border-radius: 12px 12px 0 0;
+  grid-template: "."/1.75fr 1fr 1fr 1fr 1fr;
+  border-bottom: 1px solid lightgray;
+  margin-top: 20px;
+}
+
+.compare_plans_main
+  .compare_plan_table_main
+  .table_body_content
+  ul
+  li
+  span:nth-child(1) {
+  padding-left: 10px;
+  color: #1f4ab6;
+  font-weight: 600;
+  font-size: 16px;
+}
+
+.compare_plans_main .compare_plan_table_main .table_body_content ul li span {
+  width: auto;
+  color: #33405e;
+  text-align: left;
+  font-family: DM Sans, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 500;
+  line-height: 1.5rem;
+  padding: 15px 0px;
+}
+
+.compare_plans_main
+  .compare_plan_table_main
+  .table_body_content
+  ul
+  li
+  span
+  img {
+  height: 28px;
+  width: 28px;
+}
+
+.compare_plan_buttons {
+  display: flex;
+  justify-content: end;
+  align-items: center;
+  gap: 15px;
+  margin-top: 40px;
+}
+
+.compare_plan_buttons button {
+  padding: 8px 20px;
+  background-color: #005ad3;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+}
+.compare_plan_buttons button:hover {
+  padding: 8px 20px;
+  background-color: #244bac;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  font-weight: 600;
+}

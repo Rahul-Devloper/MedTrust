@@ -11,15 +11,14 @@ const MemberDashboard = () => {
         <Col span={24}>
           <h2
             style={{
-              marginLeft: "10px",
-            }}
-          >
-            Welcome back, {user?.name.split(" ")[0]} 👋
+              marginLeft: '10px',
+            }}>
+            Welcome, {user?.name.split(' ')[0]} 👋
           </h2>
         </Col>
       </Row>
     </>
-  );
+  )
 };
 
 export default MemberDashboard;

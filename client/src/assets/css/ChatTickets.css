@@ -1,0 +1,116 @@
+/* HANDLED TICKETS LIST */
+.tickets-list-container {
+    overflow: auto;
+    height: calc(100vh - 160px);
+    background-color: #fff;
+    margin-bottom: 60px;
+  }
+  
+  /* Custom scrollbar styles for tickets list */
+  .tickets-list-container::-webkit-scrollbar {
+    width: 8px; /* width of the entire scrollbar */
+  }
+  
+  .tickets-list-container::-webkit-scrollbar-track {
+    background: none; /* color of the tracking area */
+  }
+  
+  .tickets-list-container::-webkit-scrollbar-thumb {
+    background-color: #0b4eb8; /* Different color for scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid transparent; /* creates padding around scroll thumb */
+  }
+
+  .unhandled-tickets-list-container {
+    overflow: auto;
+    height: calc(100vh - 160px);
+    background-color: #fff;
+    margin-bottom: 60px;
+  }
+  
+  /* Custom scrollbar styles for tickets list */
+  .unhandled-tickets-list-container::-webkit-scrollbar {
+    width: 8px; /* width of the entire scrollbar */
+  }
+  
+  .unhandled-tickets-list-container::-webkit-scrollbar-track {
+    background: none; /* color of the tracking area */
+  }
+  
+  .unhandled-tickets-list-container::-webkit-scrollbar-thumb {
+    background-color: #d83347; /* Different color for scroll thumb */
+    border-radius: 20px; /* roundness of the scroll thumb */
+    border: 3px solid transparent; /* creates padding around scroll thumb */
+  }
+  
+  /* Ticket Item Style */
+  .tickets-list {
+    color: #000;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: box-shadow 0.4s ease-out;
+    border: none;
+    border-radius: 2px;
+    margin-bottom: 1px; /* Slight space between items */
+    background-color: #fff; /* Default background */
+  }
+  
+  .tickets-list:hover {
+    background-color: #89acd9 !important; /* Lighter shade on hover */
+    color: #fff !important; 
+    border: none;
+  }
+
+  .unhandled-tickets-list {
+    color: #000;
+    height: 60px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0px 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    transition: box-shadow 0.4s ease-out;
+    border: none;
+    border-radius: 2px;
+    margin-bottom: 1px; /* Slight space between items */
+    background-color: #fff; /* Default background */
+  }
+  
+  .unhandled-tickets-list:hover {
+    background-color: #e47575 !important; /* Lighter shade on hover */
+    color: #fff !important; 
+    border: none;
+  }
+  
+  .ticket-button-icon {
+    background-color: #9f9ffa !important; /* Color for button icon */
+    color: #fff;
+    margin-right: 5px;
+  }
+  
+  .ticket-text {
+    width: 160px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  
+  .ticket-status-tag {
+    width: 80px;
+    height: 20px;
+    border-radius: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 12px;
+    font-weight: 500;
+    color: #fff;
+    top: 0;
+    right: 0;
+  }

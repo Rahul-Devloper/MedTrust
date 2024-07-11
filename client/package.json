@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@craco/craco": "^6.4.3",
+    "@craco/craco": "^7.0.0",
     "@react-oauth/google": "^0.2.6",
     "@stripe/react-stripe-js": "^1.4.1",
     "@stripe/stripe-js": "^1.15.1",
@@ -13,18 +13,17 @@
     "antd": "^4.16.11",
     "antd-mask-input": "^0.1.15",
     "axios": "^0.21.1",
-    "craco-less": "^2.0.0",
-    "craco-less-plugin": "0.0.3",
+    "craco-less": "^3.0.0",
     "framer-motion": "^7.3.2",
     "js-cookie": "^2.2.1",
     "jwt-decode": "^3.1.2",
-    "react": "^17.0.2",
-    "react-dom": "^17.0.2",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
     "react-iconly": "^2.2.5",
     "react-icons": "^4.2.0",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-    "react-scripts": "4.0.3",
+    "react-scripts": "5.0.0",
     "react-scroll-up": "^1.3.7",
     "react-toastify": "^7.0.4",
     "redux": "^4.1.0",
@@ -55,5 +54,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11"
   }
 }

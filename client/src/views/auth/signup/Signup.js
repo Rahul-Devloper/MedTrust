@@ -12,38 +12,39 @@ import LeftContent from "../leftContent";
 import { ErrorNotification } from "../../../components";
 
 const initialFormData = {
-  name: "",
-  email: "",
-  password: "",
-};
+  name: '',
+  email: '',
+  nhsNumber: '',
+  password: '',
+}
 
 const Signup = ({ history }) => {
-  const [formData, setFormData] = useState(initialFormData);
-  const [agree, setAgree] = useState(false);
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [formData, setFormData] = useState(initialFormData)
+  const [agree, setAgree] = useState(false)
+  const [loading, setLoading] = useState(false)
+  const dispatch = useDispatch()
 
   // Handle form change
   const handleFormChange = (e) => {
-    e.preventDefault();
-    setFormData({ ...formData, [e.target.name]: e.target.value });
-  };
+    e.preventDefault()
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
 
   // Handle custom email sign up
   const handleEmailSignup = (e) => {
-    e.preventDefault();
-    const { name, email, password } = formData;
+    e.preventDefault()
+    const { name, email, nhsNumber, password } = formData
 
     // If fields are empty, throw error
-    if (name === "" || email === "" || password === "") {
-      ErrorNotification("Please fill in all fields");
-      return;
+    if ((name === '' || email === '' || password === '', nhsNumber === '')) {
+      ErrorNotification('Please fill in all fields')
+      return
     }
 
     // If not agreed, show error
     if (!agree) {
-      ErrorNotification("You need to agree to the terms and conditions");
-      return;
+      ErrorNotification('You need to agree to the terms and conditions')
+      return
     }
 
     try {
@@ -53,75 +54,86 @@ const Signup = ({ history }) => {
           name,
           email,
           password,
+          nhsNumber,
           setFormData,
           initialFormData,
           setLoading,
         })
-      );
+      )
     } catch (error) {
-      console.log("SIGNUP_ERROR", error);
+      console.log('SIGNUP_ERROR', error)
     }
-  };
+  }
 
   // Handle google login success
   const handleGoogleSuccess = async (credentialResponse) => {
-    const userObject = jwt_decode(credentialResponse.credential);
-    const { name, email } = userObject;
-    setLoading(true);
+    const userObject = jwt_decode(credentialResponse.credential)
+    const { name, email } = userObject
+    setLoading(true)
 
     // Dispatch email, password and history to action
-    dispatch(googleLoginAction({ name, email, history }));
-  };
+    dispatch(googleLoginAction({ name, email, history }))
+  }
 
   // Handle google login failure
   const handleGoogleFailure = () => {
-    console.log("GOOGLE_SIGNUP_ERROR");
-  };
+    console.log('GOOGLE_SIGNUP_ERROR')
+  }
 
   return (
     <>
-      <Row gutter={[32, 0]} className="hp-authentication-page">
+      <Row gutter={[32, 0]} className='hp-authentication-page'>
         <LeftContent />
 
-        <Col lg={12} span={24} className="hp-py-sm-0 hp-py-md-64">
-          <Row className="hp-h-100" align="middle" justify="center">
+        <Col lg={12} span={24} className='hp-py-sm-0 hp-py-md-64'>
+          <Row className='hp-h-100' align='middle' justify='center'>
             <Col
               xxl={11}
               xl={15}
               lg={20}
               md={20}
               sm={24}
-              className="hp-px-sm-8 hp-pt-24 hp-pb-48"
-            >
-              <h1 className="hp-mb-sm-0">Create Account</h1>
+              className='hp-px-sm-8 hp-pt-24 hp-pb-48'>
+              <h1 className='hp-mb-sm-0'>Create Account</h1>
 
               <Form
-                layout="vertical"
-                name="basic"
-                className="hp-mt-sm-16 hp-mt-32"
-              >
-                <Form.Item label="Name :" className="hp-mb-16">
+                layout='vertical'
+                name='basic'
+                className='hp-mt-sm-16 hp-mt-32'>
+                <Form.Item label='Name' className='hp-mb-16'>
                   <Input
-                    id="name"
-                    name="name"
+                    id='name'
+                    name='name'
+                    placeholder='Enter Name as per NHS Records'
                     value={formData.name}
                     onChange={handleFormChange}
                   />
                 </Form.Item>
 
-                <Form.Item label="Email :">
+                <Form.Item label='Email'>
                   <Input
-                    id="email"
-                    name="email"
+                    id='email'
+                    name='email'
+                    placeholder='Enter Email used in NHS registration'
                     value={formData.email}
                     onChange={handleFormChange}
                   />
                 </Form.Item>
 
-                <Form.Item label="Password :">
+                <Form.Item label='NHS number' className='hp-mb-16 hp-mt-16'>
+                  <Input
+                    id='nhsNumber'
+                    name='nhsNumber'
+                    placeholder='Enter NHS number'
+                    value={formData.nhsNumber}
+                    onChange={handleFormChange}
+                  />
+                </Form.Item>
+
+                <Form.Item label='Password'>
                   <Input.Password
-                    id="password"
-                    name="password"
+                    id='password'
+                    name='password'
                     value={formData.password}
                     onChange={handleFormChange}
                   />
@@ -133,20 +145,17 @@ const Signup = ({ history }) => {
                     <Col span={24}>
                       <Checkbox
                         checked={agree}
-                        onChange={() => setAgree(!agree)}
-                      >
-                        I agree to the{" "}
+                        onChange={() => setAgree(!agree)}>
+                        I agree to the{' '}
                         <Link
-                          to="/terms"
-                          className="hp-text-color-blue-100 hp-text-color-dark-80"
-                        >
+                          to='/terms'
+                          className='hp-text-color-blue-100 hp-text-color-dark-80'>
                           Term of use
-                        </Link>{" "}
-                        &{" "}
+                        </Link>{' '}
+                        &{' '}
                         <Link
-                          to="/privacy"
-                          className="hp-text-color-blue-100 hp-text-color-dark-80"
-                        >
+                          to='/privacy'
+                          className='hp-text-color-blue-100 hp-text-color-dark-80'>
                           Privacy policy
                         </Link>
                       </Checkbox>
@@ -154,75 +163,69 @@ const Signup = ({ history }) => {
                   </Row>
                 </Form.Item>
 
-                <Form.Item className="hp-mt-16 hp-mb-8">
+                <Form.Item className='hp-mt-16 hp-mb-8'>
                   <Button
                     block
-                    type="primary"
-                    htmlType="submit"
+                    type='primary'
+                    htmlType='submit'
                     onClick={handleEmailSignup}
-                    loading={loading}
-                  >
+                    loading={loading}>
                     Sign up
                   </Button>
                 </Form.Item>
               </Form>
 
-              <div className="hp-form-info">
-                <span className="hp-text-color-black-80 hp-text-color-dark-40 hp-caption hp-mr-4">
-                  Already have an account?{" "}
+              <div className='hp-form-info'>
+                <span className='hp-text-color-black-80 hp-text-color-dark-40 hp-caption hp-mr-4'>
+                  Already have an account?{' '}
                 </span>
 
                 <Link
-                  to="/login"
-                  className="hp-text-color-primary-1 hp-text-color-dark-primary-2 hp-caption"
-                >
+                  to='/login'
+                  className='hp-text-color-primary-1 hp-text-color-dark-primary-2 hp-caption'>
                   Login
                 </Link>
               </div>
 
-              <Col className="hp-or-line hp-text-center hp-mt-16">
-                <span className="hp-caption hp-text-color-black-80 hp-text-color-dark-30 hp-px-16 hp-bg-color-black-0 hp-bg-color-dark-100">
+              {/* <Col className='hp-or-line hp-text-center hp-mt-16'>
+                <span className='hp-caption hp-text-color-black-80 hp-text-color-dark-30 hp-px-16 hp-bg-color-black-0 hp-bg-color-dark-100'>
                   Or
                 </span>
-              </Col>
+              </Col> */}
 
-              <Col
-                className="hp-account-buttons hp-mt-16"
+              {/* <Col
+                className='hp-account-buttons hp-mt-16'
                 style={{
-                  display: "flex",
-                  justifyContent: "center",
-                }}
-              >
+                  display: 'flex',
+                  justifyContent: 'center',
+                }}>
                 <GoogleLogin
                   onSuccess={(credentialResponse) => {
-                    handleGoogleSuccess(credentialResponse);
+                    handleGoogleSuccess(credentialResponse)
                   }}
                   onError={() => {
-                    handleGoogleFailure();
+                    handleGoogleFailure()
                   }}
                 />
-              </Col>
+              </Col> */}
 
               <Col
-                className="hp-other-links hp-mt-24"
+                className='hp-other-links hp-mt-24'
                 style={{
-                  justifyContent: "center",
-                  display: "flex",
-                }}
-              >
+                  justifyContent: 'center',
+                  display: 'flex',
+                }}>
                 <Link
-                  to="/privacy"
-                  className="hp-text-color-black-80 hp-text-color-dark-40"
+                  to='/privacy'
+                  className='hp-text-color-black-80 hp-text-color-dark-40'
                   style={{
-                    marginRight: "8px",
-                  }}
-                >
+                    marginRight: '8px',
+                  }}>
                   Privacy Policy
                 </Link>
                 <Link
-                  to="/terms"
-                  className="hp-text-color-black-80 hp-text-color-dark-40"
-                >
+                  to='/terms'
+                  className='hp-text-color-black-80 hp-text-color-dark-40'>
                   Term of use
                 </Link>
               </Col>
@@ -231,7 +234,7 @@ const Signup = ({ history }) => {
         </Col>
       </Row>
     </>
-  );
-};
+  )
+}
 
 export default Signup;

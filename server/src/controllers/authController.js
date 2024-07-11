@@ -7,26 +7,30 @@ const bcrypt = require("bcryptjs");
 const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
+const PatientRecordService = require('../services/patientRecordService')
 
 /**********************************
   Sign up & send email verification
 ***********************************/
 exports.signup = async (req, res) => {
-  const { name, email, password, role } = req.body;
+  console.log('req==>', req)
+  const { name, email, password, nhsNumber } = req.body
+
+  let { role } = req.body
 
   // Validate the input fields
-  const validationErrors = [];
+  const validationErrors = []
 
   // Validate the email and password with utils
-  const emailValidationErrors = emailValidator(email);
-  const passwordValidationErrors = passwordValidator(password);
+  const emailValidationErrors = emailValidator(email)
+  const passwordValidationErrors = passwordValidator(password)
 
   if (emailValidationErrors.length) {
-    validationErrors.push(...emailValidationErrors);
+    validationErrors.push(...emailValidationErrors)
   }
 
   if (passwordValidationErrors.length) {
-    validationErrors.push(...passwordValidationErrors);
+    validationErrors.push(...passwordValidationErrors)
   }
 
   // Sends the validation error message
@@ -34,141 +38,176 @@ exports.signup = async (req, res) => {
     const errorObject = {
       error: true,
       type: validationErrors,
-    };
-    res.status(400).json(errorObject);
-    return;
+    }
+    res.status(400).json(errorObject)
+    return
   }
 
   try {
+    // Check if patient exists in patientRecords
+    const patientInRecord = await PatientRecordService.findPatientInRecord({
+      'personalDetails.name': name,
+      'personalDetails.nhsNumber': nhsNumber,
+      'personalDetails.contactDetails.email': email,
+    })
+    if (patientInRecord) {
+      role = 'patient'
+      console.log('patientInRecord==>', patientInRecord)
+    } else {
+      console.error('patientInRecordError==>', patientInRecord)
+      const errorObject = {
+        error: true,
+        type: [
+          {
+            code: 'GLOBAL_ERROR',
+            field: 'user',
+            message:
+              'Details do not match NHS records, please check details and try again',
+          },
+        ],
+      }
+      res.status(409).json(errorObject)
+      return
+    }
     // Check if user already exists
-    const existingUser = await UserService.findOneUser({ email });
+    const existingUser = await UserService.findOneUser({ email })
     if (existingUser) {
       const errorObject = {
         error: true,
         type: [
           {
-            code: "GLOBAL_ERROR",
-            field: "user",
-            message: "Email already exists, please login to continue",
+            code: 'GLOBAL_ERROR',
+            field: 'user',
+            message: 'Email already exists, please login to continue',
           },
         ],
-      };
-      res.status(409).json(errorObject);
-      return;
+      }
+      res.status(409).json(errorObject)
+      return
     }
     // Create payload to create JWT token
-    const payload = { email: email };
+    const payload = { email: email }
     // Generate JWT token for email verification, expires in 30 mins
     const verificationToken = jwt.sign(payload, process.env.JWT_EMAIL_SECRET, {
       expiresIn: 1800,
-    });
+    })
 
     // Create a new user, but keep the activation field to false
     // Hash the password
-    const hashedPassword = await bcrypt.hash(password, 12);
+    const hashedPassword = await bcrypt.hash(password, 12)
     // Create the user
     let newUser = await UserService.createUser({
       name,
       email,
-      role: role || "admin",
+      nhsNumber: nhsNumber || '',
+      role: role || 'admin',
       password: hashedPassword,
       activated: false,
       activationToken: verificationToken,
       activationTokenSentAt: Date.now(),
-    });
+    })
 
     // If admin, create an admin account
-    if (newUser.role === "admin") {
+    if (newUser.role === 'admin') {
       await AdminService.createAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
-      });
-    } else if (newUser.role === "superadmin") {
+      })
+    } else if (newUser.role === 'superadmin') {
       await SuperAdminService.createSuperAdmin({
         user: newUser._id,
         name: newUser.name,
         email: newUser.email,
-      });
+      })
     }
 
-    // Send verification to the user email
+    // testing mailservice using mailtrap.
     const transporter = nodemailer.createTransport({
-      port: 465,
-      host: "smtpout.secureserver.net",
+      host: 'sandbox.smtp.mailtrap.io',
+      port: 2525,
       auth: {
-        user: process.env.NODEMAILER_EMAIL,
-        pass: process.env.NODEMAILER_PASSWORD,
+        user: 'e9498c2661df56',
+        pass: '0f4933f2b27d54',
       },
-      secure: true,
-    });
+      secure: false,
+    })
+    // // Send verification to the user email
+    // const transporter = nodemailer.createTransport({
+    //   port: 465,
+    //   host: 'smtpout.secureserver.net',
+    //   auth: {
+    //     user: process.env.NODEMAILER_EMAIL,
+    //     pass: process.env.NODEMAILER_PASSWORD,
+    //   },
+    //   secure: true,
+    // })
 
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transporter.verify(function (error, success) {
         if (error) {
-          console.log(error);
-          reject(error);
+          console.log(error)
+          reject(error)
         } else {
-          console.log("Server is ready to take our messages");
-          resolve(success);
+          console.log('Server is ready to take our messages')
+          resolve(success)
         }
-      });
-    });
+      })
+    })
 
     // Configure the message
     let mailOptions = {
-      from: `Deepak from Netraga <${process.env.NODEMAILER_EMAIL}>`,
+      from: `MedTrust <${process.env.NODEMAILER_EMAIL}>`,
       to: email,
       subject: "You're in :) Plus, a quick question",
-      html: `Hi, ${newUser.name.split(" ")[0]}! <br>
+      html: `Hi, ${newUser.name.split(' ')[0]}! <br>
       <br>
       <a href=${
         process.env.APP_URL
       }/account/activate?token=${verificationToken}>Click here</a> to activate your account
       <br>
-      <p>I really appreciate you joining us at Netraga, and I know you'll love it when you see how easy it is to manage tasks, <br> collaborate and get your work done from anywhere.</p>
-      <p>We built Netraga to help small business improve their teams productivity, and I hope we can achieve that for you.
+      <p>I really appreciate you joining us at MedTrust, and I know you'll love it when you see how easy it is to read reviews.</p>
+      <p>We built MedTrust to establish a healthy communication between healthcare providers and patients. I hope we can achieve that for you.
       <br>
-      <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for Netraga?</p>
+      <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for MedTrust?</p>
       <p>I'm asking because knowing what made you sign up is really helpful for us in making sure that we're delivering <br> on what our users want. Just hit "reply" and let me know.</p>
-      <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from Netraga. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use Netraga to collaborate and improve their teams productivity.</p>
+      <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from MedTrust. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use MedTrust.</p>
       Cheers, <br>
-      Deepak, <br>
-      CEO, Netraga
+      MedTrust Team, <br>
       `,
-    };
+    }
 
     // Send the email
     await new Promise((resolve, reject) => {
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.error(err);
-          reject(err);
+          console.error(err)
+          reject(err)
         } else {
-          console.log(info);
-          resolve(info);
+          console.log(info)
+          resolve(info)
         }
-      });
-    });
+      })
+    })
 
     res.status(201).json({
-      message: "Check your email, and verify your account",
+      message: 'Check your email, and verify your account',
       user: User.toClientObject(newUser),
-    });
+    })
   } catch (error) {
-    res.status(500).json(error);
-    console.log("SERVER_SIGNUP_ERROR", error);
+    res.status(500).json(error)
+    console.log('SERVER_SIGNUP_ERROR', error)
   }
-};
+}
 
 /**********************************
   Email Verification, acc. activation
 ***********************************/
 exports.accountActivate = async (req, res, next) => {
   // Get the token from client body
-  const { token } = req.body;
+  const { token } = req.body
 
   try {
     // If token exists
@@ -180,70 +219,70 @@ exports.accountActivate = async (req, res, next) => {
             error: true,
             type: [
               {
-                code: "GLOBAL_ERROR",
+                code: 'GLOBAL_ERROR',
                 message:
-                  "Token is not valid or expired, enter email to resend verification",
+                  'Token is not valid or expired, enter email to resend verification',
               },
             ],
-          });
+          })
         }
-        const { email } = user;
+        const { email } = user
 
         // Check if already activated
-        const existingUser = await UserService.findOneUser({ email });
+        const existingUser = await UserService.findOneUser({ email })
         if (existingUser.activated) {
           return res.status(409).json({
             error: true,
             type: [
               {
-                code: "GLOBAL_ERROR",
-                message: "Account already activated",
+                code: 'GLOBAL_ERROR',
+                message: 'Account already activated',
               },
             ],
-          });
+          })
         }
 
         const updatedUser = await UserService.findOneUserAndUpdate(
           { email },
           { activated: true }
-        );
+        )
 
         return res.status(200).json({
-          message: "Email verified, please login to continue",
+          message: 'Email verified, please login to continue',
           user: User.toClientObject(updatedUser),
-        });
-      });
+        })
+      })
     }
   } catch (error) {
-    res.status(500).json(error);
-    console.log("ACCOUNT_VERIFY_ERROR", error);
+    res.status(500).json(error)
+    console.log('ACCOUNT_VERIFY_ERROR', error)
   }
-};
+}
 
 /**********************************
   Resend Account Email Verification
 ***********************************/
 exports.accountReverify = async (req, res) => {
   // Get the email from client
-  const { email } = req.body;
+  const { email } = req.body
 
   // Validate the input fields
-  const validationErrors = emailValidator(email);
+  const validationErrors = emailValidator(email)
 
   // Sends the validation error message
   if (validationErrors.length) {
     const errorObject = {
       error: true,
       type: validationErrors,
-    };
-    res.status(400).json(errorObject);
-    return;
+    }
+    res.status(400).json(errorObject)
+    return
   }
 
   if (email) {
     try {
       // Check if activated is false for the user
-      const existingUser = await UserService.FindOneUser({ email });
+      const existingUser = await UserService.FindOneUser({ email })
 
       // Check if the user is already activated
       if (existingUser.activated === true) {
@@ -251,16 +290,16 @@ exports.accountReverify = async (req, res) => {
           error: true,
           type: [
             {
-              code: "GLOBAL_ERROR",
-              field: "user",
-              message: "Email already activated, login to continue",
+              code: 'GLOBAL_ERROR',
+              field: 'user',
+              message: 'Email already activated, login to continue',
             },
           ],
-        });
+        })
       }
 
       // Generate JWT and mail the user
-      const payload = { email: email };
+      const payload = { email: email }
 
       // Generate JWT token for email verification, expires in 30 mins
       const verificationToken = jwt.sign(
@@ -269,7 +308,7 @@ exports.accountReverify = async (req, res) => {
         {
           expiresIn: 1800,
         }
-      );
+      )
 
       // Update activation token sent at in the user model
       await UserService.findOneUserAndUpdate(
@@ -278,105 +317,105 @@ exports.accountReverify = async (req, res) => {
           activationToken: verificationToken,
           activationTokenSentAt: Date.now(),
         }
-      );
+      )
 
       // Re Send verification to the user email
       const transporter = nodemailer.createTransport({
         port: 465,
-        host: "smtpout.secureserver.net",
+        host: 'smtpout.secureserver.net',
         auth: {
           user: process.env.NODEMAILER_EMAIL,
           pass: process.env.NODEMAILER_PASSWORD,
         },
         secure: true,
-      });
+      })
 
       await new Promise((resolve, reject) => {
         // verify connection configuration
         transporter.verify(function (error, success) {
           if (error) {
-            console.log(error);
-            reject(error);
+            console.log(error)
+            reject(error)
           } else {
-            console.log("Server is ready to take our messages");
-            resolve(success);
+            console.log('Server is ready to take our messages')
+            resolve(success)
           }
-        });
-      });
+        })
+      })
 
       let mailOptions = {
-        from: `Deepak from Netraga <${process.env.NODEMAILER_EMAIL}>`,
+        from: `Deepak from MedTrust <${process.env.NODEMAILER_EMAIL}>`,
         to: email,
-        subject: "Re-Verification :) Plus, a quick question",
-        html: `Hi, ${existingUser?.name?.split(" ")[0]}! <br>
+        subject: 'Re-Verification :) Plus, a quick question',
+        html: `Hi, ${existingUser?.name?.split(' ')[0]}! <br>
         <br>
         <a href=${
           process.env.APP_URL
         }/account/activate?token=${verificationToken}>Click here</a> to activate your account
         <br>
-        <p>I really appreciate you joining us at Netraga, and I know you'll love it when you see how easy it is to manage tasks, <br> collaborate and get your work done from anywhere.</p>
-        <p>We built Netraga to help small business improve their teams productivity, and I hope we can achieve that for you.
+        <p>I really appreciate you joining us at MedTrust, and I know you'll love it when you see how easy it is to manage tasks, <br> collaborate and get your work done from anywhere.</p>
+        <p>We built MedTrust to help small business improve their teams productivity, and I hope we can achieve that for you.
         <br>
-        <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for Netraga?</p>
+        <p>If you wouldn't mind, I'd love it if you answered one quick question: why did you sign up for MedTrust?</p>
         <p>I'm asking because knowing what made you sign up is really helpful for us in making sure that we're delivering <br> on what our users want. Just hit "reply" and let me know.</p>
-        <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from Netraga. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use Netraga to collaborate and improve their teams productivity.</p>
+        <p>By the way, over the next couple of weeks. We'll be sending you a few more emails on how you can extract more value from MedTrust. <br> We'll be sharing some tips, checking in with you and showing you how some of our customers use MedTrust to collaborate and improve their teams productivity.</p>
         Cheers, <br>
         Deepak, <br>
-        CEO, Netraga
+        CEO, MedTrust
         `,
-      };
+      }
 
       // Send the email
       await new Promise((resolve, reject) => {
         // send mail
         transporter.sendMail(mailOptions, (err, info) => {
           if (err) {
-            console.error(err);
-            reject(err);
+            console.error(err)
+            reject(err)
           } else {
-            console.log(info);
-            resolve(info);
+            console.log(info)
+            resolve(info)
           }
-        });
-      });
+        })
+      })
 
       return res.json({
         message:
-          "Verification email sent, check your email to activate account",
+          'Verification email sent, check your email to activate account',
         user: User.toClientObject(existingUser),
-      });
+      })
     } catch (error) {
-      res.status(500).json(error);
-      console.log("AUTH_REVERIFY_ERROR", error);
+      res.status(500).json(error)
+      console.log('AUTH_REVERIFY_ERROR', error)
     }
   } else {
-    return res.json({ message: "Please enter a valid email" });
+    return res.json({ message: 'Please enter a valid email' })
   }
-};
+}
 
 /**********************************
   Password Reset Email
 ***********************************/
 exports.passwordResetEmail = async (req, res) => {
   // Get the email from client body
-  const { email } = req.body;
+  const { email } = req.body
 
   // Validate the input fields
-  const validationErrors = emailValidator(email);
+  const validationErrors = emailValidator(email)
 
   // Sends the validation error message
   if (validationErrors.length) {
     const errorObject = {
       error: true,
       type: validationErrors,
-    };
-    res.status(400).json(errorObject);
-    return;
+    }
+    res.status(400).json(errorObject)
+    return
   }
 
   try {
     // Check if the user exists
-    const existingUser = await UserService.findOneUser({ email });
+    const existingUser = await UserService.findOneUser({ email })
 
     // If the user doesn't exist, don't send
     if (!existingUser) {
@@ -384,53 +423,53 @@ exports.passwordResetEmail = async (req, res) => {
         error: true,
         type: [
           {
-            code: "GLOBAL_ERROR",
-            field: "user",
+            code: 'GLOBAL_ERROR',
+            field: 'user',
             message: "Your email doesn't exist, please sign up to continue",
           },
         ],
-      });
+      })
     }
 
     // If user exists
     // Generate JWT and mail the user
-    const payload = { email: email };
+    const payload = { email: email }
 
     // Generate JWT token for password reset, expires in 30 mins
     const resetToken = jwt.sign(payload, process.env.JWT_EMAIL_SECRET, {
       expiresIn: 1800,
-    });
+    })
 
     // Send password reset email to the user
     const transporter = nodemailer.createTransport({
       port: 465,
-      host: "smtpout.secureserver.net",
+      host: 'smtpout.secureserver.net',
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
       },
       secure: true,
-    });
+    })
 
     await new Promise((resolve, reject) => {
       // verify connection configuration
       transporter.verify(function (error, success) {
         if (error) {
-          console.log(error);
-          reject(error);
+          console.log(error)
+          reject(error)
         } else {
-          console.log("Server is ready to take our messages");
-          resolve(success);
+          console.log('Server is ready to take our messages')
+          resolve(success)
         }
-      });
-    });
+      })
+    })
 
     // Configure the message
     let mailOptions = {
-      from: `Netraga <${process.env.SUPPORT_EMAIL}>`,
+      from: `MedTrust <${process.env.SUPPORT_EMAIL}>`,
       to: email,
-      subject: "Password Reset",
-      html: `Hi, ${existingUser?.name?.split(" ")[0]}! <br>
+      subject: 'Password Reset',
+      html: `Hi, ${existingUser?.name?.split(' ')[0]}! <br>
       <br>
       <a href=${
         process.env.APP_URL
@@ -438,33 +477,33 @@ exports.passwordResetEmail = async (req, res) => {
       <br>
       <p>If you didn't request a password reset, please ignore this email.</p>
       Customer Success Team, <br>
-      Netraga
+      MedTrust
       `,
-    };
+    }
 
     // Send the email
     await new Promise((resolve, reject) => {
       // send mail
       transporter.sendMail(mailOptions, (err, info) => {
         if (err) {
-          console.error(err);
-          reject(err);
+          console.error(err)
+          reject(err)
         } else {
-          console.log(info);
-          resolve(info);
+          console.log(info)
+          resolve(info)
         }
-      });
-    });
+      })
+    })
 
     return res.status(200).json({
-      message: "Password reset link sent to your email",
+      message: 'Password reset link sent to your email',
       user: User.toClientObject(existingUser),
-    });
+    })
   } catch (error) {
-    res.status(500).json(error);
-    console.log("PASSWORD_RESET_EMAIL_ERROR", error);
+    res.status(500).json(error)
+    console.log('PASSWORD_RESET_EMAIL_ERROR', error)
   }
-};
+}
 
 /**********************************
   Password Reset Verification
