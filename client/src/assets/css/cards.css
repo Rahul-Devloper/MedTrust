@@ -1,0 +1,22 @@
+
+  
+  .doctor-card-avatar {
+    width: 40% !important;
+    height: auto;
+  }
+  
+  
+  .doctorCard .ant-card-actions {
+    border-radius: 24px !important;
+  }
+
+  .doctorCard .ant-card-meta-avatar {
+    width: 40% !important;
+    height: 40% !important;
+  }
+
+  .doctorCard .ant-avatar {
+    width: 100% !important;
+    height: 100% !important;
+  }
+  

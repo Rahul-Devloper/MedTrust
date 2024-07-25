@@ -5,15 +5,16 @@ import { currentUser } from "../../api/user";
 import { currentAdmin } from "../../api/admin";
 import { currentSuperAdmin } from "../../api/superAdmin";
 import { currentMember } from "../../api/member";
+import { currentPatient } from '../../api/patient'
 import {
   RoleBasedRedirect,
   RedirectOnLogout,
-} from "../../utils/roleBasedRedirect";
+} from '../../utils/roleBasedRedirect'
 import {
   SuccessNotification,
   ErrorNotification,
   InfoNotification,
-} from "../../components";
+} from '../../components'
 
 /********************************************
   Sign up a user
@@ -23,9 +24,9 @@ export const signupAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
-  data.setLoading(true);
+  data.setLoading(true)
 
   try {
     // Fetch response from server
@@ -42,25 +43,25 @@ export const signupAction = (data) => async (dispatch) => {
       payload: {
         message: res.data.message,
       },
-    });
+    })
 
-    SuccessNotification(res.data.message);
-    InfoNotification("🥴 Check mail spam if not found 🥴");
+    SuccessNotification(res.data.message)
+    InfoNotification('🥴 Check mail spam if not found 🥴')
     // Clear the form on success
-    data.setFormData(data.initialFormData);
-    data.setLoading(false);
+    data.setFormData(data.initialFormData)
+    data.setLoading(false)
   } catch (error) {
-    ErrorNotification(error.response.data?.type[0].message);
-    data.setLoading(false);
+    ErrorNotification(error.response.data?.type[0].message)
+    data.setLoading(false)
     // Dispatch a error alert
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
         message: error.response.data?.type[0].message,
       },
-    });
+    })
   }
-};
+}
 
 /********************************************
   Login an user
@@ -70,21 +71,21 @@ export const loginAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
-  data.setLoading(true);
+  data.setLoading(true)
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await login(data.email, data.password);
+    const res = await login(data.email, data.password)
 
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      data.setLoading(false);
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setLoading(false)
+      return
     }
 
     // Dispatch token and user
@@ -94,7 +95,7 @@ export const loginAction = (data) => async (dispatch) => {
         accessToken: res.data.accessToken,
         user: res.data.user,
       },
-    });
+    })
 
     // Dispatch a success/error login notify
     dispatch({
@@ -102,31 +103,31 @@ export const loginAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: { loading: false },
-    });
+    })
 
-    data.setLoading(false);
+    data.setLoading(false)
     // Redirect user based on role
-    RoleBasedRedirect(res, data.history);
+    RoleBasedRedirect(res, data.history)
   } catch (error) {
-    data.setLoading(false);
+    data.setLoading(false)
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "LOGIN_AUTH_ACTION_ERROR",
+        message: 'LOGIN_AUTH_ACTION_ERROR',
       },
-    });
+    })
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: { loading: false },
-    });
+    })
   }
-};
+}
 
 /********************************************
  Google login an user 
@@ -136,19 +137,19 @@ export const googleLoginAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await googleCreateOrLogin(data.name, data.email);
+    const res = await googleCreateOrLogin(data.name, data.email)
 
     // Error toast message
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      return
     }
 
     // Dispatch token and user
@@ -158,7 +159,7 @@ export const googleLoginAction = (data) => async (dispatch) => {
         accessToken: res.data.accessToken,
         user: res.data.user,
       },
-    });
+    })
 
     // Dispatch a success/error login notify
     dispatch({
@@ -166,20 +167,20 @@ export const googleLoginAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
     // Redirect user based on role
-    RoleBasedRedirect(res, data.history);
+    RoleBasedRedirect(res, data.history)
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "GOOGLE_LOGIN_AUTH_ACTION_ERROR",
+        message: 'GOOGLE_LOGIN_AUTH_ACTION_ERROR',
       },
-    });
+    })
   }
-};
+}
 
 /********************************************
   Is user action to check if user is logged in
@@ -189,18 +190,18 @@ export const isUserAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await currentUser();
+    const res = await currentUser()
 
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      return
     }
 
     // Dispatch token and user
@@ -209,11 +210,11 @@ export const isUserAction = (data) => async (dispatch) => {
       payload: {
         user: res.data.user,
       },
-    });
+    })
 
     // If data.setOk exists, set it to true
     if (data?.setOk) {
-      data.setOk(true);
+      data.setOk(true)
     }
 
     // Dispatch a success/error login notify
@@ -222,23 +223,23 @@ export const isUserAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
     // If data.history exists, redirect user based on role
     if (data?.history) {
       // Redirect user based on role
-      RoleBasedRedirect(res, data.history);
+      RoleBasedRedirect(res, data.history)
     }
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "IS_USER_ACTION_ERROR",
+        message: 'IS_USER_ACTION_ERROR',
       },
-    });
+    })
   }
-};
+}
 
 /********************************************
   Is user super admin action
@@ -248,19 +249,19 @@ export const isSuperAdminAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await currentSuperAdmin();
+    const res = await currentSuperAdmin()
 
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      data.setOk(false);
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setOk(false)
+      return
     }
 
     // Dispatch token and user
@@ -269,7 +270,7 @@ export const isSuperAdminAction = (data) => async (dispatch) => {
       payload: {
         user: res.data.user,
       },
-    });
+    })
 
     // Dispatch a success/error login notify
     dispatch({
@@ -277,19 +278,19 @@ export const isSuperAdminAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
-    data.setOk(true);
+    data.setOk(true)
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "IS_SUPER_ADMIN_ACTION_ERROR",
+        message: 'IS_SUPER_ADMIN_ACTION_ERROR',
       },
-    });
+    })
   }
-};
+}
 
 /********************************************
   Is user admin action
@@ -299,19 +300,19 @@ export const isAdminAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await currentAdmin();
+    const res = await currentAdmin()
 
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      data.setOk(false);
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setOk(false)
+      return
     }
 
     // Dispatch token and user
@@ -320,7 +321,7 @@ export const isAdminAction = (data) => async (dispatch) => {
       payload: {
         user: res.data.user,
       },
-    });
+    })
 
     // Dispatch a success/error login notify
     dispatch({
@@ -328,19 +329,19 @@ export const isAdminAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
-    data.setOk(true);
+    data.setOk(true)
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "IS_ADMIN_ACTION_ERROR",
+        message: 'IS_ADMIN_ACTION_ERROR',
       },
-    });
+    })
   }
-};
+}
 
 /********************************************
   Is user member action
@@ -350,19 +351,19 @@ export const isMemberAction = (data) => async (dispatch) => {
   dispatch({
     type: ACTION_TYPES.ALERT,
     payload: { loading: true },
-  });
+  })
 
   try {
-    let errorMessage = "";
+    let errorMessage = ''
 
     // Fetch response from server
-    const res = await currentMember();
+    const res = await currentMember()
 
     if (res.data.error === true) {
-      ErrorNotification(res.data.type[0].message);
-      errorMessage = res.data.type[0].message;
-      data.setOk(false);
-      return;
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setOk(false)
+      return
     }
 
     // Dispatch token and user
@@ -371,7 +372,7 @@ export const isMemberAction = (data) => async (dispatch) => {
       payload: {
         user: res.data.user,
       },
-    });
+    })
 
     // Dispatch a success/error login notify
     dispatch({
@@ -379,19 +380,70 @@ export const isMemberAction = (data) => async (dispatch) => {
       payload: {
         message: errorMessage ? errorMessage : res.data.message,
       },
-    });
+    })
 
-    data.setOk(true);
+    data.setOk(true)
   } catch (error) {
     // Dispatch a error notify
     dispatch({
       type: ACTION_TYPES.ALERT,
       payload: {
-        message: "IS_MEMBER_ACTION_ERROR",
+        message: 'IS_MEMBER_ACTION_ERROR',
       },
-    });
+    })
   }
-};
+}
+
+/********************************************
+  Is user patient action
+*********************************************/
+export const isPatientAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  })
+
+  try {
+    let errorMessage = ''
+
+    // Fetch response from server
+    const res = await currentPatient()
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setOk(false)
+      return
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_PATIENT,
+      payload: {
+        user: res.data.user,
+      },
+    })
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
+    })
+
+    data.setOk(true)
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: 'IS_MEMBER_ACTION_ERROR',
+      },
+    })
+  }
+}
 
 /********************************************
   Log out an user

@@ -1,0 +1,41 @@
+const User = require('../models/user')
+const DoctorRecord = require('../services/doctorRecordService')
+const UserService = require('../services/userService')
+
+/**********************************
+  Check if user is a member
+***********************************/
+exports.currentPatient = async (req, res) => {
+  const { _id } = req.user
+
+  const user = await UserService.findUserById(_id)
+
+  if (user.role === 'patient') {
+    res.status(200).json({
+      user: true,
+      message: 'Welcome patient!',
+      user: User.toClientObject(user),
+    })
+  } else {
+    res.status(403).json({
+      admin: false,
+      error: 'You are trying to access a restricted resource. Access Denied',
+    })
+  }
+}
+
+// get all doctors available in the NHS database records
+exports.getAllDoctors = async (req, res) => {
+  const doctors = await DoctorRecord.findAllDoctors()
+  if (!doctors) {
+    return res.status(400).json({
+      success: false,
+      message: 'No doctors found',
+    })
+  } else
+    return res.status(200).json({
+      success: true,
+      doctors: doctors,
+      message: 'All doctors found',
+    })
+}

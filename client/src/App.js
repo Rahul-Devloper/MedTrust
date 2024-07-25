@@ -7,8 +7,9 @@ import {
   AdminRoute,
   SuperAdminRoute,
   ProfileRoute,
-} from "./routes";
-import { isUserAction } from "./redux/actions/authActions";
+  PatientRoute,
+} from './routes'
+import { isUserAction } from './redux/actions/authActions'
 
 import {
   // -------------- Auth views --------------
@@ -45,144 +46,158 @@ import {
   AdminDashboard,
   // -------------- Member views --------------
   MemberDashboard,
+  // -------------- Patient views --------------
+  PatientDashboard,
   // -------------- Wildcard --------------
   RandomPageRedirect,
-} from "./views";
+} from './views'
+import PatientFindDoctor from "./views/patient/PatientFindDoctor";
 
 const App = () => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { user } = useSelector((state) => state.auth);
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { user } = useSelector((state) => state.auth)
 
   // If local storage "allgin" is true and is on the auth pages page, redirect to dashboard
   useEffect(() => {
     if (
-      localStorage.getItem("allgin") === "true" &&
-      (history.location.pathname === "/" ||
-        history.location.pathname === "/signup" ||
-        history.location.pathname === "/login")
+      localStorage.getItem('allgin') === 'true' &&
+      (history.location.pathname === '/' ||
+        history.location.pathname === '/signup' ||
+        history.location.pathname === '/login')
     ) {
       // Dispatch the user action
-      dispatch(isUserAction({ history }));
+      dispatch(isUserAction({ history }))
     }
-  }, [dispatch, history]);
+  }, [dispatch, history])
 
   return (
-    <div className="App">
+    <div className='App'>
       <Suspense
         fallback={
           <>
-            <div class="loader">
-              <div class="bar1"></div>
-              <div class="bar2"></div>
-              <div class="bar3"></div>
-              <div class="bar4"></div>
-              <div class="bar5"></div>
-              <div class="bar6"></div>
+            <div class='loader'>
+              <div class='bar1'></div>
+              <div class='bar2'></div>
+              <div class='bar3'></div>
+              <div class='bar4'></div>
+              <div class='bar5'></div>
+              <div class='bar6'></div>
             </div>
           </>
-        }
-      ></Suspense>
+        }></Suspense>
       <Switch>
         {/*************** Common Routes ***************/}
-        <Route exact path="/" component={!user && Login} />
-        <Route exact path="/login" component={!user && Login} />
-        <Route exact path="/signup" component={!user && Signup} />
+        <Route exact path='/' component={!user && Login} />
+        <Route exact path='/login' component={!user && Login} />
+        <Route exact path='/signup' component={!user && Signup} />
         <Route
           exact
-          path="/account/activate"
+          path='/account/activate'
           component={!user && AccountActivation}
         />
         <Route
           exact
-          path="/forgot-password"
+          path='/forgot-password'
           component={!user && ForgotPassword}
         />
-        <Route exact path="/new-password" component={!user && NewPassword} />
-        <Route exact path="/privacy" component={!user && Privacy} />
-        <Route exact path="/terms" component={!user && Terms} />
+        <Route exact path='/new-password' component={!user && NewPassword} />
+        <Route exact path='/privacy' component={!user && Privacy} />
+        <Route exact path='/terms' component={!user && Terms} />
         {/*************** Super Admin Routes ***************/}
         <SuperAdminRoute
           exact
-          path="/super-admin/dashboard"
+          path='/super-admin/dashboard'
           component={SuperAdminDashboard}
         />
         {/* Admins */}
         <SuperAdminRoute
           exact
-          path="/super-admin/admins"
+          path='/super-admin/admins'
           component={AdminList}
         />
         {/* Visitors */}
         <SuperAdminRoute
           exact
-          path="/super-admin/visitors"
+          path='/super-admin/visitors'
           component={VisitorList}
         />
         {/* Leads */}
         <SuperAdminRoute
           exact
-          path="/super-admin/leads"
+          path='/super-admin/leads'
           component={LeadsList}
         />
         {/* Plans */}
         <SuperAdminRoute
           exact
-          path="/super-admin/plans"
+          path='/super-admin/plans'
           component={PlansList}
         />
         <SuperAdminRoute
           exact
-          path="/super-admin/plans/create"
+          path='/super-admin/plans/create'
           component={PlanCreate}
         />
         <SuperAdminRoute
           exact
-          path="/super-admin/plans/update/:id"
+          path='/super-admin/plans/update/:id'
           component={PlanUpdate}
         />
         {/* Coupons */}
         <SuperAdminRoute
           exact
-          path="/super-admin/coupons"
+          path='/super-admin/coupons'
           component={CouponsList}
         />
         <SuperAdminRoute
           exact
-          path="/super-admin/coupons/create"
+          path='/super-admin/coupons/create'
           component={CouponCreate}
         />
         <SuperAdminRoute
           exact
-          path="/super-admin/coupons/update/:id"
+          path='/super-admin/coupons/update/:id'
           component={CouponUpdate}
         />
 
         {/**************** Admin Routes ****************/}
-        <AdminRoute exact path="/admin/dashboard" component={AdminDashboard} />
+        <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
 
         {/**************** Member Routes ****************/}
         <MemberRoute
           exact
-          path="/member/dashboard"
+          path='/member/dashboard'
           component={MemberDashboard}
         />
 
+        {/*************** Patient Routes ***************/}
+        <PatientRoute
+          exact
+          path='/patient/dashboard'
+          component={PatientDashboard}
+        />
+
+        <PatientRoute
+          exact path='/patient/find-doctor'
+          component={PatientFindDoctor}
+        />
+
         {/*************** Profile Routes ***************/}
-        <ProfileRoute exact path="/profile/information" component={MyProfile} />
+        <ProfileRoute exact path='/profile/information' component={MyProfile} />
         <ProfileRoute
           exact
-          path="/profile/subscription"
+          path='/profile/subscription'
           component={MySubscription}
         />
-        <ProfileRoute exact path="/profile/security" component={MySecurity} />
-        <ProfileRoute exact path="/profile/password" component={MyPassword} />
+        <ProfileRoute exact path='/profile/security' component={MySecurity} />
+        <ProfileRoute exact path='/profile/password' component={MyPassword} />
 
         {/* Wildcard */}
-        <Route path={"*"} component={RandomPageRedirect} />
+        <Route path={'*'} component={RandomPageRedirect} />
       </Switch>
     </div>
-  );
-};
+  )
+}
 
 export default App;

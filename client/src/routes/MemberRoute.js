@@ -6,6 +6,8 @@ import { useDispatch } from "react-redux";
 import { isMemberAction } from "../redux/actions/authActions";
 
 const MemberRoute = ({ children, ...restProps }) => {
+  children ? console.log('children==>', children) : console.log('noCHildren==>')
+
   const dispatch = useDispatch();
   const [ok, setOk] = useState(false);
 

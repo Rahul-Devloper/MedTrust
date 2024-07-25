@@ -36,5 +36,8 @@ export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
 /************************************************ Member Views ************************************************************/
 export { default as MemberDashboard } from "./member/dashboard/MemberDashboard";
 
+/************************************************ Patient Views ************************************************************/
+export { default as PatientDashboard } from "./patient/dashboard/PatientDashboard";
+
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";
