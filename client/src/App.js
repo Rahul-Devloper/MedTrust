@@ -52,6 +52,7 @@ import {
   RandomPageRedirect,
 } from './views'
 import PatientFindDoctor from "./views/patient/PatientFindDoctor";
+import CategoryView from './views/patient/CategoryView'
 
 const App = () => {
   const history = useHistory()
@@ -179,8 +180,14 @@ const App = () => {
         />
 
         <PatientRoute
-          exact path='/patient/find-doctor'
+          exact
+          path='/patient/find-doctor'
           component={PatientFindDoctor}
+        />
+        <PatientRoute
+          exact
+          path='/patient/category/:category'
+          component={CategoryView}
         />
 
         {/*************** Profile Routes ***************/}

@@ -39,5 +39,9 @@ export { default as MemberDashboard } from "./member/dashboard/MemberDashboard";
 /************************************************ Patient Views ************************************************************/
 export { default as PatientDashboard } from "./patient/dashboard/PatientDashboard";
 
+export { default as PatientFindDoctor } from './patient/PatientFindDoctor'
+
+export { default as CategoryView } from './patient/CategoryView'
+
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

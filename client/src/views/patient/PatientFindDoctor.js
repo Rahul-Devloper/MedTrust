@@ -64,7 +64,11 @@ const PatientFindDoctor = () => {
       <br />
       <br />
       <h2>Popular Categories</h2>
-      <CardGrid children={categories} />
+      <CardGrid
+        toRenderView={true}
+        viewPath={'/patient/category/'}
+        children={categories}
+      />
       <section className='doctorCard'>
         <h2>Popular Doctors</h2>
         <Row gutter={[16, 16]}>

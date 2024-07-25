@@ -6,7 +6,6 @@ import { useDispatch } from 'react-redux'
 import { isPatientAction } from '../redux/actions/authActions'
 
 const PatientRoute = ({ children, ...restProps }) => {
-  children ? console.log('children==>', children) : console.log('noCHildren==>')
   const dispatch = useDispatch()
   const [ok, setOk] = useState(false)
 
