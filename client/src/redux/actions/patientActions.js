@@ -1,23 +1,11 @@
 import { ACTION_TYPES } from '../constants/actionTypes'
-import { AUTH_TYPES } from '../constants/authTypes'
-import { signUp, login, googleCreateOrLogin, logout } from '../../api/auth'
-import { currentUser } from '../../api/user'
-import { currentAdmin } from '../../api/admin'
-import { currentSuperAdmin } from '../../api/superAdmin'
-import { currentMember } from '../../api/member'
-import { currentPatient, getAllDoctors } from '../../api/patient'
-import {
-  RoleBasedRedirect,
-  RedirectOnLogout,
-} from '../../utils/roleBasedRedirect'
-import {
-  SuccessNotification,
-  ErrorNotification,
-  InfoNotification,
-} from '../../components'
+
+import { getAllDoctors, getDoctorSpeciality } from '../../api/patient'
+
+import { ErrorNotification } from '../../components'
 
 /********************************************
-  Sign up a user
+  Get All Doctors
 *********************************************/
 export const getAllDoctorsAction =
   ({ setOk, setDoctorsList }) =>
@@ -59,5 +47,39 @@ export const getAllDoctorsAction =
       })
       setOk(false)
       setDoctorsList([])
+    }
+  }
+/********************************************
+  Get Speciality
+*********************************************/
+
+export const getDoctorSpecialityAction =
+  ({ setOk, setDoctorsBySpecialization, speciality }) =>
+  async (dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: true },
+    })
+
+    try {
+      // Fetch response from server
+      const res = await getDoctorSpeciality(speciality)
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+      setOk(true)
+      setDoctorsBySpecialization(res?.data?.doctors)
+    } catch (error) {
+      ErrorNotification(error?.response?.status)
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.status,
+        },
+      })
     }
   }

@@ -186,7 +186,7 @@ const App = () => {
         />
         <PatientRoute
           exact
-          path='/patient/category/:category'
+          path='/patient/speciality/:speciality'
           component={CategoryView}
         />
 

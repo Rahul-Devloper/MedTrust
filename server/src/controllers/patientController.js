@@ -39,3 +39,35 @@ exports.getAllDoctors = async (req, res) => {
       message: 'All doctors found',
     })
 }
+
+exports.getDoctorSpeciality = async (req, res) => {
+  const { speciality } = req.params
+  const formattedSpeciality = speciality.includes('-')
+    ? speciality.split('-').join(' ')
+    : speciality
+
+  try {
+    const doctors = await DoctorRecord.findDoctorBySpecialty(
+      formattedSpeciality
+    )
+
+    if (!doctors || doctors.length === 0) {
+      return res.status(400).json({
+        success: false,
+        message: 'No doctors found',
+      })
+    } else {
+      return res.status(200).json({
+        success: true,
+        doctors: doctors,
+        message: 'All doctors found',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching doctors',
+      error: error.message,
+    })
+  }
+}

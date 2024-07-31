@@ -24,7 +24,7 @@ const PatientFindDoctor = () => {
   }
 
   const categories = [
-    'Family Doctors',
+    'Family Doctor',
     'Dermatology',
     'Dentistry',
     'Orthopedics',
@@ -66,7 +66,7 @@ const PatientFindDoctor = () => {
       <h2>Popular Categories</h2>
       <CardGrid
         toRenderView={true}
-        viewPath={'/patient/category/'}
+        viewPath={'/patient/speciality/'}
         children={categories}
       />
       <section className='doctorCard'>

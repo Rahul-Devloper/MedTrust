@@ -31,7 +31,13 @@ const InfoCard = ({
       ]}>
       <Meta
         className='info-card-meta'
-        avatar={<Avatar src={avatar} alt='Avatar' />}
+        avatar={
+          <Avatar
+            src={avatar}
+            alt='Avatar'
+            style={{ width: '100%', height: 'auto' }}
+          />
+        }
         title={title}
         description={description}
       />

@@ -8,10 +8,12 @@ const { authCheck } = require('../middlewares/auth')
 const {
   currentPatient,
   getAllDoctors,
+  getDoctorSpeciality,
 } = require('../controllers/patientController')
 
 // Routes
 router.post('/currentPatient', authCheck, currentPatient)
 router.get('/doctors', getAllDoctors)
+router.get('/doctors/speciality/:speciality', getDoctorSpeciality)
 
 module.exports = router

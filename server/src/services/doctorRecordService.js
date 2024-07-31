@@ -34,6 +34,23 @@ class DoctorRecordService {
     }
   }
 
+  // Find doctor by speciality
+  static async findDoctorBySpecialty(specialty) {
+    try {
+      if (!specialty) {
+        throw new Error('Specialty is required')
+      }
+
+      const doctors = await DoctorRecord.find({
+        'professionalInfo.specialty': specialty,
+      }).exec()
+
+      return doctors
+    } catch (error) {
+      console.error('Error finding doctors by specialty:', error)
+      throw error // Re-throw the error to be handled by the calling function
+    }
+  }
   //   // Find one user and update
   //   static findOneUserAndUpdate = async (query, update) => {
   //     try {

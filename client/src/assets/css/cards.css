@@ -5,7 +5,6 @@
     height: auto;
   }
   
-  
   .doctorCard .ant-card-actions {
     border-radius: 24px !important;
   }
@@ -15,8 +14,39 @@
     height: 40% !important;
   }
 
-  .doctorCard .ant-avatar {
+  .doctor-card .ant-avatar {
     width: 100% !important;
-    height: 100% !important;
+    height: auto !important;
+    border-radius: none !important;
   }
+  
+
+  .doctor-card {
+    border-radius: 8px;
+    overflow: hidden;
+  }
+  
+  .doctor-card-avatar {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .doctor-card-info {
+    padding: 10px;
+  }
+
+  .doctor-card-info .progress {
+    margin-top: 15px!important;
+    margin-left: 5px!important;
+    margin-right: 5px!important;
+  }
+  
+  .doctor-card-actions {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
   

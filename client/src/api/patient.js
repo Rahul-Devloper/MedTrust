@@ -9,3 +9,9 @@ export const currentPatient = () => {
 export const getAllDoctors = () => {
   return api.get('/doctors')
 }
+
+// Get Doctor Speciality
+export const getDoctorSpeciality = (speciality) => {
+  return api.get(`/doctors/speciality/${speciality}`)
+} 
+
