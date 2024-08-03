@@ -71,3 +71,35 @@ exports.getDoctorSpeciality = async (req, res) => {
     })
   }
 }
+
+exports.getDoctorProfileData = async (req, res) => {
+  console.log('req==>', req)
+  const { name, gmcNumber } = req.query
+
+  try {
+    // find doctor with name and gmcNumber
+    const doctor = await DoctorRecord.findDoctorByNameAndGmcNumber(
+      name,
+      gmcNumber
+    )
+    console.log('doctor==>', doctor)
+    if (!doctor) {
+      return res.status(400).json({
+        success: false,
+        message: 'No doctor found',
+      })
+    } else {
+      return res.status(200).json({
+        success: true,
+        doctor: doctor,
+        message: 'Doctor found',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching doctor',
+      error: error.message,
+    })
+  }
+}

@@ -51,6 +51,30 @@ class DoctorRecordService {
       throw error // Re-throw the error to be handled by the calling function
     }
   }
+
+  // Find doctor with name and gmcNumber
+  static async findDoctorByNameAndGmcNumber(name, gmcNumber) {
+    try {
+      if (!name || !gmcNumber) {
+        throw new Error('Name and GMC Number are required')
+      }
+      const modifiedName = name
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ')
+      console.log('modifiedName==>', modifiedName)
+      const doctor = await DoctorRecord.findOne({
+        'personalInfo.name': `Dr. ${modifiedName}`, // Changed from professionalInfo to personalInfo
+        gmcNumber: gmcNumber,
+      }).exec()
+
+      return doctor
+    } catch (error) {
+      console.error('Error finding doctor by name and gmcNumber:', error)
+      throw error // Re-throw the error to be handled by the calling function
+    }
+  }
+
   //   // Find one user and update
   //   static findOneUserAndUpdate = async (query, update) => {
   //     try {

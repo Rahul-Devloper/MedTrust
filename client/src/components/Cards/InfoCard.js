@@ -25,6 +25,7 @@ const InfoCard = ({
         <Button
           type='primary'
           className='info-card-action'
+          shape='round'
           onClick={onButtonClick}>
           {buttonText}
         </Button>,

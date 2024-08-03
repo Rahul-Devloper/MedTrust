@@ -43,5 +43,9 @@ export { default as PatientFindDoctor } from './patient/PatientFindDoctor'
 
 export { default as CategoryView } from './patient/CategoryView'
 
+export { default as SpecialityDirectory } from './patient/SpecialityDirectory'
+
+export { default as PhysicianProfile } from './patient/PhysicianProfile'
+
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

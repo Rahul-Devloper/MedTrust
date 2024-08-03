@@ -1,6 +1,10 @@
 import { ACTION_TYPES } from '../constants/actionTypes'
 
-import { getAllDoctors, getDoctorSpeciality } from '../../api/patient'
+import {
+  getAllDoctors,
+  getDoctorSpeciality,
+  getDoctorProfileData,
+} from '../../api/patient'
 
 import { ErrorNotification } from '../../components'
 
@@ -74,6 +78,41 @@ export const getDoctorSpecialityAction =
       setDoctorsBySpecialization(res?.data?.doctors)
     } catch (error) {
       ErrorNotification(error?.response?.status)
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.status,
+        },
+      })
+    }
+  }
+
+/********************************************
+  Get Doctor Profile Data
+*********************************************/
+export const getDoctorProfileDataAction =
+  ({ setOk, setDoctorData, physicianName, physicianId }) =>
+  async (dispatch) => {
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: true },
+    })
+    try {
+      // Fetch response from server
+      const res = await getDoctorProfileData(physicianName, physicianId)
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+      setOk(true)
+      setDoctorData(res?.data?.doctor)
+    } catch (error) {
+      ErrorNotification(
+        `Status: ${error?.response?.status} - Error in Finding Doctor`
+      )
 
       dispatch({
         type: ACTION_TYPES.ALERT,

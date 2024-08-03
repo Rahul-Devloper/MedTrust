@@ -15,3 +15,8 @@ export const getDoctorSpeciality = (speciality) => {
   return api.get(`/doctors/speciality/${speciality}`)
 } 
 
+// Get Doctor Profile
+export const getDoctorProfileData = (physicianName, physicianId) => {
+  return api.get(`/doctor/profile?name=${physicianName}&gmcNumber=${physicianId}`)
+}
+

@@ -1,26 +1,39 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Input, Row, Col, Card } from 'antd'
+import { Image, Input, Row, Col, Card, Typography, Tag, Button } from 'antd'
 import { useDispatch } from 'react-redux'
 import { getAllDoctorsAction } from '../../redux/actions/patientActions'
 import { FindDoctor } from '../../assets/images/index'
+import { FaArrowRightLong, FaEye } from 'react-icons/fa6'
+import { useHistory } from 'react-router-dom'
 
 import doctorMaleAvatar from '../../assets/images/illustrations/doctorMaleAvatar.png'
 import doctorFemaleAvatar from '../../assets/images/illustrations/doctorFemaleAvatar.png'
 import InfoCard from '../../components/Cards/InfoCard'
 import CardGrid from '../../components/Cards/CardGrid'
+const { Text } = Typography
 
 const PatientFindDoctor = () => {
   const [ok, setOk] = useState(false)
   const [doctorsList, setDoctorsList] = useState([])
 
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     dispatch(getAllDoctorsAction({ setOk, setDoctorsList }))
   }, [dispatch, setOk, setDoctorsList])
 
-  const onViewMore = (doctorGmcNumber) => {
+  const filteredDoctors = doctorsList
+    .filter((doctor) => doctor.ratings?.overallEffectiveness >= 4.5)
+    .slice(0, 6)
+  console.log('filteredDoctors==>', filteredDoctors)
+
+  const onViewMore = (doctorGmcNumber, doctorName) => {
     console.log('doctorGmcNumber==>', doctorGmcNumber)
+    const formattedDoctorName = doctorName
+      .replace(/^(Dr\.\s*)?/g, '')
+      .toLowerCase()
+    history.push(`/patient/physician/${formattedDoctorName}-${doctorGmcNumber}`)
   }
 
   const categories = [
@@ -69,11 +82,23 @@ const PatientFindDoctor = () => {
         viewPath={'/patient/speciality/'}
         children={categories}
       />
+      <br />
+      <Row justify={'end'}>
+        <div className='site-button-ghost-wrapper'>
+          <Button
+            ghost
+            icon={<FaEye />}
+            onClick={() => history.push('/patient/speciality-directory')}>
+            View All Specialities
+          </Button>
+        </div>
+      </Row>
+
       <section className='doctorCard'>
         <h2>Popular Doctors</h2>
         <Row gutter={[16, 16]}>
-          {doctorsList?.map((doctor) => {
-            if (doctor.ratings?.overallEffectiveness >= 4.5)
+          {doctorsList &&
+            filteredDoctors?.map((doctor, index) => {
               return (
                 <Col key={doctor._id} xs={24} sm={12} md={8} lg={8}>
                   <InfoCard
@@ -100,12 +125,14 @@ const PatientFindDoctor = () => {
                         </p>
                       </>
                     }
-                    buttonText='View More'
-                    onButtonClick={() => onViewMore(doctor?.gmcNumber)}
+                    buttonText='View Profile'
+                    onButtonClick={() =>
+                      onViewMore(doctor?.gmcNumber, doctor?.personalInfo?.name)
+                    }
                   />
                 </Col>
               )
-          })}
+            })}
         </Row>
       </section>
     </div>

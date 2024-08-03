@@ -11,6 +11,7 @@ const ProfileCard = ({
   progressBars,
   actions,
   ratingData,
+  profileCardStyle,
 }) => {
   return (
     <Card
@@ -19,26 +20,29 @@ const ProfileCard = ({
         marginBottom: '20px',
         marginLeft: 'auto',
         marginRight: 'auto',
+        ...profileCardStyle,
       }}
       className='doctor-card'>
       <Row gutter={16} align='start'>
-        <Col
-          xs={24}
-          sm={24}
-          md={4}
-          lg={4}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <Avatar
-            src={avatar}
-            alt='Avatar'
-            size={100}
-            className='doctor-card-avatar'
-          />
-        </Col>
+        {avatar && (
+          <Col
+            xs={24}
+            sm={24}
+            md={4}
+            lg={4}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <Avatar
+              src={avatar}
+              alt='Avatar'
+              size={100}
+              className='doctor-card-avatar'
+            />
+          </Col>
+        )}
         <Col xs={24} sm={24} md={14} lg={14}>
           <div className='doctor-card-info'>
             <Meta title={title} description={description} />
@@ -50,7 +54,7 @@ const ProfileCard = ({
               </Tag>
             </div>
             <Row gutter={[16, 16]} justify={'space-evenly'}>
-              {progressBars.map((bar, index) => (
+              {progressBars?.map((bar, index) => (
                 <Col key={index} style={{ textAlign: 'center' }}>
                   <Progress
                     key={index}
@@ -70,7 +74,7 @@ const ProfileCard = ({
               ))}
             </Row>
             <br />
-            {details.map((detail, index) => (
+            {details?.map((detail, index) => (
               <span key={index} style={{ marginRight: '10px' }}>
                 <strong>{detail.label}: </strong>
                 {detail.value}
@@ -78,28 +82,30 @@ const ProfileCard = ({
             ))}
           </div>
         </Col>
-        <Col
-          xs={24}
-          sm={24}
-          md={6}
-          lg={6}
-          style={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-          }}>
-          <div className='doctor-card-actions'>
-            {actions.map((action) => (
-              <Button
-                type={action.type}
-                style={{ marginBottom: '10px' }}
-                onClick={action.onClick}
-                key={action.label}>
-                {action.label}
-              </Button>
-            ))}
-          </div>
-        </Col>
+        {actions && (
+          <Col
+            xs={24}
+            sm={24}
+            md={6}
+            lg={6}
+            style={{
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}>
+            <div className='doctor-card-actions'>
+              {actions?.map((action) => (
+                <Button
+                  type={action.type}
+                  style={{ marginBottom: '10px' }}
+                  onClick={action.onClick}
+                  key={action.label}>
+                  {action.label}
+                </Button>
+              ))}
+            </div>
+          </Col>
+        )}
       </Row>
     </Card>
   )

@@ -50,8 +50,10 @@ import {
   PatientDashboard,
   // -------------- Wildcard --------------
   RandomPageRedirect,
+  SpecialityDirectory,
+  PhysicianProfile,
 } from './views'
-import PatientFindDoctor from "./views/patient/PatientFindDoctor";
+import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
 
 const App = () => {
@@ -190,6 +192,17 @@ const App = () => {
           component={CategoryView}
         />
 
+        <PatientRoute
+          exact
+          path='/patient/speciality-directory'
+          component={SpecialityDirectory}
+        />
+
+        <PatientRoute
+          exact
+          path='/patient/physician/:physicianName-:physicianId'
+          component={PhysicianProfile}
+        />
         {/*************** Profile Routes ***************/}
         <ProfileRoute exact path='/profile/information' component={MyProfile} />
         <ProfileRoute
