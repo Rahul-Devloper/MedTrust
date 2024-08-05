@@ -1,5 +1,6 @@
 const User = require('../models/user')
 const DoctorRecord = require('../services/doctorRecordService')
+const PatientRecordService = require('../services/patientRecordService')
 const UserService = require('../services/userService')
 
 /**********************************
@@ -99,6 +100,34 @@ exports.getDoctorProfileData = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'An error occurred while fetching doctor',
+      error: error.message,
+    })
+  }
+}
+
+// get patient details by nhs number
+exports.getPatientDetailsByNHSNumber = async (req, res) => {
+  const { nhsNumber } = req?.params
+  try {
+    const patient = await PatientRecordService.findPatientInRecord({
+      'personalDetails.nhsNumber': nhsNumber,
+    })
+    if (!patient) {
+      return res.status(400).json({
+        success: false,
+        message: 'No patient found',
+      })
+    } else {
+      return res.status(200).json({
+        success: true,
+        patient: patient,
+        message: 'Patient found',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching patient',
       error: error.message,
     })
   }

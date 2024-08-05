@@ -49,8 +49,8 @@ const RenderCardDetails = ({ title, description, icon }) => {
 }
 
 RenderCardDetails.propTypes = {
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  title: PropTypes.string,
+  description: PropTypes.string,
   icon: PropTypes.element,
 }
 

@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useHistory, useParams } from 'react-router-dom'
-import { getDoctorProfileDataAction } from '../../redux/actions/patientActions'
+import {
+  getDoctorProfileDataAction,
+  getPatientByNHSNumberAction,
+} from '../../redux/actions/patientActions'
 import { Affix, Anchor, Button, Card, Col, Collapse, Progress, Row } from 'antd'
 import ProfileCard2 from '../../components/Cards/ProfileCard2'
 import MaleAvatar from '../../assets/images/illustrations/doctorMaleAvatar.png'
@@ -16,6 +19,7 @@ import '../../assets/css/accordion.css'
 import RenderCardDetails from '../../components/Cards/RenderCardDetails'
 import ProfileCard from '../../components/Cards/ProfileCard'
 import RatingCard from '../../components/Cards/RatingCard'
+import { getAllReviewsAction } from '../../redux/actions/reviewActions'
 
 const { Link } = Anchor
 const { Panel } = Collapse
@@ -23,6 +27,9 @@ const { Panel } = Collapse
 const PhysicianProfile = () => {
   const [ok, setOk] = useState(false)
   const [doctorData, setDoctorData] = useState([])
+  const [reviewList, setReviewsList] = useState([])
+  const [reviewerNames, setReviewerNames] = useState({})
+  const [showReviewsCount, setShowReviewsCount] = useState(1)
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -42,12 +49,30 @@ const PhysicianProfile = () => {
         physicianId,
       })
     )
-  }, [dispatch, setOk, setDoctorData, physicianName, physicianId])
 
-  const style = {
-    background: '#0092ff',
-    padding: '8px 0',
-  }
+    dispatch(getAllReviewsAction({ setOk, setReviewsList, physicianId }))
+  }, [dispatch, physicianName, physicianId])
+
+  useEffect(() => {
+    const fetchReviewerNames = async () => {
+      console.log('reviewList==>', reviewList)
+      const names = {}
+      for (const review of reviewList) {
+        if (review?.patientNHSNumber) {
+          const patient = await dispatch(
+            getPatientByNHSNumberAction(review.patientNHSNumber)
+          )
+          if (patient) {
+            names[review.patientNHSNumber] = patient?.personalDetails?.name
+          }
+        }
+      }
+      setReviewerNames(names)
+      console.log('names==>', reviewerNames)
+    }
+
+    fetchReviewerNames()
+  }, [dispatch, reviewList])
 
   const dataWithIcons = [
     {
@@ -80,13 +105,14 @@ const PhysicianProfile = () => {
       description: item?.description,
     })) || []
 
-  const certificates = doctorData?.professionalInfo?.certifications.map(
+  const certificates = doctorData?.professionalInfo?.certifications?.map(
     (cert) => ({
       title: cert,
       description: `Certified by ${doctorData?.professionalInfo?.education}`,
       icon: <GrCertificate style={{ fontSize: '24px', color: 'gold' }} />,
     })
   )
+
   const insurances = doctorData?.professionalInfo?.insuranceAccepted?.map(
     (ins) => ({
       title: ins,
@@ -94,7 +120,6 @@ const PhysicianProfile = () => {
       icon: <MdHealthAndSafety style={{ fontSize: '24px', color: 'purple' }} />,
     })
   )
-  console.log('Certificates==>', certificates)
 
   const hospitalAffiliations =
     doctorData?.professionalInfo?.hospitalAffiliations?.map((hosp) => ({
@@ -111,14 +136,14 @@ const PhysicianProfile = () => {
     },
   ]
 
-  const ratingData = {
-    title: "The best GP I've ever had",
-    rating: 5,
-    reviewText:
-      'Dr. Malek is consistent, kind, always prepared, and has gone above and beyond every time. I have been a patient of his for several years now and he always acts quickly and thoroughly. He is a doctor that really cares and has the knowledge to do so. Beyond recommend him to anyone looking for a great...',
-    reviewer: 'Rachel',
-    date: 'Apr 26, 2024',
-  }
+  const ratingData = reviewList?.map((review) => ({
+    heading: review?.reviewTitle,
+    title: review.title || '', // Provide a default title if missing
+    rating: review.rating || 0, // Handle potential null/undefined values
+    reviewText: review.comment || '',
+    reviewer: reviewerNames[review?.patientNHSNumber] || '', // Provide a default reviewer if missing
+    date: new Date(review.date).toLocaleDateString(), // Format the date
+  }))
 
   return (
     <div className='physician-profile' style={{ marginBottom: '20px' }}>
@@ -151,7 +176,6 @@ const PhysicianProfile = () => {
               'Certificates',
               'Hospital',
               'Insurance',
-              // 'Contact',
               'Ratings',
             ]}
             targetOffset={targetOffset}
@@ -236,7 +260,6 @@ const PhysicianProfile = () => {
             <ProfileCard
               profileCardStyle={{ width: '100%' }}
               title='Ratings'
-              // description={doctor?.professionalInfo?.specialty}
               ratingData={{
                 label: 'Overall Effectiveness',
                 value: doctorData?.ratings?.overallEffectiveness || 0,
@@ -280,24 +303,35 @@ const PhysicianProfile = () => {
               ]}
               actions={[
                 {
-                  label: 'View Profile',
-                  type: 'primary',
-                  // onClick: () => onViewProfile(doctor.gmcNumber),
-                },
-                {
                   label: 'Post Review',
-                  type: 'secondary',
+                  type: 'primary',
                   // onClick: () => onPostReview(doctor.gmcNumber),
                 },
               ]}
             />
-            <RatingCard
-              title={ratingData.title}
-              rating={ratingData.rating}
-              reviewText={ratingData.reviewText}
-              reviewer={ratingData.reviewer}
-              date={ratingData.date}
-            />
+            {ratingData.slice(0, showReviewsCount)?.map((rating, index) => {
+              console.log('rating==>', rating)
+              return (
+                <RatingCard
+                  key={index}
+                  title={rating?.title}
+                  rating={rating?.rating}
+                  heading={rating?.heading}
+                  description={rating?.reviewText}
+                  reviewer={rating?.reviewer}
+                  date={rating?.date}
+                />
+              )
+            })}
+            {showReviewsCount < ratingData.length && (
+              <div style={{ textAlign: 'center' }}>
+                <Button
+                  type='primary'
+                  onClick={() => setShowReviewsCount(showReviewsCount + 1)}>
+                  Show More
+                </Button>
+              </div>
+            )}
           </section>
         </Col>
         <Col xs={24} sm={12} md={8} lg={8}>
@@ -310,6 +344,7 @@ const PhysicianProfile = () => {
               }}>
               {contactInfo?.map((contact, index) => (
                 <RenderCardDetails
+                  key={index}
                   title={contact?.title}
                   icon={contact?.icon}
                   description={contact?.description}

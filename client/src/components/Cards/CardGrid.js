@@ -102,7 +102,7 @@ CategoryGrid.propTypes = {
     PropTypes.shape({
       icon: PropTypes.element,
       title: PropTypes.string,
-      description: PropTypes.string,
+      description: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     })
   ),
 }

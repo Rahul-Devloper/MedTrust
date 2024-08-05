@@ -4,6 +4,7 @@ import {
   getAllDoctors,
   getDoctorSpeciality,
   getDoctorProfileData,
+  getPatientDetailsByNHSNumber,
 } from '../../api/patient'
 
 import { ErrorNotification } from '../../components'
@@ -122,3 +123,39 @@ export const getDoctorProfileDataAction =
       })
     }
   }
+
+/********************************************
+   Get Patient Details with NHS number
+  *********************************************/
+
+export const getPatientByNHSNumberAction = (nhsNumber) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  })
+
+  try {
+    // Fetch response from server
+    const res = await getPatientDetailsByNHSNumber(nhsNumber)
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: res?.data?.message,
+      },
+    })
+    return res?.data?.patient
+  } catch (error) {
+    ErrorNotification(error?.response?.data?.type[0].message)
+    // data.setLoading(false)
+    // Dispatch a error alert
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: error.response.data?.type[0].message,
+      },
+    })
+  }
+}

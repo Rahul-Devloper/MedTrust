@@ -112,28 +112,28 @@ const ProfileCard = ({
 }
 
 ProfileCard.propTypes = {
-  avatar: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  avatar: PropTypes.string,
+  title: PropTypes.string,
+  description: PropTypes.string,
   details: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.string.isRequired,
+      label: PropTypes.string,
+      value: PropTypes.string,
     })
-  ).isRequired,
+  ),
   progressBars: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      value: PropTypes.number.isRequired,
+      label: PropTypes.string,
+      value: PropTypes.number,
     })
-  ).isRequired,
+  ),
   actions: PropTypes.arrayOf(
     PropTypes.shape({
-      label: PropTypes.string.isRequired,
-      type: PropTypes.string.isRequired,
-      onClick: PropTypes.func.isRequired,
+      label: PropTypes.string,
+      type: PropTypes.string,
+      onClick: PropTypes.func,
     })
-  ).isRequired,
+  ),
 }
 
 export default ProfileCard

@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Row, Col, Rate, Button, Typography } from 'antd'
+import { Card, Row, Col, Rate, Button, Typography, Tag } from 'antd'
 import { LikeOutlined, MessageOutlined, FlagOutlined } from '@ant-design/icons'
 
 const { Title, Paragraph, Text, Link } = Typography
@@ -12,10 +12,12 @@ const RatingCard = ({
   detailsLink,
   helpfulCount,
   reviewer,
-  reviewDate,
+  heading,
+  date,
 }) => {
+  console.log('reviewDate==>', date)
   return (
-    <Card style={{ marginBottom: '20px' }}>
+    <Card title={heading} style={{ marginBottom: '20px' }}>
       <Row gutter={16}>
         <Col span={24}>
           <Rate disabled defaultValue={rating} />
@@ -28,18 +30,15 @@ const RatingCard = ({
       </Row>
       <Row gutter={16}>
         <Col span={24}>
-          <Paragraph
-            ellipsis={{ rows: 2, expandable: true, symbol: 'More Details' }}>
-            {description}
-          </Paragraph>
+          <p>{description}</p>
         </Col>
       </Row>
       <Row gutter={16} justify='space-between'>
         <Col>
-          <Text>{reviewer}</Text>
+          <Tag color='geekblue'>{reviewer}</Tag>
         </Col>
         <Col>
-          <Text>{reviewDate}</Text>
+          <Text>{date}</Text>
         </Col>
       </Row>
     </Card>
@@ -47,13 +46,13 @@ const RatingCard = ({
 }
 
 RatingCard.propTypes = {
-  rating: PropTypes.number.isRequired,
-  title: PropTypes.string.isRequired,
-  description: PropTypes.string.isRequired,
+  rating: PropTypes.number,
+  title: PropTypes.string,
+  description: PropTypes.string,
   detailsLink: PropTypes.string,
   helpfulCount: PropTypes.number,
-  reviewer: PropTypes.string.isRequired,
-  reviewDate: PropTypes.string.isRequired,
+  reviewer: PropTypes.string,
+  reviewDate: PropTypes.string,
 }
 
 RatingCard.defaultProps = {
