@@ -11,6 +11,17 @@ class ReviewService {
       throw error
     }
   }
+
+  static createReview = async (reviewData) => {
+    try {
+      const review = new Review(reviewData)
+      await review.save()
+
+      return review
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = ReviewService

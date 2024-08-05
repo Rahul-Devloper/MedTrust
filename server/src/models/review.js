@@ -2,21 +2,21 @@ const mongoose = require('mongoose')
 
 const reviewSchema = new mongoose.Schema(
   {
-    patient: {
-      type: mongoose.Schema.Types.ObjectId, //gets id from patientRecord model
-      ref: 'Patient',
-      required: true,
-    },
+    // patient: {
+    //   type: mongoose.Schema.Types.ObjectId, //gets id from patientRecord model
+    //   ref: 'Patient',
+    //   required: true,
+    // },
     patientNHSNumber: {
       type: String,
       required: true,
       index: true,
     },
-    doctor: {
-      type: mongoose.Schema.Types.ObjectId, //gets doctor model from doctorRecord
-      ref: 'Doctor',
-      required: true,
-    },
+    // doctor: {
+    //   type: mongoose.Schema.Types.ObjectId, //gets doctor model from doctorRecord
+    //   ref: 'Doctor',
+    //   required: true,
+    // },
     doctorGMCNumber: {
       type: String,
       required: true,

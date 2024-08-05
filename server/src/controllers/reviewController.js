@@ -24,3 +24,47 @@ exports.getAllReviews = async (req, res) => {
     message: 'All reviews found',
   })
 }
+
+
+exports.postReview = async (req, res) => {
+  const { doctorGMCNumber, patientNHSNumber, values } = req.body
+  const {
+    communication,
+    bedsideManner,
+    officeEnvironment,
+    waitTime,
+    professionalism,
+    treatmentSatisfaction,
+    title,
+    description,
+  } = values
+  const overallRating =
+    (communication +
+      bedsideManner +
+      officeEnvironment +
+      waitTime +
+      professionalism +
+      treatmentSatisfaction) /
+    6
+  const review = await ReviewService.createReview({
+    doctorGMCNumber,
+    patientNHSNumber,
+    comment: description,
+    reviewTitle: title,
+    date: Date.now(),
+    rating: overallRating,
+  })
+
+  if (!review) {
+    return res.status(400).json({
+      success: false,
+      message: 'Could not post review',
+    })
+  }
+
+  return res.status(200).json({
+    success: true,
+    review: review,
+    message: 'Review posted',
+  })
+}

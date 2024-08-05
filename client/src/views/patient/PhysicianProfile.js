@@ -5,7 +5,20 @@ import {
   getDoctorProfileDataAction,
   getPatientByNHSNumberAction,
 } from '../../redux/actions/patientActions'
-import { Affix, Anchor, Button, Card, Col, Collapse, Progress, Row } from 'antd'
+import {
+  Affix,
+  Anchor,
+  Button,
+  Card,
+  Col,
+  Collapse,
+  Form,
+  Input,
+  Modal,
+  Progress,
+  Rate,
+  Row,
+} from 'antd'
 import ProfileCard2 from '../../components/Cards/ProfileCard2'
 import MaleAvatar from '../../assets/images/illustrations/doctorMaleAvatar.png'
 import FemaleAvatar from '../../assets/images/illustrations/doctorFemaleAvatar.png'
@@ -19,7 +32,11 @@ import '../../assets/css/accordion.css'
 import RenderCardDetails from '../../components/Cards/RenderCardDetails'
 import ProfileCard from '../../components/Cards/ProfileCard'
 import RatingCard from '../../components/Cards/RatingCard'
-import { getAllReviewsAction } from '../../redux/actions/reviewActions'
+import {
+  getAllReviewsAction,
+  postReviewAction,
+} from '../../redux/actions/reviewActions'
+import TextArea from 'antd/lib/input/TextArea'
 
 const { Link } = Anchor
 const { Panel } = Collapse
@@ -29,12 +46,16 @@ const PhysicianProfile = () => {
   const [doctorData, setDoctorData] = useState([])
   const [reviewList, setReviewsList] = useState([])
   const [reviewerNames, setReviewerNames] = useState({})
-  const [showReviewsCount, setShowReviewsCount] = useState(1)
+  const [showReviewsCount, setShowReviewsCount] = useState(4) // Initialize with 4 reviews to show
+  const [isModalVisible, setIsModalVisible] = useState(false)
+  const [form] = Form.useForm() // Form instance
 
   const dispatch = useDispatch()
   const history = useHistory()
   const params = useParams()
   const { physicianName, physicianId } = params
+  const patientNHSNumber = useSelector((state) => state?.auth?.user?.nhsNumber)
+  console.log('patientNHSNumber==>', patientNHSNumber)
 
   const buttonHeight = 40 // Approximate height of the button
   const additionalOffset = 10 // Extra space below the button
@@ -55,7 +76,7 @@ const PhysicianProfile = () => {
 
   useEffect(() => {
     const fetchReviewerNames = async () => {
-      console.log('reviewList==>', reviewList)
+      console.log('reviewList==>', reviewList.length && reviewList)
       const names = {}
       for (const review of reviewList) {
         if (review?.patientNHSNumber) {
@@ -136,14 +157,36 @@ const PhysicianProfile = () => {
     },
   ]
 
-  const ratingData = reviewList?.map((review) => ({
-    heading: review?.reviewTitle,
-    title: review.title || '', // Provide a default title if missing
-    rating: review.rating || 0, // Handle potential null/undefined values
-    reviewText: review.comment || '',
-    reviewer: reviewerNames[review?.patientNHSNumber] || '', // Provide a default reviewer if missing
-    date: new Date(review.date).toLocaleDateString(), // Format the date
-  }))
+  const ratingData =
+    reviewList?.length > 0
+      ? reviewList?.map((review) => ({
+          heading: review?.reviewTitle,
+          rating: review.rating || 0, // Handle potential null/undefined values
+          reviewText: review.comment || '',
+          reviewer: reviewerNames[review?.patientNHSNumber] || '', // Provide a default reviewer if missing
+          date: new Date(review.date).toLocaleDateString(), // Format the date
+        }))
+      : []
+
+  const handlePostReview = (values) => {
+    console.log('Review Submitted:', values)
+    dispatch(
+      postReviewAction({
+        setReviewsList,
+        values,
+        doctorGMCNumber: doctorData?.gmcNumber,
+        patientNHSNumber,
+        setOk,
+      })
+    )
+    setIsModalVisible(false)
+    form.resetFields()
+  }
+
+  const handleCancel = () => {
+    setIsModalVisible(false)
+    form.resetFields()
+  }
 
   return (
     <div className='physician-profile' style={{ marginBottom: '20px' }}>
@@ -216,6 +259,7 @@ const PhysicianProfile = () => {
               </Row>
             </Card>
           </section>
+
           <section style={{ marginTop: '20px' }} id='Hospital'>
             <Card
               title='Hospital Affiliations'
@@ -305,29 +349,29 @@ const PhysicianProfile = () => {
                 {
                   label: 'Post Review',
                   type: 'primary',
-                  // onClick: () => onPostReview(doctor.gmcNumber),
+                  onClick: () => setIsModalVisible(true),
                 },
               ]}
             />
-            {ratingData.slice(0, showReviewsCount)?.map((rating, index) => {
-              console.log('rating==>', rating)
-              return (
-                <RatingCard
-                  key={index}
-                  title={rating?.title}
-                  rating={rating?.rating}
-                  heading={rating?.heading}
-                  description={rating?.reviewText}
-                  reviewer={rating?.reviewer}
-                  date={rating?.date}
-                />
-              )
-            })}
+            {Array.isArray(ratingData) &&
+              ratingData
+                .slice(0, showReviewsCount)
+                ?.map((rating, index) => (
+                  <RatingCard
+                    key={index}
+                    title={rating?.title}
+                    rating={rating?.rating}
+                    heading={rating?.heading}
+                    description={rating?.reviewText}
+                    reviewer={rating?.reviewer}
+                    date={rating?.date}
+                  />
+                ))}
             {showReviewsCount < ratingData.length && (
               <div style={{ textAlign: 'center' }}>
                 <Button
                   type='primary'
-                  onClick={() => setShowReviewsCount(showReviewsCount + 1)}>
+                  onClick={() => setShowReviewsCount(showReviewsCount + 4)}>
                   Show More
                 </Button>
               </div>
@@ -354,6 +398,84 @@ const PhysicianProfile = () => {
           </section>
         </Col>
       </Row>
+
+      <Modal
+        title='Post Review'
+        visible={isModalVisible}
+        onCancel={handleCancel}
+        footer={null}>
+        <Form form={form} onFinish={handlePostReview}>
+          {/* Template Questions */}
+          <Form.Item
+            label='Communication'
+            name='communication'
+            rules={[{ required: true, message: 'Please rate communication!' }]}>
+            <Rate />
+          </Form.Item>
+          <Form.Item
+            label='Bedside Manner'
+            name='bedsideManner'
+            rules={[
+              { required: true, message: 'Please rate bedside manner!' },
+            ]}>
+            <Rate />
+          </Form.Item>
+          <Form.Item
+            label='Office Environment'
+            name='officeEnvironment'
+            rules={[
+              { required: true, message: 'Please rate office environment!' },
+            ]}>
+            <Rate />
+          </Form.Item>
+          <Form.Item
+            label='Wait Time'
+            name='waitTime'
+            rules={[{ required: true, message: 'Please rate wait time!' }]}>
+            <Rate />
+          </Form.Item>
+          <Form.Item
+            label='Professionalism'
+            name='professionalism'
+            rules={[
+              { required: true, message: 'Please rate professionalism!' },
+            ]}>
+            <Rate />
+          </Form.Item>
+          <Form.Item
+            label='Treatment Satisfaction'
+            name='treatmentSatisfaction'
+            rules={[
+              {
+                required: true,
+                message: 'Please rate treatment satisfaction!',
+              },
+            ]}>
+            <Rate />
+          </Form.Item>
+          {/* Feedback Title */}
+          <Form.Item
+            label='Title'
+            name='title'
+            rules={[{ required: true, message: 'Please enter a title!' }]}>
+            <Input />
+          </Form.Item>
+          {/* Feedback Description */}
+          <Form.Item
+            label='Description'
+            name='description'
+            rules={[
+              { required: true, message: 'Please enter your feedback!' },
+            ]}>
+            <TextArea rows={4} />
+          </Form.Item>
+          <Form.Item>
+            <Button type='primary' htmlType='submit'>
+              Submit Review
+            </Button>
+          </Form.Item>
+        </Form>
+      </Modal>
     </div>
   )
 }
