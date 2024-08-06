@@ -37,6 +37,7 @@ import {
   postReviewAction,
 } from '../../redux/actions/reviewActions'
 import TextArea from 'antd/lib/input/TextArea'
+import MenuFooter from '../../layouts/components/footer'
 
 const { Link } = Anchor
 const { Panel } = Collapse
@@ -56,6 +57,7 @@ const PhysicianProfile = () => {
   const { physicianName, physicianId } = params
   const patientNHSNumber = useSelector((state) => state?.auth?.user?.nhsNumber)
   console.log('patientNHSNumber==>', patientNHSNumber)
+  const role = useSelector((state) => state?.auth?.user?.role)
 
   const buttonHeight = 40 // Approximate height of the button
   const additionalOffset = 10 // Extra space below the button
@@ -260,7 +262,7 @@ const PhysicianProfile = () => {
             </Card>
           </section>
 
-          <section style={{ marginTop: '20px' }} id='Hospital'>
+          <section style={{ marginTop: targetOffset }} id='Hospital'>
             <Card
               title='Hospital Affiliations'
               bordered={false}
@@ -349,14 +351,15 @@ const PhysicianProfile = () => {
                 {
                   label: 'Post Review',
                   type: 'primary',
+                  disabled: role !== 'patient' ? true : false,
                   onClick: () => setIsModalVisible(true),
                 },
               ]}
             />
             {Array.isArray(ratingData) &&
-              ratingData
-                .slice(0, showReviewsCount)
-                ?.map((rating, index) => (
+              ratingData.slice(0, showReviewsCount)?.map((rating, index) => {
+                console.log('rating==>', rating)
+                return (
                   <RatingCard
                     key={index}
                     title={rating?.title}
@@ -366,7 +369,8 @@ const PhysicianProfile = () => {
                     reviewer={rating?.reviewer}
                     date={rating?.date}
                   />
-                ))}
+                )
+              })}
             {showReviewsCount < ratingData.length && (
               <div style={{ textAlign: 'center' }}>
                 <Button
@@ -476,6 +480,9 @@ const PhysicianProfile = () => {
           </Form.Item>
         </Form>
       </Modal>
+      <br />
+      <br />
+      <MenuFooter />
     </div>
   )
 }

@@ -15,12 +15,12 @@ const RatingCard = ({
   heading,
   date,
 }) => {
-  console.log('reviewDate==>', date)
+  console.log('reviewRate==>', rating)
   return (
     <Card title={heading} style={{ marginBottom: '20px' }}>
       <Row gutter={16}>
         <Col span={24}>
-          <Rate disabled defaultValue={rating} />
+          <Rate disabled value={rating} />
         </Col>
       </Row>
       <Row gutter={16}>

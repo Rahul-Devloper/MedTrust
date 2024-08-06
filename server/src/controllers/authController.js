@@ -8,13 +8,14 @@ const passport = require("passport");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const PatientRecordService = require('../services/patientRecordService')
+const DoctorRecordService = require('../services/doctorRecordService')
 
 /**********************************
   Sign up & send email verification
 ***********************************/
 exports.signup = async (req, res) => {
   console.log('req==>', req)
-  const { name, email, password, nhsNumber } = req.body
+  const { name, email, password, nhsNumber, gmcNumber } = req.body
 
   let { role } = req.body
 
@@ -44,17 +45,35 @@ exports.signup = async (req, res) => {
   }
 
   try {
-    // Check if patient exists in patientRecords
-    const patientInRecord = await PatientRecordService.findPatientInRecord({
-      'personalDetails.name': name,
-      'personalDetails.nhsNumber': nhsNumber,
-      'personalDetails.contactDetails.email': email,
-    })
-    if (patientInRecord) {
-      role = 'patient'
-      console.log('patientInRecord==>', patientInRecord)
-    } else {
-      console.error('patientInRecordError==>', patientInRecord)
+    let userRecord = null
+
+    // Check if nhsNumber is provided
+    if (nhsNumber) {
+      userRecord = await PatientRecordService.findPatientInRecord({
+        'personalDetails.name': name,
+        'personalDetails.nhsNumber': nhsNumber,
+        'personalDetails.contactDetails.email': email,
+      })
+      if (userRecord) {
+        role = 'patient'
+        console.log('patientInRecord==>', userRecord)
+      }
+    }
+
+    // Check if gmcNumber is provided
+    if (gmcNumber && !userRecord) {
+      userRecord = await DoctorRecordService.findDoctorByNameAndGmcNumber(
+        name,
+        gmcNumber
+      )
+      if (userRecord) {
+        role = 'doctor'
+        console.log('doctorInRecord==>', userRecord)
+      }
+    }
+
+    if (!userRecord) {
+      console.error('userRecordError==>', userRecord)
       const errorObject = {
         error: true,
         type: [
@@ -62,13 +81,14 @@ exports.signup = async (req, res) => {
             code: 'GLOBAL_ERROR',
             field: 'user',
             message:
-              'Details do not match NHS records, please check details and try again',
+              'Details do not match records, please check details and try again',
           },
         ],
       }
       res.status(409).json(errorObject)
       return
     }
+
     // Check if user already exists
     const existingUser = await UserService.findOneUser({ email })
     if (existingUser) {
@@ -85,6 +105,7 @@ exports.signup = async (req, res) => {
       res.status(409).json(errorObject)
       return
     }
+
     // Create payload to create JWT token
     const payload = { email: email }
     // Generate JWT token for email verification, expires in 30 mins
@@ -100,6 +121,7 @@ exports.signup = async (req, res) => {
       name,
       email,
       nhsNumber: nhsNumber || '',
+      gmcNumber: gmcNumber || '',
       role: role || 'admin',
       password: hashedPassword,
       activated: false,
@@ -132,16 +154,6 @@ exports.signup = async (req, res) => {
       },
       secure: false,
     })
-    // // Send verification to the user email
-    // const transporter = nodemailer.createTransport({
-    //   port: 465,
-    //   host: 'smtpout.secureserver.net',
-    //   auth: {
-    //     user: process.env.NODEMAILER_EMAIL,
-    //     pass: process.env.NODEMAILER_PASSWORD,
-    //   },
-    //   secure: true,
-    // })
 
     await new Promise((resolve, reject) => {
       // verify connection configuration
@@ -201,6 +213,7 @@ exports.signup = async (req, res) => {
     console.log('SERVER_SIGNUP_ERROR', error)
   }
 }
+
 
 /**********************************
   Email Verification, acc. activation

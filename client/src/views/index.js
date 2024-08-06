@@ -47,5 +47,8 @@ export { default as SpecialityDirectory } from './patient/SpecialityDirectory'
 
 export { default as PhysicianProfile } from './patient/PhysicianProfile'
 
+/************************************************** Doctor Views ************************************************************/
+export { default as DoctorDashboard } from "./doctor/dashboard/DoctorDashboard";
+
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

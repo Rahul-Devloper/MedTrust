@@ -22,6 +22,8 @@ const authReducer = (state = initialState, action) => {
       return action?.payload
     case AUTH_TYPES.IS_PATIENT:
       return action?.payload
+    case AUTH_TYPES.IS_DOCTOR:
+      return action?.payload
     case AUTH_TYPES.LOGOUT:
       Cookies.remove('access')
       localStorage.removeItem('allgin')

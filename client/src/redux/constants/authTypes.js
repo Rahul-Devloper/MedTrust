@@ -7,4 +7,5 @@ export const AUTH_TYPES = {
   IS_ADMIN: 'IS_ADMIN',
   IS_MEMBER: 'IS_MEMBER',
   IS_PATIENT: 'IS_PATIENT',
+  IS_DOCTOR: 'IS_DOCTOR',
 }

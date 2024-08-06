@@ -13,6 +13,8 @@ export const RoleBasedRedirect = (res, history) => {
       window.location.href = '/member/dashboard'
     } else if (res.data.user.role === 'patient') {
       window.location.href = '/patient/dashboard'
+    } else if (res.data.user.role === 'doctor') {
+      window.location.href = '/doctor/dashboard'
     }
   }
 }
@@ -32,6 +34,8 @@ export const RoleBasedRedirectWithUser = (user, history) => {
       window.location.href = '/member/dashboard'
     } else if (user.role === 'patient') {
       window.location.href = '/patient/dashboard'
+    } else if (user.role === 'doctor') {
+      window.location.href = '/doctor/dashboard'
     }
   }
 }
@@ -45,6 +49,8 @@ export const redirectToDashboard = (user) => {
     return '/member/dashboard'
   } else if (user?.role === 'patient') {
     return '/patient/dashboard'
+  } else if (user?.role === 'doctor') {
+    return '/doctor/dashboard'
   }
 }
 
@@ -59,5 +65,7 @@ export const RedirectOnLogout = (res) => {
     window.location.href = '/member/dashboard'
   } else if (res.data.user?.role === 'patient') {
     window.location.href = '/patient/dashboard'
+  } else if (res.data.user?.role === 'doctor') {
+    window.location.href = '/doctor/dashboard'
   }
 }

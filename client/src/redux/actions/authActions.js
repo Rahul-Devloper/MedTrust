@@ -15,6 +15,7 @@ import {
   ErrorNotification,
   InfoNotification,
 } from '../../components'
+import { currentDoctor } from "../../api/doctor";
 
 /********************************************
   Sign up a user
@@ -34,7 +35,8 @@ export const signupAction = (data) => async (dispatch) => {
       data.name,
       data.email,
       data.password,
-      data.nhsNumber
+      data.nhsNumber,
+      data?.gmcNumber
     )
 
     // Dispatch a success/error login notify
@@ -80,6 +82,7 @@ export const loginAction = (data) => async (dispatch) => {
 
     // Fetch response from server
     const res = await login(data.email, data.password)
+    console.log('res.data==>', res?.data)
 
     if (res.data.error === true) {
       ErrorNotification(res.data.type[0].message)
@@ -446,6 +449,59 @@ export const isPatientAction = (data) => async (dispatch) => {
 }
 
 /********************************************
+Is User Doctor Action
+********************************************/
+export const isDoctorAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  })
+
+  try {
+    let errorMessage = ''
+
+    // Fetch response from server
+    const res = await currentDoctor()
+
+    if (res.data.error === true) {
+      ErrorNotification(res.data.type[0].message)
+      errorMessage = res.data.type[0].message
+      data.setOk(false)
+      return
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.IS_DOCTOR,
+      payload: {
+        user: {
+          ...res.data.user, checking: true},
+      },
+    })
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: errorMessage ? errorMessage : res.data.message,
+      },
+    })
+
+    data.setOk(true)
+  } catch (error) {
+    // Dispatch a error notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: 'IS_MEMBER_ACTION_ERROR',
+      },
+    })
+  }
+}
+
+/********************************************
+
   Log out an user
 *********************************************/
 export const logoutAction = () => async (dispatch) => {

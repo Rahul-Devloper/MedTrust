@@ -8,6 +8,7 @@ import {
   SuperAdminRoute,
   ProfileRoute,
   PatientRoute,
+  DoctorRoute,
 } from './routes'
 import { isUserAction } from './redux/actions/authActions'
 
@@ -48,6 +49,9 @@ import {
   MemberDashboard,
   // -------------- Patient views --------------
   PatientDashboard,
+
+  //----------------Doctor Views----------------
+  DoctorDashboard,
   // -------------- Wildcard --------------
   RandomPageRedirect,
   SpecialityDirectory,
@@ -213,6 +217,12 @@ const App = () => {
         <ProfileRoute exact path='/profile/security' component={MySecurity} />
         <ProfileRoute exact path='/profile/password' component={MyPassword} />
 
+        {/*************** Doctor Routes ***************/}
+        <DoctorRoute
+          exact
+          path='/doctor/dashboard'
+          component={DoctorDashboard}
+        />
         {/* Wildcard */}
         <Route path={'*'} component={RandomPageRedirect} />
       </Switch>

@@ -2,15 +2,22 @@ const DoctorRecord = require('../models/doctorRecord')
 
 class DoctorRecordService {
   // Find if signing up doctor exists in NHS doctorRecord Database before signing up.
-  static findDoctorInRecord = async (query) => {
-    try {
-      const doctorRecord = await DoctorRecord.findOne(query).exec()
+  // static async findDoctorBySpecialty(specialty) {
+  //   try {
+  //     if (!specialty) {
+  //       throw new Error('Specialty is required')
+  //     }
 
-      return doctorRecord
-    } catch (error) {
-      throw error
-    }
-  }
+  //     const doctors = await DoctorRecord.find({
+  //       'professionalInfo.specialty': specialty,
+  //     }).exec()
+
+  //     return doctors
+  //   } catch (error) {
+  //     console.error('Error finding doctors by specialty:', error)
+  //     throw error // Re-throw the error to be handled by the calling function
+  //   }
+  // }
 
   //   // Find user by id
   //   static findUserById = async (id) => {

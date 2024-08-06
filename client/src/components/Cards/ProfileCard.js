@@ -98,6 +98,7 @@ const ProfileCard = ({
                 <Button
                   type={action.type}
                   style={{ marginBottom: '10px' }}
+                  disabled={action.disabled}
                   onClick={action.onClick}
                   key={action.label}>
                   {action.label}

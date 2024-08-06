@@ -1,12 +1,13 @@
 import api from "./index";
 
 // Signup user to send verification email
-export const signUp = async (name, email, password, nhsNumber) => {
+export const signUp = async (name, email, password, nhsNumber, gmcNumber) => {
   return await api.post('/signup', {
     name,
     email,
     password,
     nhsNumber,
+    gmcNumber,
   })
 }
 

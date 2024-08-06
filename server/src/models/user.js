@@ -25,6 +25,11 @@ const userSchema = new mongoose.Schema(
     },
     nhsNumber: {
       type: String,
+      index: true,
+    },
+    gmcNumber: {
+      type: String,
+      index: true,
     },
     // Local account or Google
     accountType: {
@@ -73,6 +78,7 @@ userSchema.statics.toClientObject = function (user) {
     name: userObject.name,
     role: userObject.role,
     nhsNumber: userObject.nhsNumber,
+    gmcNumber: userObject.gmcNumber,
     activated: userObject.activated,
     currentPlan: userObject.currentPlan,
     createdAt: userObject.createdAt,
