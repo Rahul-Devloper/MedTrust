@@ -35,9 +35,12 @@ import RatingCard from '../../components/Cards/RatingCard'
 import {
   getAllReviewsAction,
   postReviewAction,
+  updateReviewAction,
 } from '../../redux/actions/reviewActions'
 import TextArea from 'antd/lib/input/TextArea'
 import MenuFooter from '../../layouts/components/footer'
+import { checkAppointmentStatusAction } from '../../redux/actions/appointmentActions'
+import { LiaCheckDoubleSolid } from 'react-icons/lia'
 
 const { Link } = Anchor
 const { Panel } = Collapse
@@ -49,6 +52,9 @@ const PhysicianProfile = () => {
   const [reviewerNames, setReviewerNames] = useState({})
   const [showReviewsCount, setShowReviewsCount] = useState(4) // Initialize with 4 reviews to show
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isUpdate, setIsUpdate] = useState(false) // Track if updating a review
+  const [currentReviewId, setCurrentReviewId] = useState(null) // Track the current review being updated
+  const [appointmentData, setAppointmentData] = useState({})
   const [form] = Form.useForm() // Form instance
 
   const dispatch = useDispatch()
@@ -74,7 +80,18 @@ const PhysicianProfile = () => {
     )
 
     dispatch(getAllReviewsAction({ setOk, setReviewsList, physicianId }))
-  }, [dispatch, physicianName, physicianId])
+    console.log('gmcNumber==>', physicianId)
+    console.log('patientNHSNumber==>', patientNHSNumber)
+    dispatch(
+      checkAppointmentStatusAction({
+        setOk,
+        setAppointmentData,
+        doctorGMCNumber: physicianId,
+        patientNHSNumber,
+      })
+    )
+    console.log('appointmentData==>', appointmentData)
+  }, [dispatch, physicianName, physicianId, patientNHSNumber])
 
   useEffect(() => {
     const fetchReviewerNames = async () => {
@@ -99,17 +116,17 @@ const PhysicianProfile = () => {
 
   const dataWithIcons = [
     {
-      icon: <FaStethoscope style={{ fontSize: '24px' }} />,
+      icon: <FaStethoscope style={{ fontSize: '20px' }} />,
       title: 'Speciality',
       description: doctorData?.professionalInfo?.specialty,
     },
     {
-      icon: <FaBook style={{ fontSize: '24px' }} />,
+      icon: <FaBook style={{ fontSize: '20px' }} />,
       title: 'Education',
       description: doctorData?.professionalInfo?.education,
     },
     {
-      icon: <GrUserExpert style={{ fontSize: '24px' }} />,
+      icon: <GrUserExpert style={{ fontSize: '20px' }} />,
       title: 'Experience',
       description: doctorData?.professionalInfo?.yearsOfExperience,
     },
@@ -162,25 +179,43 @@ const PhysicianProfile = () => {
   const ratingData =
     reviewList?.length > 0
       ? reviewList?.map((review) => ({
+          _id: review?._id, // Include review ID for identifying the review
           heading: review?.reviewTitle,
           rating: review.rating || 0, // Handle potential null/undefined values
           reviewText: review.comment || '',
           reviewer: reviewerNames[review?.patientNHSNumber] || '', // Provide a default reviewer if missing
           date: new Date(review.date).toLocaleDateString(), // Format the date
+          isReviewed: review.patientNHSNumber === patientNHSNumber, // Check if the logged-in user is the reviewer
+          reviewScores: review?.reviewScores || {},
+          isResponse: review?.isResponse || false,
+          response: review?.response || '',
+          responseDate: review?.responseDate || '',
         }))
       : []
 
   const handlePostReview = (values) => {
-    console.log('Review Submitted:', values)
-    dispatch(
-      postReviewAction({
-        setReviewsList,
-        values,
-        doctorGMCNumber: doctorData?.gmcNumber,
-        patientNHSNumber,
-        setOk,
-      })
-    )
+    if (hasReviewed) {
+      dispatch(
+        updateReviewAction({
+          reviewId: currentReviewId, // Pass the existing review ID for update
+          values,
+          doctorGMCNumber: physicianId,
+          patientNHSNumber,
+          setOk,
+          setReviewsList,
+        })
+      )
+    } else {
+      dispatch(
+        postReviewAction({
+          setReviewsList,
+          values,
+          doctorGMCNumber: physicianId,
+          patientNHSNumber,
+          setOk,
+        })
+      )
+    }
     setIsModalVisible(false)
     form.resetFields()
   }
@@ -189,6 +224,19 @@ const PhysicianProfile = () => {
     setIsModalVisible(false)
     form.resetFields()
   }
+
+  const openUpdateModal = (reviewId, reviewValues) => {
+    setIsModalVisible(true)
+    setIsUpdate(true)
+    setCurrentReviewId(reviewId)
+    form.setFieldsValue(reviewValues) // Populate the form with existing review values
+  }
+
+  const hasReviewed = reviewList.some(
+    (review) => review.patientNHSNumber === patientNHSNumber
+  )
+
+  const reviewWithResponse = ratingData?.find((review) => review.isResponse)
 
   return (
     <div className='physician-profile' style={{ marginBottom: '20px' }}>
@@ -237,7 +285,7 @@ const PhysicianProfile = () => {
               }}>
               <h3>{`${doctorData?.personalInfo?.name} is a trained ${doctorData?.professionalInfo?.specialty} who has a degree in ${doctorData?.personalInfo?.degree}`}</h3>
               <CardGrid dataWithIcons={dataWithIcons} />
-              <h4>Treatment Frequency by Condition</h4>
+              {treatmentData && <h4>Treatment Frequency by Condition</h4>}
               <RenderAccordion data={treatmentData} />
             </Card>
           </section>
@@ -349,10 +397,22 @@ const PhysicianProfile = () => {
               ]}
               actions={[
                 {
-                  label: 'Post Review',
+                  label:
+                    Object.keys(appointmentData)?.length > 0
+                      ? hasReviewed
+                        ? 'You have already reviewed this doctor'
+                        : 'Post Review'
+                      : 'You can only post a review after completing an appointment',
                   type: 'primary',
-                  disabled: role !== 'patient' ? true : false,
-                  onClick: () => setIsModalVisible(true),
+                  disabled:
+                    role !== 'patient' || // Disable if the user is not a patient
+                    Object.keys(appointmentData)?.length === 0 || // Disable if no appointment data exists
+                    hasReviewed, // Disable if the patient has already reviewed
+                  onClick: () => {
+                    if (!hasReviewed) {
+                      setIsModalVisible(true)
+                    }
+                  },
                 },
               ]}
             />
@@ -367,7 +427,32 @@ const PhysicianProfile = () => {
                     heading={rating?.heading}
                     description={rating?.reviewText}
                     reviewer={rating?.reviewer}
-                    date={rating?.date}
+                    date={`Reviewed on: ${rating?.date}`}
+                    extra={
+                      rating?.isReviewed ? (
+                        <Button
+                          onClick={() =>
+                            openUpdateModal(rating._id, {
+                              communication:
+                                rating?.reviewScores?.communication,
+                              bedsideManner:
+                                rating?.reviewScores?.bedsideManner,
+                              officeEnvironment:
+                                rating?.reviewScores?.officeEnvironment,
+                              waitTime: rating?.reviewScores?.waitTime,
+                              professionalism:
+                                rating?.reviewScores?.professionalism,
+                              treatmentSatisfaction:
+                                rating?.reviewScores?.treatmentSatisfaction,
+                              title: rating?.heading,
+                              description: rating?.reviewText,
+                            })
+                          }
+                          type='primary'>
+                          Update Review
+                        </Button>
+                      ) : null
+                    }
                   />
                 )
               })}
@@ -399,6 +484,34 @@ const PhysicianProfile = () => {
                 />
               ))}
             </Card>
+          </section>
+          {console.log('ratingData?.isResponse==>', ratingData?.isResponse)}
+          <section style={{ marginTop: '20px' }} id='Response'>
+            {hasReviewed && (
+              <RatingCard
+                //   title={'Response'}
+                //   rating={rating?.rating}
+                heading={'Response From Doctor'}
+                description={
+                  reviewWithResponse?.response || 'No response yet from doctor'
+                }
+                reviewer={
+                  reviewWithResponse?.isResponse ? (
+                    <LiaCheckDoubleSolid
+                      style={{ fontSize: '24px', color: 'blue' }}
+                    />
+                  ) : null
+                }
+                isTag={false}
+                date={
+                  reviewWithResponse?.isResponse
+                    ? `Responded On: ${new Date(
+                        reviewWithResponse?.responseDate
+                      ).toLocaleDateString()}`
+                    : null
+                }
+              />
+            )}
           </section>
         </Col>
       </Row>
@@ -475,7 +588,7 @@ const PhysicianProfile = () => {
           </Form.Item>
           <Form.Item>
             <Button type='primary' htmlType='submit'>
-              Submit Review
+              {hasReviewed ? 'Update Review' : 'Post Review'}
             </Button>
           </Form.Item>
         </Form>

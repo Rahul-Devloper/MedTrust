@@ -2,21 +2,11 @@ const mongoose = require('mongoose')
 
 const reviewSchema = new mongoose.Schema(
   {
-    // patient: {
-    //   type: mongoose.Schema.Types.ObjectId, //gets id from patientRecord model
-    //   ref: 'Patient',
-    //   required: true,
-    // },
     patientNHSNumber: {
       type: String,
       required: true,
       index: true,
     },
-    // doctor: {
-    //   type: mongoose.Schema.Types.ObjectId, //gets doctor model from doctorRecord
-    //   ref: 'Doctor',
-    //   required: true,
-    // },
     doctorGMCNumber: {
       type: String,
       required: true,
@@ -41,6 +31,26 @@ const reviewSchema = new mongoose.Schema(
     date: {
       type: Date,
       default: Date.now,
+    },
+    reviewScores: {
+      communication: { type: Number, required: true, min: 1, max: 5 },
+      bedsideManner: { type: Number, required: true, min: 1, max: 5 },
+      officeEnvironment: { type: Number, required: true, min: 1, max: 5 },
+      waitTime: { type: Number, required: true, min: 1, max: 5 },
+      professionalism: { type: Number, required: true, min: 1, max: 5 },
+      treatmentSatisfaction: { type: Number, required: true, min: 1, max: 5 },
+    },
+    response: {
+      type: String,
+      trim: true,
+    },
+    responseDate: {
+      type: Date,
+      // default: Date.now,
+    },
+    isResponse: {
+      type: Boolean,
+      default: false,
     },
   },
   {

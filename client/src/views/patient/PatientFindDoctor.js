@@ -1,35 +1,68 @@
 import React, { useEffect, useState } from 'react'
-import { Image, Input, Row, Col, Card, Typography, Tag, Button } from 'antd'
+import { Image, Input, Row, Col, Button } from 'antd'
 import { useDispatch } from 'react-redux'
 import { getAllDoctorsAction } from '../../redux/actions/patientActions'
 import { FindDoctor } from '../../assets/images/index'
-import { FaArrowRightLong, FaEye } from 'react-icons/fa6'
+import { FaEye, FaSearch } from 'react-icons/fa'
 import { useHistory } from 'react-router-dom'
-
 import doctorMaleAvatar from '../../assets/images/illustrations/doctorMaleAvatar.png'
 import doctorFemaleAvatar from '../../assets/images/illustrations/doctorFemaleAvatar.png'
 import InfoCard from '../../components/Cards/InfoCard'
 import CardGrid from '../../components/Cards/CardGrid'
-const { Text } = Typography
+import MenuFooter from '../../layouts/components/footer'
+import { ErrorNotification } from '../../components/Notification/ToastNotification'
 
 const PatientFindDoctor = () => {
   const [ok, setOk] = useState(false)
   const [doctorsList, setDoctorsList] = useState([])
+  const [filteredDoctors, setFilteredDoctors] = useState([])
+  const [searchName, setSearchName] = useState('')
+  const [searchLocation, setSearchLocation] = useState('')
 
   const dispatch = useDispatch()
   const history = useHistory()
 
   useEffect(() => {
     dispatch(getAllDoctorsAction({ setOk, setDoctorsList }))
-  }, [dispatch, setOk, setDoctorsList])
+  }, [dispatch])
 
-  const filteredDoctors = doctorsList
-    .filter((doctor) => doctor.ratings?.overallEffectiveness >= 4.5)
-    .slice(0, 6)
-  console.log('filteredDoctors==>', filteredDoctors)
+  // Filtering logic
+  const handleSearch = () => {
+    const results = doctorsList.filter((doctor) => {
+      const searchQuery = searchName.toLowerCase()
+
+      // Check if the search query matches the doctor's name, specialty, or degree
+      const matchesName = doctor.personalInfo.name
+        .toLowerCase()
+        .includes(searchQuery)
+      const matchesSpeciality = doctor.professionalInfo.specialty
+        .toLowerCase()
+        .includes(searchQuery)
+      const matchesDegree = doctor.personalInfo.degree
+        ?.toLowerCase()
+        .includes(searchQuery)
+
+      // Check if the search query matches the location
+      const matchesLocation = doctor.contactInfo?.address?.city
+        ?.toLowerCase()
+        .includes(searchLocation.toLowerCase())
+
+      // Return true if any of the name, specialty, or degree matches, and if the location matches (if provided)
+      return (
+        (matchesName || matchesSpeciality || matchesDegree) &&
+        (searchLocation ? matchesLocation : true)
+      )
+    })
+    console.log('results==>', results)
+    if (results?.length <= 0) {
+      ErrorNotification(
+        'No results found for this search Query, please try another one'
+      )
+    }
+    setFilteredDoctors(results)
+  }
 
   const onViewMore = (doctorGmcNumber, doctorName) => {
-    console.log('doctorGmcNumber==>', doctorGmcNumber)
     const formattedDoctorName = doctorName
       .replace(/^(Dr\.\s*)?/g, '')
       .toLowerCase()
@@ -43,6 +76,13 @@ const PatientFindDoctor = () => {
     'Orthopedics',
   ]
 
+  // Doctors to display (either search results or popular doctors)
+  const doctorsToDisplay = filteredDoctors.length
+    ? filteredDoctors
+    : doctorsList
+        .filter((doctor) => doctor.ratings?.overallEffectiveness >= 4.5)
+        .slice(0, 6)
+
   return (
     <div style={{ padding: '20px' }}>
       <Input.Group
@@ -50,23 +90,30 @@ const PatientFindDoctor = () => {
           width: '100%',
           marginBottom: '20px',
           position: 'absolute',
-          top: '25%',
-          left: '20%',
+          top: '20%',
+          left: '15%',
           zIndex: '9999',
         }}
         compact>
         <Input
-          style={{
-            width: '30%',
-          }}
+          style={{ width: '30%' }}
           placeholder='Search Doctor, Speciality, Degree'
+          value={searchName}
+          onChange={(e) => setSearchName(e.target.value)}
         />
         <Input
-          style={{
-            width: '25%',
-          }}
+          style={{ width: '25%' }}
           placeholder='Search with City'
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
         />
+        <Button
+          type='primary'
+          icon={<FaSearch />}
+          onClick={handleSearch}
+          style={{ width: '10%' }}>
+          Search
+        </Button>
       </Input.Group>
       <Image
         style={{ width: '100%' }}
@@ -95,46 +142,48 @@ const PatientFindDoctor = () => {
       </Row>
 
       <section className='doctorCard'>
-        <h2>Popular Doctors</h2>
+        <h2>{filteredDoctors.length ? 'Search Results' : 'Popular Doctors'}</h2>
         <Row gutter={[16, 16]}>
-          {doctorsList &&
-            filteredDoctors?.map((doctor, index) => {
-              return (
-                <Col key={doctor._id} xs={24} sm={12} md={8} lg={8}>
-                  <InfoCard
-                    avatar={
-                      doctor?.personalInfo?.gender === 'Male'
-                        ? doctorMaleAvatar
-                        : doctorFemaleAvatar
-                    }
-                    title={doctor?.personalInfo?.name}
-                    description={
-                      <>
-                        <p>
-                          <strong>Specialty:</strong>{' '}
-                          {doctor?.professionalInfo.specialty}
-                        </p>
-                        <p>
-                          <strong>Hospital:</strong>{' '}
-                          {doctor?.professionalInfo
-                            ?.hospitalAffiliations?.[0] || 'N/A'}
-                        </p>
-                        <p>
-                          <strong>Overall Effectiveness:</strong>{' '}
-                          {doctor.ratings?.overallEffectiveness || 'N/A'}
-                        </p>
-                      </>
-                    }
-                    buttonText='View Profile'
-                    onButtonClick={() =>
-                      onViewMore(doctor?.gmcNumber, doctor?.personalInfo?.name)
-                    }
-                  />
-                </Col>
-              )
-            })}
+          {doctorsToDisplay.map((doctor, index) => {
+            return (
+              <Col key={doctor._id} xs={24} sm={12} md={8} lg={8}>
+                <InfoCard
+                  avatar={
+                    doctor?.personalInfo?.gender === 'Male'
+                      ? doctorMaleAvatar
+                      : doctorFemaleAvatar
+                  }
+                  title={doctor?.personalInfo?.name}
+                  description={
+                    <>
+                      <p>
+                        <strong>Specialty:</strong>{' '}
+                        {doctor?.professionalInfo.specialty}
+                      </p>
+                      <p>
+                        <strong>Hospital:</strong>{' '}
+                        {doctor?.professionalInfo?.hospitalAffiliations?.[0] ||
+                          'N/A'}
+                      </p>
+                      <p>
+                        <strong>Overall Effectiveness:</strong>{' '}
+                        {doctor.ratings?.overallEffectiveness || 'N/A'}
+                      </p>
+                    </>
+                  }
+                  buttonText='View Profile'
+                  onButtonClick={() =>
+                    onViewMore(doctor?.gmcNumber, doctor?.personalInfo?.name)
+                  }
+                />
+              </Col>
+            )
+          })}
         </Row>
       </section>
+      <br />
+      <br />
+      <MenuFooter />
     </div>
   )
 }

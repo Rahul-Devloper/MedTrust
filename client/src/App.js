@@ -45,6 +45,7 @@ import {
   CouponUpdate,
   // -------------- Admin views --------------
   AdminDashboard,
+  PatientManagement,
   // -------------- Member views --------------
   MemberDashboard,
   // -------------- Patient views --------------
@@ -56,9 +57,11 @@ import {
   RandomPageRedirect,
   SpecialityDirectory,
   PhysicianProfile,
+  ReviewDetails,
 } from './views'
 import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
+import PatientReviews from './views/doctor/PatientReviews'
 
 const App = () => {
   const history = useHistory()
@@ -170,6 +173,11 @@ const App = () => {
 
         {/**************** Admin Routes ****************/}
         <AdminRoute exact path='/admin/dashboard' component={AdminDashboard} />
+        <AdminRoute
+          exact
+          path='/admin/manage-patients'
+          component={PatientManagement}
+        />
 
         {/**************** Member Routes ****************/}
         <MemberRoute
@@ -222,6 +230,18 @@ const App = () => {
           exact
           path='/doctor/dashboard'
           component={DoctorDashboard}
+        />
+
+        <DoctorRoute
+          exact
+          path='/doctor/patient-reviews'
+          component={PatientReviews}
+        />
+
+        <DoctorRoute
+          exact
+          path='/doctor/reviews/:reviewId'
+          component={ReviewDetails}
         />
         {/* Wildcard */}
         <Route path={'*'} component={RandomPageRedirect} />

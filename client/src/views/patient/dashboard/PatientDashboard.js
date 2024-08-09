@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Card } from 'antd'
 import { useSelector } from 'react-redux'
+import MenuFooter from '../../../layouts/components/footer'
 
 const PatientDashboard = () => {
   const { user } = useSelector((state) => state.auth)
@@ -51,6 +52,7 @@ const PatientDashboard = () => {
           </Col>
         </Row>
       </div>
+      <MenuFooter />
     </>
   )
 }

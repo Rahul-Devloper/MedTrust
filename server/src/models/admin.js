@@ -5,7 +5,7 @@ const adminSchema = new mongoose.Schema(
   {
     user: {
       type: ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     name: {
       type: String,
@@ -16,7 +16,7 @@ const adminSchema = new mongoose.Schema(
     // Current subscription plan
     currentPlan: {
       type: String,
-      default: "Free",
+      default: 'Free',
     },
     subscriptionsHistory: {
       type: Array,
@@ -28,7 +28,7 @@ const adminSchema = new mongoose.Schema(
     },
     subscriptionStatus: {
       type: String,
-      default: "",
+      default: '',
     },
     // Stripe customer id
     stripeCustomerId: {
@@ -46,12 +46,13 @@ const adminSchema = new mongoose.Schema(
         },
         role: {
           type: String,
-          enum: ["member"],
+          enum: ['admin'],
+          default: 'admin',
         },
         status: {
           type: String,
-          enum: ["pending", "accepted", "rejected"],
-          default: "pending",
+          enum: ['pending', 'accepted', 'rejected'],
+          default: 'pending',
         },
       },
     ],
@@ -59,11 +60,11 @@ const adminSchema = new mongoose.Schema(
     members: [
       {
         type: ObjectId,
-        ref: "Member",
+        ref: 'Member',
       },
     ],
   },
   { timestamps: true }
-);
+)
 
 module.exports = mongoose.model("Admin", adminSchema);

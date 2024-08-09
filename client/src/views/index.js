@@ -32,12 +32,12 @@ export { default as CouponUpdate } from "./superAdmin/coupon/CouponUpdate";
 
 /************************************************ Admin Views ************************************************************/
 export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
-
+export { default as PatientManagement } from './admin/PatientManagement'
 /************************************************ Member Views ************************************************************/
-export { default as MemberDashboard } from "./member/dashboard/MemberDashboard";
+export { default as MemberDashboard } from './member/dashboard/MemberDashboard'
 
 /************************************************ Patient Views ************************************************************/
-export { default as PatientDashboard } from "./patient/dashboard/PatientDashboard";
+export { default as PatientDashboard } from './patient/dashboard/PatientDashboard'
 
 export { default as PatientFindDoctor } from './patient/PatientFindDoctor'
 
@@ -48,7 +48,11 @@ export { default as SpecialityDirectory } from './patient/SpecialityDirectory'
 export { default as PhysicianProfile } from './patient/PhysicianProfile'
 
 /************************************************** Doctor Views ************************************************************/
-export { default as DoctorDashboard } from "./doctor/dashboard/DoctorDashboard";
+export { default as DoctorDashboard } from './doctor/dashboard/DoctorDashboard'
+
+export { default as PatientReviews } from './doctor/PatientReviews'
+
+export { default as ReviewDetails } from './doctor/ReviewDetails'
 
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

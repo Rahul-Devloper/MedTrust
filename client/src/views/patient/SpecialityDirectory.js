@@ -1,6 +1,7 @@
 import React from 'react'
 import { Row, Col, Typography, Divider } from 'antd'
 import { useHistory } from 'react-router-dom'
+import MenuFooter from '../../layouts/components/footer'
 
 const { Title } = Typography
 
@@ -106,6 +107,7 @@ const SpecialityDirectory = () => {
           </Col>
         ))}
       </Row>
+      <MenuFooter />
     </div>
   )
 }

@@ -1,4 +1,4 @@
-import { Avatar, Card, Col, Rate, Row, Tag } from 'antd'
+import { Avatar, Card, Col, Progress, Rate, Row, Tag } from 'antd'
 import Meta from 'antd/lib/card/Meta'
 import React from 'react'
 
@@ -8,9 +8,9 @@ const ProfileCard2 = ({
   description,
   details,
   progressBars,
-  actions,
   ratingData,
   paragraph,
+  progressBarSize,
 }) => {
   console.log('paragraph==>', paragraph)
   return (
@@ -30,7 +30,7 @@ const ProfileCard2 = ({
           lg={6}
           style={{
             display: 'flex',
-            flexDirection: 'column', // Ensures avatar and ratings are stacked
+            flexDirection: 'column',
             justifyContent: 'center',
             alignItems: 'center',
           }}>
@@ -40,15 +40,17 @@ const ProfileCard2 = ({
             size={100}
             className='doctor-card-avatar'
           />
-          <div>
-            <Rate allowHalf disabled value={ratingData.value} />
-            <span className='ant-rate-text'>{`(${ratingData.value})`}</span>
+          {ratingData && (
             <div>
-              <Tag color={ratingData?.color ? ratingData.color : 'white'}>
-                {ratingData.label}
-              </Tag>
+              <Rate allowHalf disabled value={ratingData.value} />
+              <span className='ant-rate-text'>{`(${ratingData.value})`}</span>
+              <div>
+                <Tag color={ratingData?.color ? ratingData.color : 'white'}>
+                  {ratingData.label}
+                </Tag>
+              </div>
             </div>
-          </div>
+          )}
         </Col>
         <Col xs={24} sm={24} md={18} lg={18}>
           <div className='doctor-card-info'>
@@ -63,7 +65,57 @@ const ProfileCard2 = ({
               ))}
             </div>
             <br />
-            <p style={{ color: 'gray' }}>{paragraph}</p>
+            {progressBars ? (
+              <Row gutter={16}>
+                <Col
+                  xs={24}
+                  sm={24}
+                  md={10}
+                  lg={10}
+                  style={{ textAlign: 'center' }}>
+                  <div>
+                    {progressBars.map((bar, index) => (
+                      <div key={index} style={{ marginBottom: '10px' }}>
+                        <Progress
+                          width={progressBarSize || 80}
+                          className='progress'
+                          type='circle'
+                          percent={(bar.value / 5) * 100}
+                          format={() => `${bar.value}`}
+                          strokeColor={bar?.color ? bar.color : 'blue'}
+                        />
+                        <div style={{ paddingTop: '5px' }}>
+                          <Tag color={bar?.color ? bar.color : 'blue'}>
+                            {bar.label}
+                          </Tag>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </Col>
+                <Col xs={24} sm={24} md={14} lg={14}>
+                  <p style={{ color: 'gray' }}>
+                    {typeof paragraph === 'object' ? (
+                      <>
+                        <strong>{paragraph?.label}</strong> - {paragraph?.value}
+                      </>
+                    ) : (
+                      paragraph
+                    )}
+                  </p>
+                </Col>
+              </Row>
+            ) : (
+              <p style={{ color: 'gray' }}>
+                {typeof paragraph === 'object' ? (
+                  <>
+                    <strong>{paragraph?.label}</strong> - {paragraph?.value}
+                  </>
+                ) : (
+                  paragraph
+                )}
+              </p>
+            )}
           </div>
         </Col>
       </Row>

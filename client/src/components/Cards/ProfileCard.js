@@ -53,26 +53,28 @@ const ProfileCard = ({
                 {ratingData.label}
               </Tag>
             </div>
-            <Row gutter={[16, 16]} justify={'space-evenly'}>
-              {progressBars?.map((bar, index) => (
-                <Col key={index} style={{ textAlign: 'center' }}>
-                  <Progress
-                    key={index}
-                    width={80}
-                    className='progress'
-                    type='circle'
-                    percent={(bar.value / 5) * 100}
-                    format={() => `${bar.value}`}
-                    strokeColor={bar?.color ? bar.color : 'blue'}
-                  />
-                  <div style={{ paddingTop: '5px' }}>
-                    <Tag color={bar?.color ? bar.color : 'blue'}>
-                      {bar.label}
-                    </Tag>
-                  </div>
-                </Col>
-              ))}
-            </Row>
+            {progressBars && (
+              <Row gutter={[16, 16]} justify={'space-evenly'}>
+                {progressBars?.map((bar, index) => (
+                  <Col key={index} style={{ textAlign: 'center' }}>
+                    <Progress
+                      key={index}
+                      width={80}
+                      className='progress'
+                      type='circle'
+                      percent={(bar.value / 5) * 100}
+                      format={() => `${bar.value}`}
+                      strokeColor={bar?.color ? bar.color : 'blue'}
+                    />
+                    <div style={{ paddingTop: '5px' }}>
+                      <Tag color={bar?.color ? bar.color : 'blue'}>
+                        {bar.label}
+                      </Tag>
+                    </div>
+                  </Col>
+                ))}
+              </Row>
+            )}
             <br />
             {details?.map((detail, index) => (
               <span key={index} style={{ marginRight: '10px' }}>

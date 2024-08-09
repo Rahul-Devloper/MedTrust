@@ -8,12 +8,15 @@ import doctorFemaleAvatar from '../../assets/images/illustrations/doctorFemaleAv
 import { getDoctorSpecialityAction } from '../../redux/actions/patientActions'
 import { useDispatch } from 'react-redux'
 import ProfileCard from '../../components/Cards/ProfileCard'
+import { useHistory } from 'react-router-dom/cjs/react-router-dom.min'
+import MenuFooter from '../../layouts/components/footer'
 
 const CategoryView = () => {
   const [ok, setOk] = useState(false)
   const [doctorsBySpecialization, setDoctorsBySpecialization] = useState([])
   const { speciality } = useParams()
   const dispatch = useDispatch()
+  const history = useHistory()
 
   useEffect(() => {
     console.log('speciality==>', speciality)
@@ -27,8 +30,12 @@ const CategoryView = () => {
   }, [dispatchEvent, setOk, setDoctorsBySpecialization, speciality])
   console.log('doctorsBySpecialization==>', doctorsBySpecialization)
 
-  const onViewProfile = (doctorGmcNumber) => {
-    console.log('View Profile of doctor with GMC Number:', doctorGmcNumber)
+  const onViewProfile = (doctorGmcNumber, doctorName) => {
+    console.log('doctorGmcNumber==>', doctorGmcNumber)
+    const formattedDoctorName = doctorName
+      .replace(/^(Dr\.\s*)?/g, '')
+      .toLowerCase()
+    history.push(`/patient/physician/${formattedDoctorName}-${doctorGmcNumber}`)
   }
 
   const onPostReview = (doctorGmcNumber) => {
@@ -37,7 +44,7 @@ const CategoryView = () => {
 
   return (
     <div>
-      CategoryView
+      <h2>Doctors by Speciality</h2>
       {doctorsBySpecialization.map((doctor) => (
         <div key={doctor._id} style={{ marginBottom: '20px' }}>
           <ProfileCard
@@ -89,17 +96,19 @@ const CategoryView = () => {
               {
                 label: 'View Profile',
                 type: 'primary',
-                onClick: () => onViewProfile(doctor.gmcNumber),
+                onClick: () =>
+                  onViewProfile(doctor.gmcNumber, doctor?.personalInfo?.name),
               },
-              {
-                label: 'Post Review',
-                type: 'secondary',
-                onClick: () => onPostReview(doctor.gmcNumber),
-              },
+              // {
+              //   label: 'Post Review',
+              //   type: 'secondary',
+              //   onClick: () => onPostReview(doctor.gmcNumber),
+              // },
             ]}
           />
         </div>
       ))}
+      <MenuFooter />
     </div>
   )
 }

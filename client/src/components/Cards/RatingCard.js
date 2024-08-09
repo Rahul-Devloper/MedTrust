@@ -1,9 +1,8 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { Card, Row, Col, Rate, Button, Typography, Tag } from 'antd'
-import { LikeOutlined, MessageOutlined, FlagOutlined } from '@ant-design/icons'
+import { Card, Row, Col, Rate, Tag, Typography } from 'antd'
 
-const { Title, Paragraph, Text, Link } = Typography
+const { Title, Text } = Typography
 
 const RatingCard = ({
   rating,
@@ -14,33 +13,50 @@ const RatingCard = ({
   reviewer,
   heading,
   date,
+  extra,
+  isTag,
 }) => {
-  console.log('reviewRate==>', rating)
   return (
-    <Card title={heading} style={{ marginBottom: '20px' }}>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Rate disabled value={rating} />
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={24}>
-          <Title level={4}>{title}</Title>
-        </Col>
-      </Row>
-      <Row gutter={16}>
-        <Col span={24}>
-          <p>{description}</p>
-        </Col>
-      </Row>
-      <Row gutter={16} justify='space-between'>
-        <Col>
-          <Tag color='geekblue'>{reviewer}</Tag>
-        </Col>
-        <Col>
-          <Text>{date}</Text>
-        </Col>
-      </Row>
+    <Card title={heading} style={{ marginBottom: '20px' }} extra={extra}>
+      {rating && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Rate disabled value={rating} />
+          </Col>
+        </Row>
+      )}
+      {title && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <Title level={4}>{title}</Title>
+          </Col>
+        </Row>
+      )}
+      {description && (
+        <Row gutter={16}>
+          <Col span={24}>
+            <p>{description}</p>
+          </Col>
+        </Row>
+      )}
+      {(reviewer || date) && (
+        <Row gutter={16} justify='space-between'>
+          {reviewer && (
+            <Col>
+              {isTag === false ? (
+                <span>{reviewer}</span>
+              ) : (
+                <Tag color='geekblue'>{reviewer}</Tag>
+              )}
+            </Col>
+          )}
+          {date && (
+            <Col>
+              <Text>{date}</Text>
+            </Col>
+          )}
+        </Row>
+      )}
     </Card>
   )
 }
@@ -52,7 +68,9 @@ RatingCard.propTypes = {
   detailsLink: PropTypes.string,
   helpfulCount: PropTypes.number,
   reviewer: PropTypes.string,
-  reviewDate: PropTypes.string,
+  heading: PropTypes.string,
+  date: PropTypes.string,
+  extra: PropTypes.node, // Add prop type for extra
 }
 
 RatingCard.defaultProps = {
