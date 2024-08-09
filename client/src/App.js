@@ -58,10 +58,12 @@ import {
   SpecialityDirectory,
   PhysicianProfile,
   ReviewDetails,
+  DoctorManagement,
 } from './views'
 import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
 import PatientReviews from './views/doctor/PatientReviews'
+import PhysicianProfileAdmin from './views/admin/PhysicianProfileAdmin'
 
 const App = () => {
   const history = useHistory()
@@ -177,6 +179,16 @@ const App = () => {
           exact
           path='/admin/manage-patients'
           component={PatientManagement}
+        />
+        <AdminRoute
+          exact
+          path='/admin/manage-doctors'
+          component={DoctorManagement}
+        />
+        <AdminRoute
+          exact
+          path='/admin/physician/:physicianName-:physicianId'
+          component={PhysicianProfileAdmin}
         />
 
         {/**************** Member Routes ****************/}

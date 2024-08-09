@@ -5,9 +5,15 @@ const router = express.Router()
 const { authCheck } = require('../middlewares/auth')
 
 // Controllers
-const { currentDoctor } = require('../controllers/doctorController')
+const {
+  currentDoctor,
+  deactivateDoctorProfileById,
+  reactivateDoctorProfileById,
+} = require('../controllers/doctorController')
 
 // Routes
 router.post('/currentDoctor', authCheck, currentDoctor)
+router.patch('/doctor/deactivate', deactivateDoctorProfileById)
+router.patch('/doctor/reactivate', reactivateDoctorProfileById)
 
 module.exports = router

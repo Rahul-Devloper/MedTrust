@@ -41,18 +41,6 @@ exports.postReview = async (req, res) => {
   } = values
 
   try {
-    // const hasCompletedAppointment =
-    //   await AppointmentService.hasCompletedAppointment({
-    //     patientNHSNumber,
-    //     doctorGMCNumber,
-    //   })
-
-    // if (!hasCompletedAppointment) {
-    //   return res.status(403).json({
-    //     message: 'You can only review doctors you have had appointments with.',
-    //   })
-    // }
-
     const overallRating =
       (communication +
         bedsideManner +
@@ -194,5 +182,24 @@ exports.postResponse = async (req, res) => {
     success: true,
     response: response,
     message: 'Response posted',
+  })
+}
+
+exports.deleteReviewbyId = async (req, res) => {
+  const { reviewId } = req.params
+
+  const review = await ReviewService.findIdAndDeleteReview(reviewId)
+
+  if (!review) {
+    return res.status(400).json({
+      success: false,
+      message: 'Could not delete review',
+    })
+  }
+
+  return res.status(200).json({
+    success: true,
+    review: review,
+    message: 'Review deleted',
   })
 }

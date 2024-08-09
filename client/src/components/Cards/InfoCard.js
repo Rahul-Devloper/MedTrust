@@ -12,6 +12,7 @@ const InfoCard = ({
   description,
   buttonText,
   onButtonClick,
+  extra,
 }) => {
   const actionStyle = {
     height: '100%',
@@ -19,6 +20,7 @@ const InfoCard = ({
 
   return (
     <Card
+      extra={extra}
       className='info-card'
       style={actionStyle}
       actions={[

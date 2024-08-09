@@ -13,6 +13,7 @@ import {
   getReviewById,
   postResponse,
   updateReviewById,
+  deleteReviewbyId,
 } from '../../api/review'
 
 /********************************************
@@ -33,6 +34,7 @@ export const getAllReviewsAction =
     try {
       // Fetch response from server
       const res = await getAllReviews(physicianId)
+      console.log('getReviewsAction==>', res)
 
       // Dispatch a success/error login notify
       dispatch({
@@ -244,3 +246,40 @@ export const postResponseAction =
     }
   }
 
+export const deleteReviewAction =
+  ({ setOk, reviewId, setReviewsList, doctorGMCNumber }) =>
+  async (dispatch) => {
+    dispatch({ type: ACTION_TYPES.ALERT, payload: { loading: true } })
+
+    try {
+      console.log('doctorGMCNumberAction==>', doctorGMCNumber)
+      // Post response to server
+      const res = await deleteReviewbyId(reviewId)
+      console.log('resAction==>', res)
+
+      // Dispatch a success/error login notify
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+      dispatch(
+        getAllReviewsAction({
+          setReviewsList,
+          physicianId: doctorGMCNumber,
+          setOk,
+        })
+      )
+    } catch (error) {
+      ErrorNotification(error?.response?.data?.message)
+      // data.setLoading(false)
+      // Dispatch a error alert
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.data?.message,
+        },
+      })
+    }
+  }

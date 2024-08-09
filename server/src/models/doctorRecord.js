@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 
 const doctorSchema = new mongoose.Schema({
   gmcNumber: { type: String, required: true },
+  isDeactivated: { type: Boolean, default: false },
   personalInfo: {
     name: { type: String, required: true },
     degree: { type: String, required: true },

@@ -11,6 +11,7 @@ const {
   getReviewById,
   postResponse,
   updateReviewById,
+  deleteReviewbyId,
 } = require('../controllers/reviewController')
 
 // Routes
@@ -19,5 +20,6 @@ router.post('/reviews', postReview)
 router.get('/review/:reviewId', getReviewById)
 router.patch('/review/:reviewId', postResponse)
 router.patch('/review/update/:reviewId', updateReviewById)
+router.delete('/review/:reviewId', deleteReviewbyId)
 
 module.exports = router

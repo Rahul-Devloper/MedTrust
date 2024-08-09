@@ -33,6 +33,8 @@ export { default as CouponUpdate } from "./superAdmin/coupon/CouponUpdate";
 /************************************************ Admin Views ************************************************************/
 export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
 export { default as PatientManagement } from './admin/PatientManagement'
+export { default as DoctorManagement } from './admin/DoctorManagement'
+export { default as PhysicianProfileAdmin } from './admin/PhysicianProfileAdmin'
 /************************************************ Member Views ************************************************************/
 export { default as MemberDashboard } from './member/dashboard/MemberDashboard'
 

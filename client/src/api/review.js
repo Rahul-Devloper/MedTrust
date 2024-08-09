@@ -20,3 +20,7 @@ export const postResponse = ({ reviewId, values }) => {
 export const updateReviewById = ({ reviewId, values }) => {
   return api.patch('/review/update/' + reviewId, { values })
 }
+
+export const deleteReviewbyId = (reviewId) => {
+  return api.delete('/review/' + reviewId)
+}

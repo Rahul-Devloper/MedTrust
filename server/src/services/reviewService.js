@@ -61,6 +61,15 @@ class ReviewService {
       throw error
     }
   }
+
+  static async findIdAndDeleteReview(reviewId) {
+    try {
+      const deletedReview = await Review.findByIdAndDelete(reviewId)
+      return deletedReview
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 

@@ -25,3 +25,25 @@ exports.currentDoctor = async (req, res) => {
     })
   }
 }
+
+exports.deactivateDoctorProfileById = async (req, res) => {
+  const { doctorId } = req.body
+
+  try {
+    const response = await DoctorRecord.deactivateDoctorProfileById(doctorId)
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
+
+exports.reactivateDoctorProfileById = async (req, res) => {
+  const { doctorId } = req.body
+
+  try {
+    const response = await DoctorRecord.reactivateDoctorProfileById(doctorId)
+    res.status(200).json(response)
+  } catch (error) {
+    res.status(500).json(error)
+  }
+}
