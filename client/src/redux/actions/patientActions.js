@@ -5,9 +5,51 @@ import {
   getDoctorSpeciality,
   getDoctorProfileData,
   getPatientDetailsByNHSNumber,
+  getAllPatients,
+  changePatientStatus,
 } from '../../api/patient'
 
-import { ErrorNotification } from '../../components'
+import { ErrorNotification, SuccessNotification } from '../../components'
+
+/********************************************
+  Get All Patients
+*********************************************/
+export const getAllPatientsAction =
+  ({ setOk, setPatientsList }) =>
+  async (dispatch) => {
+    // Dispatch a loading alert
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: true },
+    })
+
+    try {
+      // Fetch response from server
+      const res = await getAllPatients()
+
+      // Dispatch a success/error login notify
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+      setOk(true)
+      setPatientsList(res?.data?.patients)
+
+      // SuccessNotification(res.data.message)
+    } catch (error) {
+      ErrorNotification(error?.response?.data?.message)
+      // data.setLoading(false)
+      // Dispatch a error alert
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.data?.message,
+        },
+      })
+    }
+  }
 
 /********************************************
   Get All Doctors
@@ -110,6 +152,7 @@ export const getDoctorProfileDataAction =
       })
       setOk(true)
       setDoctorData(res?.data?.doctor)
+      return res?.data?.doctor
     } catch (error) {
       ErrorNotification(
         `Status: ${error?.response?.status} - Error in Finding Doctor`
@@ -159,3 +202,41 @@ export const getPatientByNHSNumberAction = (nhsNumber) => async (dispatch) => {
     })
   }
 }
+
+//********************************************
+//   PatientStatus Change
+//*********************************************/
+export const changePatientStatusAction =
+  ({ patientId, setOk, setPatientsList, status }) =>
+  async (dispatch) => {
+    // Dispatch a loading alert
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: { loading: true },
+    })
+    try {
+      console.log('patientID==>', patientId)
+      console.log('status==>', status)
+      const res = await changePatientStatus({ patientId, status })
+      // setOk(true)
+      // setPatientsList(res?.data?.patient)
+      dispatch(getAllPatientsAction({ setOk, setPatientsList }))
+      SuccessNotification(res.data.message)
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+    } catch (error) {
+      ErrorNotification(error?.response?.data?.message)
+
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.data?.message,
+        },
+      })
+    }
+  }
+

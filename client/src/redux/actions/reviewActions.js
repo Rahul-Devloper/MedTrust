@@ -14,6 +14,7 @@ import {
   postResponse,
   updateReviewById,
   deleteReviewbyId,
+  getAllReviewsByPatient,
 } from '../../api/review'
 
 /********************************************
@@ -252,7 +253,6 @@ export const deleteReviewAction =
     dispatch({ type: ACTION_TYPES.ALERT, payload: { loading: true } })
 
     try {
-      console.log('doctorGMCNumberAction==>', doctorGMCNumber)
       // Post response to server
       const res = await deleteReviewbyId(reviewId)
       console.log('resAction==>', res)
@@ -264,13 +264,49 @@ export const deleteReviewAction =
           message: res?.data?.message,
         },
       })
-      dispatch(
-        getAllReviewsAction({
-          setReviewsList,
-          physicianId: doctorGMCNumber,
-          setOk,
-        })
-      )
+
+      // Check if doctorGMCNumber is passed
+      if (doctorGMCNumber) {
+        // Fetch reviews for the doctor
+        await dispatch(
+          getAllReviewsAction({
+            setReviewsList,
+            physicianId: doctorGMCNumber,
+            setOk,
+          })
+        )
+      }
+
+      setOk(true)
+    } catch (error) {
+      ErrorNotification(error?.response?.data?.message)
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.data?.message,
+        },
+      })
+    }
+  }
+
+export const getAllReviewsByPatientAction =
+  ({ setOk, setReviewsList, patientNHSNumber }) =>
+  async (dispatch) => {
+    dispatch({ type: ACTION_TYPES.ALERT, payload: { loading: true } })
+
+    try {
+      // Post response to server
+      const res = await getAllReviewsByPatient(patientNHSNumber)
+      console.log('resAction==>', res)
+      // Dispatch a success/error login notify
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+        },
+      })
+      setOk(true)
+      setReviewsList(res?.data?.reviews)
     } catch (error) {
       ErrorNotification(error?.response?.data?.message)
       // data.setLoading(false)

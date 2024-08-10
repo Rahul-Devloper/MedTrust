@@ -59,6 +59,7 @@ import {
   PhysicianProfile,
   ReviewDetails,
   DoctorManagement,
+  PatientProfileAdmin,
 } from './views'
 import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
@@ -189,6 +190,11 @@ const App = () => {
           exact
           path='/admin/physician/:physicianName-:physicianId'
           component={PhysicianProfileAdmin}
+        />
+        <AdminRoute
+          exact
+          path='/admin/patient/:patientName-:patientId'
+          component={PatientProfileAdmin}
         />
 
         {/**************** Member Routes ****************/}

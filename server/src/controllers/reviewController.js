@@ -187,8 +187,10 @@ exports.postResponse = async (req, res) => {
 
 exports.deleteReviewbyId = async (req, res) => {
   const { reviewId } = req.params
+  console.log('reviewId==>', reviewId)
 
   const review = await ReviewService.findIdAndDeleteReview(reviewId)
+  console.log('review==>', review)
 
   if (!review) {
     return res.status(400).json({
@@ -203,3 +205,34 @@ exports.deleteReviewbyId = async (req, res) => {
     message: 'Review deleted',
   })
 }
+
+exports.getAllReviewsByPatient = async (req, res) => {
+  const { patientNHSNumber } = req.params
+
+  try {
+    const reviews = await ReviewService.getAllReviewsById({
+      patientNHSNumber: patientNHSNumber,
+    })
+
+    if (!reviews || reviews.length === 0) {
+      return res.status(200).json({
+        success: true,
+        reviews: [],
+        message: 'No reviews found for this patient',
+      })
+    }
+
+    return res.status(200).json({
+      success: true,
+      reviews: reviews,
+      message: 'All reviews found',
+    })
+  } catch (error) {
+    console.error('Error fetching reviews:', error)
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred while fetching reviews',
+    })
+  }
+}
+

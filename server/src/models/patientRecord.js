@@ -1,6 +1,7 @@
 const mongoose = require('mongoose')
 
 const patientRecordSchema = new mongoose.Schema({
+  isDeactivated: { type: Boolean, default: false },
   personalDetails: {
     name: String,
     dateOfBirth: String,

@@ -12,6 +12,16 @@ class PatientRecordService {
     }
   }
 
+  // get all patients
+  static findAllPatients = async () => {
+    try {
+      const patients = await PatientRecord.find().exec()
+      return patients
+    } catch (error) {
+      throw error
+    }
+  }
+
   //   // Find user by id
   //   static findUserById = async (id) => {
   //     try {
@@ -87,6 +97,21 @@ class PatientRecordService {
   //       throw error;
   //     }
   //   };
+
+  // change patient status
+  static changePatientStatus = async ({ patientId, status }) => {
+    try {
+      const response = await PatientRecord.findOneAndUpdate(
+        { _id: patientId },
+        { isDeactivated: status },
+        { new: true }
+      )
+      return response
+    } catch (error) {
+      console.error('Error reactivating patient profile:', error)
+      throw error // Re-throw the error to be handled by the calling function
+    }
+  }
 }
 
 module.exports = PatientRecordService

@@ -32,19 +32,38 @@ class DoctorRecordService {
 
   // Find doctor with name and gmcNumber
   static async findDoctorByNameAndGmcNumber(name, gmcNumber) {
+    console.log('gmcNumberFind==>', gmcNumber)
+    console.log('nameFind==>', name)
+    let modifiedName = ''
+    let doctor = {}
     try {
-      if (!name || !gmcNumber) {
-        throw new Error('Name and GMC Number are required')
+      // if (!name || !gmcNumber) {
+      //   throw new Error('Name and GMC Number are required')
+      // }
+      if (name && gmcNumber) {
+        modifiedName = name
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        console.log('modifiedName==>', modifiedName)
+        doctor = await DoctorRecord.findOne({
+          'personalInfo.name': `Dr. ${modifiedName}`, // Changed from professionalInfo to personalInfo
+          gmcNumber: gmcNumber,
+        }).exec()
+      } else if (gmcNumber) {
+        doctor = await DoctorRecord.findOne({
+          gmcNumber: gmcNumber,
+        }).exec()
+      } else if (name) {
+        modifiedName = name
+          .split(' ')
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join(' ')
+        console.log('modifiedName==>', modifiedName)
+        doctor = await DoctorRecord.findOne({
+          'personalInfo.name': `Dr. ${modifiedName}`, // Changed from professionalInfo to personalInfo
+        }).exec()
       }
-      const modifiedName = name
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ')
-      console.log('modifiedName==>', modifiedName)
-      const doctor = await DoctorRecord.findOne({
-        'personalInfo.name': `Dr. ${modifiedName}`, // Changed from professionalInfo to personalInfo
-        gmcNumber: gmcNumber,
-      }).exec()
 
       return doctor
     } catch (error) {

@@ -35,6 +35,7 @@ export { default as AdminDashboard } from "./admin/dashboard/AdminDashboard";
 export { default as PatientManagement } from './admin/PatientManagement'
 export { default as DoctorManagement } from './admin/DoctorManagement'
 export { default as PhysicianProfileAdmin } from './admin/PhysicianProfileAdmin'
+export { default as PatientProfileAdmin } from './admin/PatientProfileAdmin'
 /************************************************ Member Views ************************************************************/
 export { default as MemberDashboard } from './member/dashboard/MemberDashboard'
 

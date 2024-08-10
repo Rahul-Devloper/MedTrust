@@ -25,6 +25,22 @@ exports.currentPatient = async (req, res) => {
   }
 }
 
+//get all patients available in the NHS database records
+exports.getAllPatients = async (req, res) => {
+  const patients = await PatientRecordService.findAllPatients()
+  if (!patients) {
+    return res.status(400).json({
+      success: false,
+      message: 'No patients found',
+    })
+  } else
+    return res.status(200).json({
+      success: true,
+      patients: patients,
+      message: 'All patients found',
+    })
+}
+
 // get all doctors available in the NHS database records
 exports.getAllDoctors = async (req, res) => {
   const doctors = await DoctorRecord.findAllDoctors()
@@ -128,6 +144,41 @@ exports.getPatientDetailsByNHSNumber = async (req, res) => {
     return res.status(500).json({
       success: false,
       message: 'An error occurred while fetching patient',
+      error: error.message,
+    })
+  }
+}
+
+exports.changePatientStatus = async (req, res) => {
+  const { patientId, status } = req.body
+  let toChangeStatus = ''
+  if(status === 'Deactivate'){
+    toChangeStatus = true
+  }
+  if(status === 'Activate'){
+    toChangeStatus = false
+  }
+  try {
+    const updatedPatient = await PatientRecordService.changePatientStatus(
+      {patientId:patientId,
+      status: toChangeStatus}
+    )
+    if (!updatedPatient) {
+      return res.status(400).json({
+        success: false,
+        message: 'No patient found',
+      })
+    } else {
+      return res.status(200).json({
+        success: true,
+        patient: updatedPatient,
+        message: 'Patient status changed successfully',
+      })
+    }
+  } catch (error) {
+    return res.status(500).json({
+      success: false,
+      message: 'An error occurred while changing patient status',
       error: error.message,
     })
   }

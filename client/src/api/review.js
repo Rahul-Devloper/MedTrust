@@ -24,3 +24,8 @@ export const updateReviewById = ({ reviewId, values }) => {
 export const deleteReviewbyId = (reviewId) => {
   return api.delete('/review/' + reviewId)
 }
+
+export const getAllReviewsByPatient = (patientNHSNumber) => {
+  console.log('patientNHSnumberCHekc==>', patientNHSNumber)
+  return api.get('/reviews/patient/' + patientNHSNumber)
+}
