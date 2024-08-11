@@ -51,6 +51,7 @@ const userSchema = new mongoose.Schema(
     // Account activation fields
     activated: {
       type: Boolean,
+      default: false,
     },
     activationToken: {
       type: String,
@@ -62,6 +63,14 @@ const userSchema = new mongoose.Schema(
       type: Date,
     },
     lastActive: {
+      type: Date,
+    },
+    // OTP fields
+    otp: {
+      type: String,
+      index: true,
+    },
+    otpExpiry: {
       type: Date,
     },
   },

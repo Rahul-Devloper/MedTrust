@@ -203,6 +203,28 @@ const App = () => {
           path='/member/dashboard'
           component={MemberDashboard}
         />
+        <MemberRoute
+          exact
+          path='/guest/find-doctor'
+          component={PatientFindDoctor}
+        />
+        <MemberRoute
+          exact
+          path='/guest/physician/:physicianName-:physicianId'
+          component={PhysicianProfile}
+        />
+
+        <MemberRoute
+          exact
+          path='/guest/speciality/:speciality'
+          component={CategoryView}
+        />
+
+        <MemberRoute
+          exact
+          path='/guest/speciality-directory'
+          component={SpecialityDirectory}
+        />
 
         {/*************** Patient Routes ***************/}
         <PatientRoute

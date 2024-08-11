@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { Image, Input, Row, Col, Button } from 'antd'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { getAllDoctorsAction } from '../../redux/actions/patientActions'
 import { FindDoctor } from '../../assets/images/index'
 import { FaEye, FaSearch } from 'react-icons/fa'
@@ -21,6 +21,7 @@ const PatientFindDoctor = () => {
 
   const dispatch = useDispatch()
   const history = useHistory()
+  const role = useSelector((state) => state?.auth?.user?.role)
 
   useEffect(() => {
     dispatch(getAllDoctorsAction({ setOk, setDoctorsList }))
@@ -66,7 +67,11 @@ const PatientFindDoctor = () => {
     const formattedDoctorName = doctorName
       .replace(/^(Dr\.\s*)?/g, '')
       .toLowerCase()
-    history.push(`/patient/physician/${formattedDoctorName}-${doctorGmcNumber}`)
+    history.push(
+      `/${
+        role?.toLowerCase() == 'patient' ? 'patient' : 'guest'
+      }/physician/${formattedDoctorName}-${doctorGmcNumber}`
+    )
   }
 
   const categories = [
@@ -84,7 +89,7 @@ const PatientFindDoctor = () => {
         .slice(0, 6)
 
   return (
-    <div style={{ padding: '20px' }}>
+    <div style={{ padding: '20px', minHeight: '100vh' }}>
       <Input.Group
         style={{
           width: '100%',
@@ -126,7 +131,9 @@ const PatientFindDoctor = () => {
       <h2>Popular Categories</h2>
       <CardGrid
         toRenderView={true}
-        viewPath={'/patient/speciality/'}
+        viewPath={`/${
+          role?.toLowerCase() == 'patient' ? 'patient' : 'guest'
+        }/speciality/`}
         children={categories}
       />
       <br />
@@ -135,7 +142,13 @@ const PatientFindDoctor = () => {
           <Button
             ghost
             icon={<FaEye />}
-            onClick={() => history.push('/patient/speciality-directory')}>
+            onClick={() =>
+              history.push(
+                `/${
+                  role?.toLowerCase() == 'patient' ? 'patient' : 'guest'
+                }/speciality-directory`
+              )
+            }>
             View All Specialities
           </Button>
         </div>

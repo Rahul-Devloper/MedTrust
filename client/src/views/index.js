@@ -57,5 +57,9 @@ export { default as PatientReviews } from './doctor/PatientReviews'
 
 export { default as ReviewDetails } from './doctor/ReviewDetails'
 
+/************************************************ Member Views ************************************************************/
+
+// export { default as PatientFindDoctor } from './patient/PatientFindDoctor'
+
 /************************************************ Redirect View ************************************************************/
 export { default as RandomPageRedirect } from "./404";

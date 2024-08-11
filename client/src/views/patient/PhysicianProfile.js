@@ -82,14 +82,16 @@ const PhysicianProfile = () => {
     dispatch(getAllReviewsAction({ setOk, setReviewsList, physicianId }))
     console.log('gmcNumber==>', physicianId)
     console.log('patientNHSNumber==>', patientNHSNumber)
-    dispatch(
-      checkAppointmentStatusAction({
-        setOk,
-        setAppointmentData,
-        doctorGMCNumber: physicianId,
-        patientNHSNumber,
-      })
-    )
+    if (role === 'patient') {
+      dispatch(
+        checkAppointmentStatusAction({
+          setOk,
+          setAppointmentData,
+          doctorGMCNumber: physicianId,
+          patientNHSNumber,
+        })
+      )
+    }
     console.log('appointmentData==>', appointmentData)
   }, [dispatch, physicianName, physicianId, patientNHSNumber])
 
@@ -239,7 +241,9 @@ const PhysicianProfile = () => {
   const reviewWithResponse = ratingData?.find((review) => review.isResponse)
 
   return (
-    <div className='physician-profile' style={{ marginBottom: '20px' }}>
+    <div
+      className='physician-profile'
+      style={{ marginBottom: '20px', minHeight: '100vh' }}>
       <Row gutter={[16, 16]}>
         <Col xs={24} sm={12} md={16} lg={16}>
           <ProfileCard2
@@ -397,19 +401,35 @@ const PhysicianProfile = () => {
               ]}
               actions={[
                 {
-                  label:
-                    Object.keys(appointmentData)?.length > 0
-                      ? hasReviewed
-                        ? 'You have already reviewed this doctor'
-                        : 'Post Review'
-                      : 'You can only post a review after completing an appointment',
+                  label: (() => {
+                    if (role !== 'patient') {
+                      return 'Login to post a review'
+                    }
+                    if (Object.keys(appointmentData)?.length === 0) {
+                      return 'You can only post a review after completing an appointment'
+                    }
+                    if (hasReviewed) {
+                      return 'You have already reviewed this doctor'
+                    }
+                    return 'Post Review'
+                  })(),
                   type: 'primary',
                   disabled:
-                    role !== 'patient' || // Disable if the user is not a patient
-                    Object.keys(appointmentData)?.length === 0 || // Disable if no appointment data exists
-                    hasReviewed, // Disable if the patient has already reviewed
+                    (role === 'patient' &&
+                      (Object.keys(appointmentData)?.length === 0 ||
+                        hasReviewed)) ||
+                    (role !== 'patient' &&
+                      !window.location.pathname.includes('guest')),
+
                   onClick: () => {
-                    if (!hasReviewed) {
+                    if (
+                      role !== 'patient' &&
+                      window.location.pathname.includes('guest')
+                    ) {
+                      // Handle guest user action here, e.g., opening the modal
+                      window.location.href = '/login'
+                    } else if (role === 'patient' && !hasReviewed) {
+                      // Open the modal for patients who haven't reviewed yet
                       setIsModalVisible(true)
                     }
                   },
@@ -485,6 +505,29 @@ const PhysicianProfile = () => {
               ))}
             </Card>
           </section>
+          {role !== 'patient' && window.location.pathname.includes('guest') && (
+            <section style={{ marginTop: '20px' }} id='LoginCard'>
+              <Card
+                title='Hello Guest !!'
+                extra={
+                  <Button
+                    type='primary'
+                    onClick={() => (window.location.href = '/login')}>
+                    Login
+                  </Button>
+                }
+                bordered={false}
+                style={{
+                  width: '100%',
+                }}>
+                <p>
+                  Are you finding it difficult to review doctors? You can just
+                  login through our secure platform and rate/ review doctors.
+                </p>
+                <p>Happy Reviewing</p>
+              </Card>
+            </section>
+          )}
           {console.log('ratingData?.isResponse==>', ratingData?.isResponse)}
           <section style={{ marginTop: '20px' }} id='Response'>
             {hasReviewed && (

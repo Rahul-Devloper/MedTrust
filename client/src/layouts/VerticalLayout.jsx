@@ -17,20 +17,20 @@ const VerticalLayout = (props) => {
   const customize = useSelector((state) => state.customize);
 
   return (
-    <Layout className="hp-app-layout">
+    <Layout className='hp-app-layout'>
       {/* Sidebar */}
       <Sidebar visible={visible} setVisible={setVisible} />
 
-      <Layout className="hp-bg-black-20 hp-bg-color-dark-90">
-        <MenuHeader setVisible={setVisible} />
+      <Layout className='hp-bg-black-20 hp-bg-color-dark-90'>
+        {props?.menuHeader !== false && <MenuHeader setVisible={setVisible} />}
 
-        <Content className="hp-content-main">
-          <Row justify="center">
-            {customize.contentWidth === "full" && (
+        <Content className='hp-content-main'>
+          <Row justify='center'>
+            {customize.contentWidth === 'full' && (
               <Col span={24}>{children}</Col>
             )}
 
-            {customize.contentWidth === "boxed" && (
+            {customize.contentWidth === 'boxed' && (
               <Col xxl={20} xl={22} span={24}>
                 {children}
               </Col>
@@ -41,7 +41,7 @@ const VerticalLayout = (props) => {
 
       <ScrollTop />
     </Layout>
-  );
+  )
 };
 
 export default VerticalLayout;

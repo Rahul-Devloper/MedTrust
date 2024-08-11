@@ -8,25 +8,23 @@ import { isMemberAction } from "../redux/actions/authActions";
 const MemberRoute = ({ children, ...restProps }) => {
   children ? console.log('children==>', children) : console.log('noCHildren==>')
 
-  const dispatch = useDispatch();
-  const [ok, setOk] = useState(false);
+  const dispatch = useDispatch()
+  // const [ok, setOk] = useState(false)
 
   // Check if current user is a member
-  useEffect(() => {
-    dispatch(isMemberAction({ setOk }));
-  }, []);
+  // useEffect(() => {
+  //   dispatch(isMemberAction({ setOk }));
+  // }, []);
 
+  //removed loading to redirect in here
+  // using member route as guest login
   return (
     <>
-      {ok ? (
-        <VerticalLayout>
-          <Route {...restProps} render={children} />
-        </VerticalLayout>
-      ) : (
-        <LoadingToRedirect />
-      )}
+      <VerticalLayout menuHeader={false}>
+        <Route {...restProps} render={children} />
+      </VerticalLayout>
     </>
-  );
+  )
 };
 
 export default MemberRoute;

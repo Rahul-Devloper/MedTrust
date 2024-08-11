@@ -147,7 +147,11 @@ const Login = ({ history }) => {
               </Col>
 
               <Col className='hp-or-line hp-text-center hp-mt-16'>
-                <Button type='primary'>Guest Login</Button>
+                <Button
+                  type='primary'
+                  onClick={() => (window.location.href = '/guest/find-doctor')}>
+                  Guest Login
+                </Button>
               </Col>
               {/* <Col
                 className="hp-account-buttons hp-mt-16"

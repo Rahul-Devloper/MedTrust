@@ -2,11 +2,13 @@ import React from 'react'
 import { Row, Col, Typography, Divider } from 'antd'
 import { useHistory } from 'react-router-dom'
 import MenuFooter from '../../layouts/components/footer'
+import { useSelector } from 'react-redux'
 
 const { Title } = Typography
 
 const SpecialityDirectory = () => {
   const history = useHistory()
+  const role = useSelector((state) => state?.auth?.user?.role)
 
   const specialities = [
     'Acupuncture',
@@ -78,7 +80,11 @@ const SpecialityDirectory = () => {
 
   const handleChildClick = (child) => {
     const formattedChild = child.trim().replace(/\s+/g, '-')
-    history.push(`${'/patient/speciality/'}${formattedChild.trim()}`)
+    history.push(
+      `/${
+        role?.toLowerCase() === 'patient' ? 'patient' : 'guest'
+      }/speciality/${formattedChild.trim()}`
+    )
   }
 
   return (
