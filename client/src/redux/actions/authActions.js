@@ -1,10 +1,16 @@
 import { ACTION_TYPES } from "../constants/actionTypes";
 import { AUTH_TYPES } from "../constants/authTypes";
-import { signUp, login, googleCreateOrLogin, logout } from "../../api/auth";
-import { currentUser } from "../../api/user";
-import { currentAdmin } from "../../api/admin";
-import { currentSuperAdmin } from "../../api/superAdmin";
-import { currentMember } from "../../api/member";
+import {
+  signUp,
+  login,
+  googleCreateOrLogin,
+  logout,
+  verifyOtp,
+} from '../../api/auth'
+import { currentUser } from '../../api/user'
+import { currentAdmin } from '../../api/admin'
+import { currentSuperAdmin } from '../../api/superAdmin'
+import { currentMember } from '../../api/member'
 import { currentPatient } from '../../api/patient'
 import {
   RoleBasedRedirect,
@@ -15,7 +21,7 @@ import {
   ErrorNotification,
   InfoNotification,
 } from '../../components'
-import { currentDoctor } from "../../api/doctor";
+import { currentDoctor } from '../../api/doctor'
 
 /********************************************
   Sign up a user
@@ -114,8 +120,10 @@ export const loginAction = (data) => async (dispatch) => {
     })
 
     data.setLoading(false)
+
+    return res?.data
     // Redirect user based on role
-    RoleBasedRedirect(res, data.history)
+    // RoleBasedRedirect(res, data.history)
   } catch (error) {
     data.setLoading(false)
     // Dispatch a error notify
@@ -129,6 +137,55 @@ export const loginAction = (data) => async (dispatch) => {
       type: ACTION_TYPES.ALERT,
       payload: { loading: false },
     })
+  }
+}
+
+/********************************************
+  VerifyOTP
+*********************************************/
+export const verifyOtpAction = (data) => async (dispatch) => {
+  // Dispatch a loading alert
+  dispatch({
+    type: ACTION_TYPES.ALERT,
+    payload: { loading: true },
+  })
+
+  try {
+    // Fetch response from server
+    const res = await verifyOtp(data.userId, data.otp)
+    if (res.data.error === true) {
+      ErrorNotification(res.data.message)
+      return
+    }
+
+    // Dispatch token and user
+    dispatch({
+      type: AUTH_TYPES.AUTH,
+      payload: {
+        accessToken: res.data.accessToken,
+        user: res.data.user,
+      },
+    })
+
+    // Dispatch a success/error login notify
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: res.data.message,
+      },
+    })
+
+    // Redirect user based on role
+    RoleBasedRedirect(res, data.history)
+  } catch (error) {
+    // Dispatch a error alert
+    dispatch({
+      type: ACTION_TYPES.ALERT,
+      payload: {
+        message: error.response.data?.message,
+      },
+    })
+    ErrorNotification(error.response.data?.message)
   }
 }
 

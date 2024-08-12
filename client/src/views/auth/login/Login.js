@@ -1,57 +1,80 @@
 import React, { useState } from "react";
-import { Row, Col, Form, Input, Button, Checkbox } from "antd";
-import { Link } from "react-router-dom";
-import { GoogleLogin } from "@react-oauth/google";
-import jwt_decode from "jwt-decode";
-import { useDispatch } from "react-redux";
-import LeftContent from "../leftContent";
+import { Row, Col, Form, Input, Button, Checkbox, Modal } from 'antd'
+import { Link } from 'react-router-dom'
+import { GoogleLogin } from '@react-oauth/google'
+import jwt_decode from 'jwt-decode'
+import { useDispatch } from 'react-redux'
+import LeftContent from '../leftContent'
 import {
   loginAction,
   googleLoginAction,
-} from "../../../redux/actions/authActions";
-import { ErrorNotification } from "../../../components";
+  verifyOtpAction, // Assuming you have an action to verify the OTP
+} from '../../../redux/actions/authActions'
+import { ErrorNotification } from '../../../components'
 
 const Login = ({ history }) => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
+  const [email, setEmail] = useState('')
+  const [password, setPassword] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [otpModalVisible, setOtpModalVisible] = useState(false)
+  const [otp, setOtp] = useState('')
+  const [userId, setUserId] = useState(null)
+  const dispatch = useDispatch()
 
   // Handle email password login
-  const handleLoginSubmit = (e) => {
+  const handleLoginSubmit = async (e) => {
+    e.preventDefault()
+
     // Validate email regex
     const emailRegex =
-      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+      /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
     if (!emailRegex.test(email)) {
-      ErrorNotification("Please enter a valid email");
-      return;
+      ErrorNotification('Please enter a valid email')
+      return
     }
 
     // Make sure the password is at least 6 characters
     if (password.length < 6) {
-      ErrorNotification("Please enter a valid password");
-      return;
+      ErrorNotification('Please enter a valid password')
+      return
     }
 
-    e.preventDefault();
     // Dispatch email, password and history to action
-    dispatch(loginAction({ email, password, history, setLoading }));
-  };
+    const user = await dispatch(
+      loginAction({ email, password, history, setLoading })
+    )
+    if (user?.userId) {
+      setOtpModalVisible(true)
+      setUserId(user?.userId)
+    }
+  }
 
   // Handle google login success
   const handleGoogleSuccess = async (credentialResponse) => {
-    const userObject = jwt_decode(credentialResponse.credential);
-    const { name, email } = userObject;
-    setLoading(true);
+    const userObject = jwt_decode(credentialResponse.credential)
+    const { name, email } = userObject
+    setLoading(true)
 
     // Dispatch email, password and history to action
-    dispatch(googleLoginAction({ name, email, history }));
-  };
+    dispatch(googleLoginAction({ name, email, history }))
+  }
 
   // Handle google login failure
   const handleGoogleFailure = () => {
-    console.log("GOOGLE_LOGIN_ERROR");
-  };
+    console.log('GOOGLE_LOGIN_ERROR')
+  }
+
+  // Handle OTP submission
+  const handleOtpSubmit = async () => {
+    if (otp.length !== 6) {
+      ErrorNotification('Please enter a valid 6-digit OTP')
+      return
+    }
+
+    dispatch(
+      verifyOtpAction({ userId, otp, history, setLoading }) // Assuming you have this action
+    )
+  }
 
   return (
     <>
@@ -153,6 +176,7 @@ const Login = ({ history }) => {
                   Guest Login
                 </Button>
               </Col>
+
               {/* <Col
                 className="hp-account-buttons hp-mt-16"
                 style={{
@@ -194,8 +218,29 @@ const Login = ({ history }) => {
           </Row>
         </Col>
       </Row>
+
+      {/* OTP Modal */}
+      <Modal
+        title='Enter OTP Sent To Your Registered Email'
+        visible={otpModalVisible}
+        onCancel={() => setOtpModalVisible(false)}
+        footer={[
+          <Button key='submit' type='primary' onClick={handleOtpSubmit}>
+            Submit
+          </Button>,
+        ]}>
+        <Form.Item
+          label='OTP'
+          rules={[{ required: true, message: 'Please enter your OTP' }]}>
+          <Input
+            value={otp}
+            onChange={(e) => setOtp(e.target.value)}
+            maxLength={6}
+          />
+        </Form.Item>
+      </Modal>
     </>
   )
-};
+}
 
 export default Login;

@@ -9,6 +9,8 @@ const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
 const PatientRecordService = require('../services/patientRecordService')
 const DoctorRecordService = require('../services/doctorRecordService')
+const otpGenerator = require('otp-generator')
+const sendOTPEmail = require('../utils/sendOTPEmail') // Utility to send OTP email
 
 /**********************************
   Sign up & send email verification
@@ -213,7 +215,6 @@ exports.signup = async (req, res) => {
     console.log('SERVER_SIGNUP_ERROR', error)
   }
 }
-
 
 /**********************************
   Email Verification, acc. activation
@@ -523,19 +524,19 @@ exports.passwordResetEmail = async (req, res) => {
 ***********************************/
 exports.passwordVerify = async (req, res, next) => {
   // Get the token from client body
-  const { token, newPassword } = req.body;
+  const { token, newPassword } = req.body
 
   // Validate the input fields
-  const validationErrors = passwordValidator(newPassword);
+  const validationErrors = passwordValidator(newPassword)
 
   // Sends the validation error message
   if (validationErrors.length) {
     const errorObject = {
       error: true,
       type: validationErrors,
-    };
-    res.status(400).json(errorObject);
-    return;
+    }
+    res.status(400).json(errorObject)
+    return
   }
 
   try {
@@ -548,54 +549,120 @@ exports.passwordVerify = async (req, res, next) => {
             error: true,
             type: [
               {
-                code: "GLOBAL_ERROR",
-                field: "token",
+                code: 'GLOBAL_ERROR',
+                field: 'token',
                 message:
-                  "Token is not valid or expired, enter email to resend reset link",
+                  'Token is not valid or expired, enter email to resend reset link',
               },
             ],
-          });
+          })
         }
-        const { email } = user;
+        const { email } = user
 
         // Hash the new password
-        const hashedPassword = await bcrypt.hash(newPassword, 12);
+        const hashedPassword = await bcrypt.hash(newPassword, 12)
 
         const updatedUser = await UserService.FindOneUserAndUpdate(
           { email },
           { password: hashedPassword }
-        );
+        )
 
         return res.status(200).json({
-          message: "Password updated, please login to continue",
+          message: 'Password updated, please login to continue',
           user: User.toClientObject(updatedUser),
-        });
-      });
+        })
+      })
     }
   } catch (error) {
-    res.status(500).json(error);
-    console.log("NEW_PASSWORD_VERIFY_ERROR", error);
+    res.status(500).json(error)
+    console.log('NEW_PASSWORD_VERIFY_ERROR', error)
   }
-};
+}
 
 /**********************************
   Login a user
 ***********************************/
-exports.login = async (req, res, next) => {
-  const { email, password } = req.body;
+// exports.login = async (req, res, next) => {
+//   const { email, password } = req.body
 
-  const validationErrors = [];
+//   const validationErrors = []
+
+//   // Validate the email and password with utils
+//   const emailValidationErrors = emailValidator(email)
+//   const passwordValidationErrors = passwordValidator(password)
+
+//   if (emailValidationErrors.length) {
+//     validationErrors.push(...emailValidationErrors)
+//   }
+
+//   if (passwordValidationErrors.length) {
+//     validationErrors.push(...passwordValidationErrors)
+//   }
+
+//   // Sends the validation error message
+//   if (validationErrors.length) {
+//     const errorObject = {
+//       error: true,
+//       type: validationErrors,
+//     }
+//     res.status(401).json(errorObject)
+//     return
+//   }
+
+//   // Use passport to authenticate
+//   passport.authenticate('local', (err, user, info) => {
+//     if (err) {
+//       return next(err)
+//     }
+//     if (!user) {
+//       res.send(info)
+//     } else {
+//       // If user is authenticated, then create JWT
+//       const userObject = user.toObject()
+//       // Use only the user ID to create JWT token
+//       const idObject = { _id: userObject._id }
+//       // Generate the access token
+//       const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
+//         expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
+//       })
+//       // Generate the refresh token
+//       const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
+//         expiresIn: '1y',
+//       })
+
+//       // Set a http only cookie for refresh token
+//       res.cookie('refreshToken', refreshToken, {
+//         httpOnly: true,
+//         path: '/api/refresh_token',
+//         maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+//       })
+
+//       // Send the access token to the client
+//       return res.status(200).json({
+//         user: User.toClientObject(user),
+//         accessToken: accessToken,
+//         message: 'Login Success',
+//       })
+//     }
+//   })(req, res, next)
+// }
+
+///********************************* OTP Login Files ***********************************/
+exports.login = async (req, res, next) => {
+  const { email, password } = req.body
+
+  const validationErrors = []
 
   // Validate the email and password with utils
-  const emailValidationErrors = emailValidator(email);
-  const passwordValidationErrors = passwordValidator(password);
+  const emailValidationErrors = emailValidator(email)
+  const passwordValidationErrors = passwordValidator(password)
 
   if (emailValidationErrors.length) {
-    validationErrors.push(...emailValidationErrors);
+    validationErrors.push(...emailValidationErrors)
   }
 
   if (passwordValidationErrors.length) {
-    validationErrors.push(...passwordValidationErrors);
+    validationErrors.push(...passwordValidationErrors)
   }
 
   // Sends the validation error message
@@ -603,48 +670,103 @@ exports.login = async (req, res, next) => {
     const errorObject = {
       error: true,
       type: validationErrors,
-    };
-    res.status(401).json(errorObject);
-    return;
+    }
+    res.status(401).json(errorObject)
+    return
   }
 
   // Use passport to authenticate
-  passport.authenticate("local", (err, user, info) => {
+  passport.authenticate('local', async (err, user, info) => {
     if (err) {
-      return next(err);
+      return next(err)
     }
     if (!user) {
-      res.send(info);
+      return res.send(info)
     } else {
-      // If user is authenticated, then create JWT
-      const userObject = user.toObject();
-      // Use only the user ID to create JWT token
-      const idObject = { _id: userObject._id };
-      // Generate the access token
-      const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
-        expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
-      });
-      // Generate the refresh token
-      const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
-        expiresIn: "1y",
-      });
+      // If user is authenticated, generate and send OTP
+      const otp = otpGenerator.generate(6, {
+        upperCaseAlphabets: false,
+        specialChars: false,
+      })
+      const otpExpiry = Date.now() + 10 * 60 * 1000 // OTP valid for 10 minutes
 
-      // Set a http only cookie for refresh token
-      res.cookie("refreshToken", refreshToken, {
-        httpOnly: true,
-        path: "/api/refresh_token",
-        maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
-      });
+      // Save the OTP and expiry in the user's record
+      await UserService.updateUserOtp(user._id, { otp, otpExpiry })
 
-      // Send the access token to the client
+      // Send OTP to user's email
+      await sendOTPEmail(user.email, otp)
+
       return res.status(200).json({
-        user: User.toClientObject(user),
-        accessToken: accessToken,
-        message: "Login Success",
-      });
+        message: 'OTP sent to your email, please verify to continue',
+        userId: user._id, // Send the userId to verify OTP later
+      })
     }
-  })(req, res, next);
-};
+  })(req, res, next)
+}
+
+// OTP verification and login
+exports.verifyOtp = async (req, res) => {
+  const { userId, otp } = req.body
+
+  try {
+    const user = await UserService.findUserById(userId)
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        type: [
+          {
+            code: 'GLOBAL_ERROR',
+            field: 'user',
+            message: 'User not found',
+          },
+        ],
+      })
+    }
+
+    // Check if OTP matches and is not expired
+    if (user.otp !== otp || user.otpExpiry < Date.now()) {
+      return res.status(401).json({
+        error: true,
+        type: [
+          {
+            code: 'GLOBAL_ERROR',
+            field: 'otp',
+            message: 'Invalid or expired OTP',
+          },
+        ],
+      })
+    }
+
+    // Clear the OTP and proceed with login
+    await UserService.clearUserOtp(userId)
+
+    // Generate JWT token as in the original login method
+    const userObject = user.toObject()
+    const idObject = { _id: userObject._id }
+    const accessToken = jwt.sign(idObject, process.env.JWT_ACCESS_SECRET, {
+      expiresIn: process.env.JWT_ACCESS_TOKEN_TTL,
+    })
+    const refreshToken = jwt.sign(idObject, process.env.JWT_REFRESH_SECRET, {
+      expiresIn: '1y',
+    })
+
+    res.cookie('refreshToken', refreshToken, {
+      httpOnly: true,
+      path: '/api/refresh_token',
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days
+    })
+
+    return res.status(200).json({
+      user: User.toClientObject(user),
+      accessToken: accessToken,
+      message: 'Login Success',
+    })
+  } catch (error) {
+    res.status(500).json(error)
+    console.log('OTP_VERIFY_ERROR', error)
+  }
+}
 
 /**********************************
   Google login/sign up save to local

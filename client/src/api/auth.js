@@ -26,6 +26,21 @@ export const login = async (email, password) => {
   );
 };
 
+// Verify otp
+export const verifyOtp = async (userId, otp) => {
+  return await api.post(
+    "/verifyOtp",
+    {
+      userId,
+      otp
+    },
+    {
+      withCredentials: true,
+      credentials: "include",
+    }
+  );
+};
+
 // Google signup or login
 export const googleCreateOrLogin = async (name, email) => {
   return await api.post(
