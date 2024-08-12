@@ -32,6 +32,11 @@ const DoctorDashboard = () => {
     label: 'Your Care Commitment',
     value: doctorData?.professionalInfo?.careCommitment,
   }
+  console.log(
+    'doctorImgUrl==>',
+    user?.ImgUrl ||
+      (doctorData?.personalInfo?.gender === 'Male' ? MaleAvatar : FemaleAvatar)
+  )
   return (
     <>
       <Row gutter={[16, 16]}>
@@ -44,9 +49,10 @@ const DoctorDashboard = () => {
           </h2>
           <ProfileCard2
             avatar={
-              doctorData?.personalInfo?.gender === 'Male'
+              doctorData?.ImgUrl ||
+              (doctorData?.personalInfo?.gender === 'Male'
                 ? MaleAvatar
-                : FemaleAvatar
+                : FemaleAvatar)
             }
             title={`${doctorData?.personalInfo?.name}, ${doctorData?.personalInfo?.degree}`}
             description={doctorData?.professionalInfo?.specialty}

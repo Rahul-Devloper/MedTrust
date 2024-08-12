@@ -229,9 +229,10 @@ const PhysicianProfile = () => {
         <Col xs={24} sm={12} md={16} lg={16}>
           <ProfileCard2
             avatar={
-              doctorData?.personalInfo?.gender === 'Male'
+              doctorData?.ImgUrl ||
+              (doctorData?.personalInfo?.gender === 'Male'
                 ? MaleAvatar
-                : FemaleAvatar
+                : FemaleAvatar)
             }
             title={`${doctorData?.personalInfo?.name}, ${doctorData?.personalInfo?.degree}`}
             description={doctorData?.professionalInfo?.specialty}

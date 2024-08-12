@@ -162,9 +162,10 @@ const PatientProfileAdmin = () => {
         <Col xs={24} sm={18} md={16} lg={16}>
           <ProfileCard2
             avatar={
-              patientData?.personalDetails?.gender === 'Male'
+              patientData?.ImgUrl ||
+              (patientData?.personalDetails?.gender === 'Male'
                 ? MaleAvatar
-                : FemaleAvatar
+                : FemaleAvatar)
             }
             title={patientData?.personalDetails?.name}
             description={'Patient'}

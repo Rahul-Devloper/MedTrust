@@ -101,6 +101,18 @@ class DoctorRecordService {
       throw error // Re-throw the error to be handled by the calling function
     }
   }
+  // Find one doctor and update
+  static findOneUserAndUpdate = async (query, update) => {
+    try {
+      const doctor = await DoctorRecord.findOneAndUpdate(query, update, {
+        new: true,
+      }).exec()
+
+      return doctor
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = DoctorRecordService

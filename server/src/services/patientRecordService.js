@@ -112,6 +112,18 @@ class PatientRecordService {
       throw error // Re-throw the error to be handled by the calling function
     }
   }
+
+  static findOneUserAndUpdate = async (query, update) => {
+    try {
+      const patient = await PatientRecord.findOneAndUpdate(query, update, {
+        new: true,
+      }).exec()
+
+      return patient
+    } catch (error) {
+      throw error
+    }
+  }
 }
 
 module.exports = PatientRecordService

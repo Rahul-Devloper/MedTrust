@@ -1,6 +1,10 @@
 const mongoose = require('mongoose')
 
 const patientRecordSchema = new mongoose.Schema({
+  ImgUrl: {
+    type: String,
+    // default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+  },
   isDeactivated: { type: Boolean, default: false },
   personalDetails: {
     name: String,

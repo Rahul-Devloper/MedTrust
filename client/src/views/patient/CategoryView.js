@@ -46,6 +46,7 @@ const CategoryView = () => {
   const onPostReview = (doctorGmcNumber) => {
     console.log('Post Review for doctor with GMC Number:', doctorGmcNumber)
   }
+  console.log('doctorsBySpecialization==>', doctorsBySpecialization)
 
   return (
     <div>
@@ -57,9 +58,10 @@ const CategoryView = () => {
             style={{ marginBottom: '20px', minHeight: '80vh' }}>
             <ProfileCard
               avatar={
-                doctor?.personalInfo?.gender === 'Male'
+                doctor?.ImgUrl ||
+                (doctor?.personalInfo?.gender === 'Male'
                   ? doctorMaleAvatar
-                  : doctorFemaleAvatar
+                  : doctorFemaleAvatar)
               }
               title={`${doctor?.personalInfo?.name}, ${doctor?.personalInfo?.degree}`}
               description={doctor?.professionalInfo?.specialty}

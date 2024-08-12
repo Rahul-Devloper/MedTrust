@@ -59,6 +59,18 @@ class UserService {
     }
   }
 
+  static findUserAndUpdateById = async (id, update) => {
+    try {
+      const user = await User.findByIdAndUpdate(id, update, {
+        new: true,
+      }).exec()
+
+      return user
+    } catch (error) {
+      throw error
+    }
+  }
+
   // Delete a user by id
   static deleteUserById = async (id) => {
     try {

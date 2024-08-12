@@ -9,3 +9,8 @@ export const currentUser = () => {
 export const getUserById = (id) => {
   return api.get(`/user/id/${id}`);
 };
+
+// find and update user image
+export const saveImageUrl = (ImgUrl, id, role, number) => {
+  return api.put(`/user/image/${id}`, { ImgUrl, role, number });
+};

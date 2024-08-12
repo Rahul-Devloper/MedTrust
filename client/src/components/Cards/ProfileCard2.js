@@ -13,6 +13,7 @@ const ProfileCard2 = ({
   progressBarSize,
 }) => {
   console.log('paragraph==>', paragraph)
+  console.log('avatar==>', avatar)
   return (
     <Card
       style={{

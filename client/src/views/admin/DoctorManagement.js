@@ -93,9 +93,10 @@ const DoctorManagement = () => {
           <Col key={doctor._id} xs={24} sm={12} md={8} lg={8}>
             <InfoCard
               avatar={
-                doctor?.personalInfo?.gender === 'Male'
+                doctor?.ImgUrl ||
+                (doctor?.personalInfo?.gender === 'Male'
                   ? doctorMaleAvatar
-                  : doctorFemaleAvatar
+                  : doctorFemaleAvatar)
               }
               title={doctor?.personalInfo?.name}
               description={

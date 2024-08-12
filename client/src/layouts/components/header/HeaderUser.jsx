@@ -67,13 +67,13 @@ const HeaderUser = () => {
 
   return (
     <Col>
-      <Dropdown overlay={menu} placement="bottomLeft">
-        <Col className="hp-d-flex-center" onClick={(e) => e.preventDefault()}>
-          <Avatar src={avatarImg} size={40} />
+      <Dropdown overlay={menu} placement='bottomLeft'>
+        <Col className='hp-d-flex-center' onClick={(e) => e.preventDefault()}>
+          <Avatar src={user?.ImgUrl || avatarImg} size={40} />
         </Col>
       </Dropdown>
     </Col>
-  );
+  )
 };
 
 export default HeaderUser;

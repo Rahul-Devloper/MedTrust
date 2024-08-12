@@ -8,8 +8,9 @@ const userSchema = new mongoose.Schema(
     },
     picture: {
       type: Array,
-      default:
+      default: [
         'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+      ],
     },
     email: {
       type: String,
@@ -21,7 +22,6 @@ const userSchema = new mongoose.Schema(
     password: {
       type: String,
       required: true,
-      // unique: true,
     },
     nhsNumber: {
       type: String,
@@ -39,7 +39,6 @@ const userSchema = new mongoose.Schema(
     // Normal or admin
     role: {
       type: String,
-      // enum: ["member", "admin", "superadmin"],
       enum: ['patient', 'doctor', 'admin', 'superadmin'],
       default: 'patient',
     },
@@ -73,6 +72,11 @@ const userSchema = new mongoose.Schema(
     otpExpiry: {
       type: Date,
     },
+    // New field for storing image URL
+    ImgUrl: {
+      type: String,
+      // default: 'https://icon-library.com/images/anonymous-avatar-icon/anonymous-avatar-icon-25.jpg',
+    },
   },
   { timestamps: true }
 )
@@ -90,6 +94,7 @@ userSchema.statics.toClientObject = function (user) {
     gmcNumber: userObject.gmcNumber,
     activated: userObject.activated,
     currentPlan: userObject.currentPlan,
+    ImgUrl: userObject.ImgUrl, // Include ImgUrl in the client object
     createdAt: userObject.createdAt,
     updatedAt: userObject.updatedAt,
   }

@@ -93,9 +93,10 @@ const PatientManagement = () => {
           <Col key={patient._id} xs={24} sm={12} md={8} lg={8}>
             <InfoCard
               avatar={
-                patient?.personalDetails?.gender === 'Male'
+                patient?.ImgUrl ||
+                (patient?.personalDetails?.gender === 'Male'
                   ? doctorMaleAvatar // Use a generic male avatar path
-                  : doctorFemaleAvatar // Use a generic female avatar path
+                  : doctorFemaleAvatar) // Use a generic female avatar path
               }
               title={patient?.personalDetails?.name}
               description={
