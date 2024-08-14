@@ -1,4 +1,4 @@
-import { saveImageUrl } from '../../api/user'
+import { getAllUsers, saveImageUrl } from '../../api/user'
 import { ErrorNotification, SuccessNotification } from '../../components'
 import { ACTION_TYPES } from '../constants/actionTypes'
 
@@ -41,6 +41,45 @@ export const saveImageToUserProfile =
       } else {
         throw new Error('Image not updated')
       }
+    } catch (error) {
+      ErrorNotification(error?.response?.data?.message)
+      // data.setLoading(false)
+      // Dispatch a error alert
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: error.response.data?.message,
+        },
+      })
+    }
+  }
+
+// get all users action
+export const getAllUsersAction =
+  ({ setOk, setUsersList }) =>
+  async (dispatch) => {
+    try {
+      // Dispatch a loading alert
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: { loading: true },
+      })
+
+      // Fetch response from server
+      const res = await getAllUsers()
+      console.log('getAllUsersAction==>', res)
+
+      // Dispatch a success/error login notify
+      dispatch({
+        type: ACTION_TYPES.ALERT,
+        payload: {
+          message: res?.data?.message,
+          users: res?.data,
+        },
+      })
+
+      setOk(true)
+      setUsersList(res?.data)
     } catch (error) {
       ErrorNotification(error?.response?.data?.message)
       // data.setLoading(false)

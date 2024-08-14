@@ -14,3 +14,8 @@ export const getUserById = (id) => {
 export const saveImageUrl = (ImgUrl, id, role, number) => {
   return api.put(`/user/image/${id}`, { ImgUrl, role, number });
 };
+
+// Get all users
+export const getAllUsers = () => {
+  return api.get("/users");
+}
