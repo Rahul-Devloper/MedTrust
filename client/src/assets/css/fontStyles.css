@@ -1,0 +1,26 @@
+.paragraphStyles{
+    background: #29baef!important;
+    color: white!important;
+    padding: 40px!important;
+    font-size: larger!important;
+    border-radius: 20px!important;
+}
+
+@keyframes circleExpandContract {
+    0% {
+      r: 10;
+      opacity: 1;
+    }
+    50% {
+      r: 25;
+      opacity: 0.5;
+    }
+    100% {
+      r: 10;
+      opacity: 1;
+    }
+  }
+  
+  .circle-animation {
+    animation: circleExpandContract 2s infinite ease-in-out;
+  }

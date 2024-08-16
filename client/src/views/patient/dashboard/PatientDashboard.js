@@ -82,7 +82,7 @@ const PatientDashboard = () => {
                 <Row align='middle'>
                   <Col span={4}>
                     <RiSearch2Fill
-                      style={{ fontSize: '32px', color: 'blue' }}
+                      style={{ fontSize: '32px', color: '#57ddbe' }}
                     />
                   </Col>
                   <Col span={16} style={{ textAlign: 'center' }}>

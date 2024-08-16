@@ -3,31 +3,41 @@ import { useLocation, Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { Menu, Tag } from "antd";
 
-import { superAdminNav, adminNav, memberNav } from "../../../navigation";
+import {
+  superAdminNav,
+  adminNav,
+  memberNav,
+  doctorNav,
+  patientNav,
+} from '../../../navigation'
 
 const MenuItem = (props) => {
-  const { onClose } = props;
-  const { user } = useSelector((state) => state.auth);
-  const [navigation, setNavigation] = useState([]);
+  const { onClose } = props
+  const { user } = useSelector((state) => state.auth)
+  const [navigation, setNavigation] = useState([])
 
   useEffect(() => {
-    if (user?.role === "superadmin") {
-      setNavigation(superAdminNav);
-    } else if (user?.role === "admin") {
-      setNavigation(adminNav);
+    if (user?.role === 'superadmin') {
+      setNavigation(superAdminNav)
+    } else if (user?.role === 'admin') {
+      setNavigation(adminNav)
+    } else if (user?.role === 'doctor') {
+      setNavigation(doctorNav)
+    } else if (user?.role === 'patient') {
+      setNavigation(patientNav)
     } else {
-      setNavigation(memberNav);
+      setNavigation(memberNav)
     }
-  }, [user]);
+  }, [user])
 
   // Location
-  const location = useLocation();
-  const { pathname } = location;
+  const location = useLocation()
+  const { pathname } = location
 
-  const splitLocation = pathname.split("/");
+  const splitLocation = pathname.split('/')
 
   const menuItem = navigation?.map((item, index) => {
-    const itemNavLink = item.navLink.split("/");
+    const itemNavLink = item.navLink.split('/')
 
     return (
       // Level 1
@@ -37,27 +47,24 @@ const MenuItem = (props) => {
         onClick={onClose}
         className={
           splitLocation[splitLocation.length - 2] +
-            "/" +
+            '/' +
             splitLocation[splitLocation.length - 1] ===
           itemNavLink[itemNavLink.length - 2] +
-            "/" +
+            '/' +
             itemNavLink[itemNavLink.length - 1]
-            ? "ant-menu-item-selected"
-            : "ant-menu-item-selected-in-active"
+            ? 'ant-menu-item-selected'
+            : 'ant-menu-item-selected-in-active'
         }
-        style={item.tag && { pointerEvents: "none" }}
-      >
+        style={item.tag && { pointerEvents: 'none' }}>
         {item.tag ? (
           // eslint-disable-next-line jsx-a11y/anchor-is-valid
           <a
-            href="#"
-            className="hp-d-flex hp-align-items-center hp-d-flex-between"
-          >
+            href='#'
+            className='hp-d-flex hp-align-items-center hp-d-flex-between'>
             <span>{item.title}</span>
             <Tag
-              className="hp-mr-0 hp-border-none hp-text-color-black-100 hp-bg-success-3 hp-border-radius-full hp-px-8"
-              style={{ marginRight: -14 }}
-            >
+              className='hp-mr-0 hp-border-none hp-text-color-black-100 hp-bg-success-3 hp-border-radius-full hp-px-8'
+              style={{ marginRight: -14 }}>
               {item.tag}
             </Tag>
           </a>
@@ -65,8 +72,8 @@ const MenuItem = (props) => {
           <Link to={item.navLink}>{item.title}</Link>
         )}
       </Menu.Item>
-    );
-  });
+    )
+  })
 
   return (
     <Menu
@@ -78,9 +85,9 @@ const MenuItem = (props) => {
         splitLocation[splitLocation.length - 2],
       ]}
       theme={'light'}>
-      {/* {menuItem} */}
+      {menuItem}
     </Menu>
   )
-};
+}
 
 export default MenuItem;

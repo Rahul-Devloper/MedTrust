@@ -36,6 +36,7 @@ export { default as PatientManagement } from './admin/PatientManagement'
 export { default as DoctorManagement } from './admin/DoctorManagement'
 export { default as PhysicianProfileAdmin } from './admin/PhysicianProfileAdmin'
 export { default as PatientProfileAdmin } from './admin/PatientProfileAdmin'
+export { default as DeactivatedProfiles } from './admin/DeactivatedProfiles'
 /************************************************ Member Views ************************************************************/
 export { default as MemberDashboard } from './member/dashboard/MemberDashboard'
 
@@ -50,6 +51,8 @@ export { default as SpecialityDirectory } from './patient/SpecialityDirectory'
 
 export { default as PhysicianProfile } from './patient/PhysicianProfile'
 
+export { default as MyReviews } from './patient/MyReviews'
+
 /************************************************** Doctor Views ************************************************************/
 export { default as DoctorDashboard } from './doctor/dashboard/DoctorDashboard'
 
@@ -62,4 +65,8 @@ export { default as ReviewDetails } from './doctor/ReviewDetails'
 // export { default as PatientFindDoctor } from './patient/PatientFindDoctor'
 
 /************************************************ Redirect View ************************************************************/
-export { default as RandomPageRedirect } from "./404";
+export { default as RandomPageRedirect } from './404'
+
+/************************************************ Home Page ************************************************************/
+
+export { default as HomePage } from './HomePage'

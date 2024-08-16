@@ -23,7 +23,7 @@ import {
 
 export const getAllReviewsAction =
   (
-    { setOk, setReviewsList, physicianId } //physicianId is gmcNumber
+    data //physicianId is gmcNumber
   ) =>
   async (dispatch) => {
     // Dispatch a loading alert
@@ -34,8 +34,8 @@ export const getAllReviewsAction =
 
     try {
       // Fetch response from server
-      const res = await getAllReviews(physicianId)
-      console.log('getReviewsAction==>', res)
+      const res = await getAllReviews(data?.physicianId)
+      console.log('getAllReviewsAction==>', res)
 
       // Dispatch a success/error login notify
       dispatch({
@@ -44,8 +44,9 @@ export const getAllReviewsAction =
           message: res?.data?.message,
         },
       })
-      setOk(true)
-      setReviewsList(res?.data?.reviews)
+      if (data?.setOk) data?.setOk(true)
+      if (data?.setReviewsList) data?.setReviewsList(res?.data?.reviews)
+      return res?.data?.reviews
     } catch (error) {
       ErrorNotification(error?.response?.data?.type[0].message)
       // data.setLoading(false)
@@ -56,8 +57,8 @@ export const getAllReviewsAction =
           message: error.response.data?.type[0].message,
         },
       })
-      setOk(false)
-      setReviewsList([])
+      data?.setOk(false)
+      data?.setReviewsList([])
     }
   }
 

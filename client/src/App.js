@@ -60,11 +60,14 @@ import {
   ReviewDetails,
   DoctorManagement,
   PatientProfileAdmin,
+  HomePage,
 } from './views'
 import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
 import PatientReviews from './views/doctor/PatientReviews'
 import PhysicianProfileAdmin from './views/admin/PhysicianProfileAdmin'
+import DeactivatedProfiles from './views/admin/DeactivatedProfiles'
+import MyReviews from './views/patient/MyReviews'
 
 const App = () => {
   const history = useHistory()
@@ -101,7 +104,9 @@ const App = () => {
         }></Suspense>
       <Switch>
         {/*************** Common Routes ***************/}
-        <Route exact path='/' component={!user && Login} />
+        <Route path={'/home'} component={HomePage} />
+        {/* <Route exact path='/' component={!user && Login} /> */}
+        <Route exact path='/' component={!user && HomePage} />
         <Route exact path='/login' component={!user && Login} />
         <Route exact path='/signup' component={!user && Signup} />
         <Route
@@ -193,6 +198,11 @@ const App = () => {
         />
         <AdminRoute
           exact
+          path='/admin/deactivatedProfiles'
+          component={DeactivatedProfiles}
+        />
+        <AdminRoute
+          exact
           path='/admin/patient/:patientName-:patientId'
           component={PatientProfileAdmin}
         />
@@ -243,6 +253,7 @@ const App = () => {
           path='/patient/speciality/:speciality'
           component={CategoryView}
         />
+        <PatientRoute exact path='/patient/my-reviews' component={MyReviews} />
 
         <PatientRoute
           exact
@@ -284,7 +295,7 @@ const App = () => {
           component={ReviewDetails}
         />
         {/* Wildcard */}
-        <Route path={'*'} component={RandomPageRedirect} />
+        {/* <Route path={'*'} component={RandomPageRedirect} /> */}
       </Switch>
     </div>
   )

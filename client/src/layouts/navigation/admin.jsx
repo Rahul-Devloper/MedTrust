@@ -1,36 +1,35 @@
 import { Home, Calendar, People, Chat, Document } from "react-iconly";
+import { MdPersonAddDisabled } from 'react-icons/md'
+import { FaUserDoctor } from 'react-icons/fa6'
+import { IoPersonAddOutline } from 'react-icons/io5'
+
+import { RxDashboard } from 'react-icons/rx'
 
 const admin = [
   {
-    id: "dashboard",
-    title: "Dashboard",
-    icon: <Home size={18} />,
-    navLink: "/admin/dashboard",
+    id: 'dashboard',
+    title: 'Dashboard',
+    icon: <RxDashboard size={18} />,
+    navLink: '/admin/dashboard',
   },
   {
-    id: "project",
-    title: "Projects",
-    icon: <Document size={18} />,
-    navLink: "/admin/projects",
+    id: 'patients',
+    title: 'Patients',
+    icon: <IoPersonAddOutline size={18} />,
+    navLink: '/admin/manage-patients',
   },
   {
-    id: "calendar",
-    title: "Calendar",
-    icon: <Calendar size={18} />,
-    navLink: "/admin/calendar",
+    id: 'doctors',
+    title: 'Doctors',
+    icon: <FaUserDoctor size={18} />,
+    navLink: '/admin/manage-doctors',
   },
   {
-    id: "chat",
-    title: "Chat",
-    icon: <Chat size={18} />,
-    navLink: "/admin/chat",
+    id: 'deactivatedProfiles',
+    title: 'Deactivated Profiles',
+    icon: <MdPersonAddDisabled size={18} />,
+    navLink: '/admin/deactivatedProfiles',
   },
-  {
-    id: "team",
-    title: "Team",
-    icon: <People size={18} />,
-    navLink: "/admin/team",
-  },
-];
+]
 
 export default admin;
