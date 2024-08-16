@@ -18,12 +18,17 @@ import CarouselOne from '../assets/images/pages/home/carouselOne.png'
 import CarouselTwo from '../assets/images/pages/home/carouselTwo.png'
 import CarouselThree from '../assets/images/pages/home/carouselThree.png'
 import LeftImage from '../assets/images/pages/home/leftImage.png'
+import { SiTrustpilot } from 'react-icons/si'
+import { MdOutlineSecurity } from 'react-icons/md'
+
 import RightImage from '../assets/images/pages/home/rightImage.png'
 import MaleAvatar from '../assets/images/illustrations/doctorMaleAvatar.png'
 import FemaleAvatar from '../assets/images/illustrations/doctorFemaleAvatar.png'
 import logo from '../assets/images/logo/logoText.png'
 import MenuFooter from '../layouts/components/footer'
 import '../assets/css/fontStyles.css'
+import { FaBook, FaStethoscope } from 'react-icons/fa6'
+import { GrUserExpert } from 'react-icons/gr'
 
 const { Header, Content } = Layout
 
@@ -33,6 +38,45 @@ const HomePage = () => {
     'Trusted Reviews',
     'Data Security',
     'User-Friendly',
+  ]
+
+  const dataWithIcons = [
+    {
+      icon: (
+        <FaStethoscope
+          style={{ fontSize: '30px', color: 'rgb(30, 156, 227)' }}
+        />
+      ),
+      title: 'Verified Doctors',
+      //   description: doctorData?.professionalInfo?.specialty,
+    },
+    {
+      icon: (
+        <SiTrustpilot
+          style={{ fontSize: '30px', color: 'rgb(30, 156, 227)' }}
+        />
+      ),
+      title: 'Trusted Reviews',
+      //   description: doctorData?.professionalInfo?.education,
+    },
+    {
+      icon: (
+        <MdOutlineSecurity
+          style={{ fontSize: '30px', color: 'rgb(30, 156, 227)' }}
+        />
+      ),
+      title: 'Data Security',
+      //   description: doctorData?.professionalInfo?.yearsOfExperience,
+    },
+    {
+      icon: (
+        <GrUserExpert
+          style={{ fontSize: '30px', color: 'rgb(30, 156, 227)' }}
+        />
+      ),
+      title: 'User-Friendly',
+      //   description: doctorData?.professionalInfo?.yearsOfExperience,
+    },
   ]
 
   const testimonials = [
@@ -107,6 +151,7 @@ const HomePage = () => {
           display: 'flex',
           justifyContent: 'space-between',
           alignItems: 'center',
+          marginTop: 0,
         }}>
         <div style={{ display: 'flex', alignItems: 'center' }}>
           <Avatar
@@ -218,7 +263,7 @@ const HomePage = () => {
             }}>
             App Specialities
           </Tag>
-          <CardGrid toRenderView={true} children={categories} />
+          <CardGrid dataWithIcons={dataWithIcons} />
           {/* <div style={{ position: 'absolute', top: 0, right: 0 }}>
             {renderAnimatedCircles()}
           </div> */}
@@ -233,14 +278,14 @@ const HomePage = () => {
             position: 'relative',
             backgroundColor: 'white',
           }}>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <img
               src={LeftImage}
               alt='left-content'
               style={{ width: '100%', objectFit: 'cover' }}
             />
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Tag
               color='geekblue'
               style={{
@@ -257,6 +302,16 @@ const HomePage = () => {
               interface and robust data security, we ensure your experience is
               both seamless and secure
             </p>
+            <br />
+            <Button
+              type='primary'
+              style={{
+                backgroundColor: '#57ddbe',
+                borderColor: '#57ddbe',
+                borderRadius: '50px',
+              }}>
+              <Link to='/login'>Start Reviewing</Link>
+            </Button>
           </Col>
           <div
             style={{
@@ -277,7 +332,7 @@ const HomePage = () => {
             position: 'relative',
             backgroundColor: 'white',
           }}>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <Tag
               color='geekblue'
               style={{
@@ -297,8 +352,19 @@ const HomePage = () => {
               here to empower you with the information you need for your health
               journey
             </p>
+            <br />
+            <br />
+            <Button
+              type='primary'
+              style={{
+                backgroundColor: '#57ddbe',
+                borderColor: '#57ddbe',
+                borderRadius: '50px',
+              }}>
+              <Link to='/login'>Sing In Today</Link>
+            </Button>
           </Col>
-          <Col span={12}>
+          <Col xs={24} sm={12} md={12} lg={12} xl={12}>
             <img
               src={RightImage}
               alt='right-content'
@@ -329,25 +395,25 @@ const HomePage = () => {
             justify='space-between'
             gutter={[16, 16]}
             style={{ color: '#fff' }}>
-            <Col span={6}>
+            <Col xs={24} sm={12} md={12} lg={6} xl={6}>
               <div>
                 <h2 style={{ color: '#fff' }}>12+</h2>
                 <p style={{ color: '#fff' }}>Years of Industry Knowledge</p>
               </div>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} md={12} lg={6} xl={6}>
               <div>
                 <h2 style={{ color: '#fff' }}>550+</h2>
                 <p style={{ color: '#fff' }}>Signed In Practitioners Listed</p>
               </div>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} md={12} lg={6} xl={6}>
               <div>
                 <h2 style={{ color: '#fff' }}>300+</h2>
                 <p style={{ color: '#fff' }}>Active Medical Respondants</p>
               </div>
             </Col>
-            <Col span={6}>
+            <Col xs={24} sm={12} md={12} lg={6} xl={6}>
               <div>
                 <h2 style={{ color: '#fff' }}>UK-Wide</h2>
                 <p style={{ color: '#fff' }}>Coverage Across the Nation</p>

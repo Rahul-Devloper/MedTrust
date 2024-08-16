@@ -148,13 +148,13 @@ exports.signup = async (req, res) => {
 
     // testing mailservice using mailtrap.
     const transporter = nodemailer.createTransport({
-      host: 'sandbox.smtp.mailtrap.io',
-      port: 2525,
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // use false for STARTTLS; true for SSL on port 465
       auth: {
-        user: 'e9498c2661df56',
-        pass: '0f4933f2b27d54',
+        user: process.env.NODEMAILER_EMAIL,
+        pass: process.env.NODEMAILER_PASSWORD,
       },
-      secure: false,
     })
 
     await new Promise((resolve, reject) => {
