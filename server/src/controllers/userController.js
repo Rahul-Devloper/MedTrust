@@ -130,6 +130,23 @@ exports.updateUserById = async (req, res) => {
   }
 }
 
+exports.getUserWithQuery = async (req, res) => {
+  const query = req.query
+  try {
+    const user = await UserService.findOneUser(query)
+    // If no user found, throw 404 error
+    if (!user) {
+      return res.status(404).json({
+        error: 'User not found',
+      })
+    }
+
+    res.status(200).json(user)
+  } catch (error) {
+    console.error('Error fetching user:', error)
+  }
+}
+
 exports.updateUserWithId = async (req, res) => {
   const { id } = req.params
   const { role, number, ImgUrl } = req.body
@@ -201,4 +218,6 @@ exports.updateUserWithId = async (req, res) => {
     })
   }
 }
+
+
 

@@ -1,6 +1,8 @@
 const Review = require('../models/review')
 const AppointmentService = require('../services/appointmentService')
 const ReviewService = require('../services/reviewService')
+const UserService = require('../services/userService')
+const sendEmail = require('../utils/sendEmail') // Utility to send OTP email
 
 /**********************************
   Check if user is a member
@@ -72,6 +74,17 @@ exports.postReview = async (req, res) => {
         success: false,
         message: 'Could not post review',
       })
+    }
+
+    const user = await UserService.findOneUser({ gmcNumber: doctorGMCNumber })
+
+    if (!user) {
+      console.error('User not found - Email not sent')
+    } else {
+      await sendEmail(
+        user,
+        `A review has been posted for you by NHS number: ${patientNHSNumber}. </br> Please check your review page and respond to the constructive review.`
+      )
     }
 
     return res.status(200).json({
@@ -176,6 +189,18 @@ exports.postResponse = async (req, res) => {
       success: false,
       message: 'Could not post response',
     })
+  }
+  const user = await UserService.findOneUser({
+    nhsNumber: response?.patientNHSNumber,
+  })
+
+  if (!user) {
+    console.error('User not found - Email not sent')
+  } else {
+    await sendEmail(
+      user,
+      `A response has been posted for your review. </br> Please check your review page `
+    )
   }
 
   return res.status(200).json({

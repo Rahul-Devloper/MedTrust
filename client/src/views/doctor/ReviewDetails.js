@@ -47,6 +47,22 @@ const ReviewDetails = () => {
     form.resetFields()
   }
 
+  const handleDeleteResponse = () => {
+    dispatch(
+      postResponseAction({
+        setReviewData,
+        values: {
+          isResponse: false,
+          response: '',
+        },
+        reviewId,
+        setOk,
+      })
+    )
+    setIsResponseModal(false)
+    form.resetFields()
+  }
+
   return (
     <div className='check'>
       <Row gutter={[16, 16]} justify='center' align={'middle'}>
@@ -118,6 +134,11 @@ const ReviewDetails = () => {
             <RatingCard
               //   title={'Response'}
               //   rating={rating?.rating}
+              extra={
+                <Button type='danger' onClick={() => handleDeleteResponse()}>
+                  Delete Response
+                </Button>
+              }
               heading={'Response'}
               description={reviewData?.response}
               reviewer={

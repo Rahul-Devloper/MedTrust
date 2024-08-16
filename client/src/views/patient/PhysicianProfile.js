@@ -33,6 +33,7 @@ import RenderCardDetails from '../../components/Cards/RenderCardDetails'
 import ProfileCard from '../../components/Cards/ProfileCard'
 import RatingCard from '../../components/Cards/RatingCard'
 import {
+  deleteReviewAction,
   getAllReviewsAction,
   postReviewAction,
   updateReviewAction,
@@ -222,6 +223,18 @@ const PhysicianProfile = () => {
     form.resetFields()
   }
 
+  const handleDeleteReview = (reviewId) => {
+    console.log('reviewId==>', reviewId)
+    console.log('physicianId==>', physicianId)
+    dispatch(
+      deleteReviewAction({
+        setOk,
+        reviewId,
+        setReviewsList,
+        doctorGMCNumber: physicianId,
+      })
+    )
+  }
   const handleCancel = () => {
     setIsModalVisible(false)
     form.resetFields()
@@ -451,27 +464,35 @@ const PhysicianProfile = () => {
                     date={`Reviewed on: ${rating?.date}`}
                     extra={
                       rating?.isReviewed ? (
-                        <Button
-                          onClick={() =>
-                            openUpdateModal(rating._id, {
-                              communication:
-                                rating?.reviewScores?.communication,
-                              bedsideManner:
-                                rating?.reviewScores?.bedsideManner,
-                              officeEnvironment:
-                                rating?.reviewScores?.officeEnvironment,
-                              waitTime: rating?.reviewScores?.waitTime,
-                              professionalism:
-                                rating?.reviewScores?.professionalism,
-                              treatmentSatisfaction:
-                                rating?.reviewScores?.treatmentSatisfaction,
-                              title: rating?.heading,
-                              description: rating?.reviewText,
-                            })
-                          }
-                          type='primary'>
-                          Update Review
-                        </Button>
+                        <div>
+                          <Button
+                            onClick={() =>
+                              openUpdateModal(rating._id, {
+                                communication:
+                                  rating?.reviewScores?.communication,
+                                bedsideManner:
+                                  rating?.reviewScores?.bedsideManner,
+                                officeEnvironment:
+                                  rating?.reviewScores?.officeEnvironment,
+                                waitTime: rating?.reviewScores?.waitTime,
+                                professionalism:
+                                  rating?.reviewScores?.professionalism,
+                                treatmentSatisfaction:
+                                  rating?.reviewScores?.treatmentSatisfaction,
+                                title: rating?.heading,
+                                description: rating?.reviewText,
+                              })
+                            }
+                            type='primary'>
+                            Update Review
+                          </Button>
+                          <Button
+                            style={{ marginLeft: '10px' }}
+                            type='danger'
+                            onClick={() => handleDeleteReview(rating._id)}>
+                            Delete Review
+                          </Button>
+                        </div>
                       ) : null
                     }
                   />

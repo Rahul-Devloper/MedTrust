@@ -34,12 +34,14 @@ class ReviewService {
 
   static findIdAndUpdateResponse = async ({ reviewId, values }) => {
     try {
+      const { isResponse = true } = values
+      console.log('isResponse==>', isResponse)
       const updatedReview = await Review.findByIdAndUpdate(
         reviewId,
         {
-          response: values.response,
+          response: values?.response,
           responseDate: new Date(),
-          isResponse: true,
+          isResponse: isResponse,
         },
         { new: true } // Return the updated document
       )
