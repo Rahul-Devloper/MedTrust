@@ -181,7 +181,11 @@ const PatientFindDoctor = () => {
                       </p>
                       <p>
                         <strong>Overall Effectiveness:</strong>{' '}
-                        {doctor.ratings?.overallEffectiveness || 'N/A'}
+                        {doctor.ratings?.overallEffectiveness
+                          ? parseFloat(
+                              doctor.ratings.overallEffectiveness
+                            ).toFixed(1)
+                          : 'N/A'}
                       </p>
                     </>
                   }

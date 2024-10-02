@@ -140,3 +140,6 @@ server/.tern-port
 
 # Stores VSCode versions used for testing VSCode extensions
 server/.vscode-test
+
+# Local Netlify folder
+.netlify

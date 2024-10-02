@@ -130,11 +130,13 @@ const Sidebar = (props) => {
 
           <MenuItem onClose={onClose} />
 
-          <MenuFooter
-            onClose={onClose}
-            collapsed={collapsed}
-            mobileMenu={false}
-          />
+          {user && (
+            <MenuFooter
+              onClose={onClose}
+              collapsed={collapsed}
+              mobileMenu={false}
+            />
+          )}
         </motion.div>
       </Sider>
       <MenuMobile onClose={onClose} visible={visible} />

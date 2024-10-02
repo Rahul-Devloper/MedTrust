@@ -94,7 +94,7 @@ const MenuProfile = (props) => {
           )}
 
           {/* Security */}
-          <Menu.Item
+          {/* <Menu.Item
             key='3'
             icon={<Setting set='curved' className={menuIconClass} />}
             className={`
@@ -107,7 +107,7 @@ const MenuProfile = (props) => {
             `}
             onClick={props.onCloseDrawer}>
             <Link to='/profile/security'>Security Settings</Link>
-          </Menu.Item>
+          </Menu.Item> */}
 
           {/* Password Change */}
           <Menu.Item

@@ -16,13 +16,9 @@ const appointmentSchema = new mongoose.Schema(
       type: Date,
       required: true,
     },
-    appointmentDetails: {
+    status: {
       type: String,
       required: true,
-    },
-    isReviewed: {
-      type: Boolean,
-      default: false,
     },
   },
   {

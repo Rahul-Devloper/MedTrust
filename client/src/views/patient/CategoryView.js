@@ -53,9 +53,7 @@ const CategoryView = () => {
       <h2>Doctors by Speciality</h2>
       {doctorsBySpecialization?.length > 0 &&
         doctorsBySpecialization?.map((doctor) => (
-          <div
-            key={doctor._id}
-            style={{ marginBottom: '20px', minHeight: '80vh' }}>
+          <div key={doctor._id} style={{ marginBottom: '20px' }}>
             <ProfileCard
               avatar={
                 doctor?.ImgUrl ||
@@ -67,7 +65,9 @@ const CategoryView = () => {
               description={doctor?.professionalInfo?.specialty}
               ratingData={{
                 label: 'Overall Effectiveness',
-                value: doctor.ratings?.overallEffectiveness || 0,
+                value: doctor.ratings?.overallEffectiveness
+                  ? parseFloat(doctor.ratings.overallEffectiveness).toFixed(1)
+                  : 'N/A' || 0,
                 color: 'magenta',
               }}
               details={[

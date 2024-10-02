@@ -135,6 +135,49 @@ const PhysicianProfile = () => {
     },
   ]
 
+  let averageScores = {}
+
+  // Initialize total scores object
+  const totalScores = {
+    communication: 0,
+    bedsideManner: 0,
+    officeEnvironment: 0,
+    waitTime: 0,
+    professionalism: 0,
+    treatmentSatisfaction: 0,
+    rating: 0,
+  }
+
+  // Count the number of reviews
+  const reviewCount = reviewList?.length
+
+  // Iterate through the reviewList and sum up the scores
+  if (reviewCount > 0) {
+    reviewList.forEach((review) => {
+      // Ensure reviewScores exists before trying to access its properties
+      if (review.reviewScores) {
+        for (const key in totalScores) {
+          if (key in review.reviewScores) {
+            totalScores[key] += review.reviewScores[key]
+          } else if (key === 'rating' && review[key] !== undefined) {
+            totalScores[key] += review[key]
+          }
+        }
+      }
+    })
+
+    // Calculate the average scores
+    for (const key in totalScores) {
+      // Calculate the average and format it to one decimal place
+      const average = totalScores[key] / reviewCount
+      averageScores[key] =
+        average % 1 !== 0 ? average.toFixed(1) : average.toString() // Converts to string and rounds to 1 decimal if necessary
+    }
+
+    console.log('Average Ratings:', averageScores)
+  } else {
+    console.log('No reviews available to calculate ratings.')
+  }
   const treatmentData =
     doctorData?.treatmentFrequency?.conditionsTreated?.map((item) => ({
       condition: item?.condition,
@@ -270,7 +313,10 @@ const PhysicianProfile = () => {
             description={doctorData?.professionalInfo?.specialty}
             ratingData={{
               label: 'Overall Effectiveness',
-              value: doctorData?.ratings?.overallEffectiveness || 0,
+              value:
+                averageScores?.rating ||
+                doctorData?.ratings?.overallEffectiveness ||
+                0,
               color: 'magenta',
             }}
             details={[
@@ -374,40 +420,57 @@ const PhysicianProfile = () => {
               title='Ratings'
               ratingData={{
                 label: 'Overall Effectiveness',
-                value: doctorData?.ratings?.overallEffectiveness || 0,
+                value:
+                  averageScores?.rating ||
+                  doctorData?.ratings?.overallEffectiveness ||
+                  0,
                 color: 'magenta',
               }}
               progressBars={[
                 {
                   label: 'Communication',
-                  value: doctorData?.ratings?.patientScores?.communication || 0,
+                  value:
+                    averageScores?.communication ||
+                    doctorData?.ratings?.patientScores?.communication ||
+                    0,
                   color: 'blue',
                 },
                 {
                   label: 'Bedside Manner',
-                  value: doctorData?.ratings?.patientScores?.bedsideManner || 0,
+                  value:
+                    averageScores?.bedsideManner ||
+                    doctorData?.ratings?.patientScores?.bedsideManner ||
+                    0,
                   color: 'green',
                 },
                 {
                   label: 'Office Environment',
                   value:
-                    doctorData?.ratings?.patientScores?.officeEnvironment || 0,
+                    averageScores?.officeEnvironment ||
+                    doctorData?.ratings?.patientScores?.officeEnvironment ||
+                    0,
                   color: 'orange',
                 },
                 {
                   label: 'Wait Time',
-                  value: doctorData?.ratings?.patientScores?.waitTime || 0,
+                  value:
+                    averageScores?.waitTime ||
+                    doctorData?.ratings?.patientScores?.waitTime ||
+                    0,
                   color: 'red',
                 },
                 {
                   label: 'Professionalism',
                   value:
-                    doctorData?.ratings?.patientScores?.professionalism || 0,
+                    averageScores?.professionalism ||
+                    doctorData?.ratings?.patientScores?.professionalism ||
+                    0,
                   color: 'purple',
                 },
                 {
                   label: 'Treatment Satisfaction',
                   value:
+                    averageScores?.treatmentSatisfaction ||
                     doctorData?.ratings?.patientScores?.treatmentSatisfaction ||
                     0,
                   color: 'teal',

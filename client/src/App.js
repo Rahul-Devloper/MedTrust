@@ -61,6 +61,9 @@ import {
   DoctorManagement,
   PatientProfileAdmin,
   HomePage,
+  AboutPage,
+  PrivacyPolicyPage,
+  ContactPage,
 } from './views'
 import PatientFindDoctor from './views/patient/PatientFindDoctor'
 import CategoryView from './views/patient/CategoryView'
@@ -107,6 +110,9 @@ const App = () => {
         <Route path={'/home'} component={HomePage} />
         {/* <Route exact path='/' component={!user && Login} /> */}
         <Route exact path='/' component={!user && HomePage} />
+        <Route exact path='/about' component={AboutPage} />
+        <Route exact path='/privacy-policy' component={PrivacyPolicyPage} />
+        <Route exact path='/contact' component={ContactPage} />
         <Route exact path='/login' component={!user && Login} />
         <Route exact path='/signup' component={!user && Signup} />
         <Route

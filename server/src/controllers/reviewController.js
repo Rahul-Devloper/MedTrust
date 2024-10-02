@@ -1,5 +1,6 @@
 const Review = require('../models/review')
 const AppointmentService = require('../services/appointmentService')
+const DoctorRecordService = require('../services/doctorRecordService')
 const ReviewService = require('../services/reviewService')
 const UserService = require('../services/userService')
 const sendEmail = require('../utils/sendEmail') // Utility to send OTP email
@@ -7,6 +8,45 @@ const sendEmail = require('../utils/sendEmail') // Utility to send OTP email
 /**********************************
   Check if user is a member
 ***********************************/
+
+// A reusable function to calculate the average rating and update the doctor's profile
+async function updateDoctorAverageRating(doctorGMCNumber) {
+  try {
+    // Fetch all reviews for the doctor
+    const allReviews = await ReviewService.getAllReviewsById({
+      doctorGMCNumber,
+    })
+
+    // Check if there are any reviews
+    if (!allReviews || allReviews.length === 0) {
+      console.log('No reviews found')
+      return null // or handle this case as needed
+    }
+
+    // Calculate the average rating
+    const totalReviews = allReviews.length
+    const averageRating =
+      allReviews.reduce((acc, review) => acc + review.rating, 0) / totalReviews
+
+    console.log('Average Rating==>', averageRating)
+
+    // Update the doctor's overall effectiveness rating
+    const updatedDoctor = await DoctorRecordService.findOneUserAndUpdate(
+      { gmcNumber: doctorGMCNumber },
+      { 'ratings.overallEffectiveness': averageRating }
+    )
+
+    if (!updatedDoctor) {
+      console.error('Doctor not found or update failed')
+      return null
+    }
+
+    return updatedDoctor
+  } catch (error) {
+    console.error('Error updating doctor rating:', error)
+    throw error
+  }
+}
 
 exports.getAllReviews = async (req, res) => {
   const { physicianId } = req?.params
@@ -76,6 +116,12 @@ exports.postReview = async (req, res) => {
       })
     }
 
+    // Update doctor's rating using the reusable function
+    const updatedDoctor = await updateDoctorAverageRating(doctorGMCNumber)
+
+    if (!updatedDoctor) {
+      console.error('Doctor not found or update failed')
+    }
     const user = await UserService.findOneUser({ gmcNumber: doctorGMCNumber })
 
     if (!user) {
@@ -167,6 +213,11 @@ exports.updateReviewById = async (req, res) => {
       message: 'Could not update review',
     })
   }
+  const updatedDoctor = await updateDoctorAverageRating(review?.doctorGMCNumber)
+
+  if (!updatedDoctor) {
+    console.error('Doctor not found or update failed')
+  }
 
   return res.status(200).json({
     success: true,
@@ -222,6 +273,12 @@ exports.deleteReviewbyId = async (req, res) => {
       success: false,
       message: 'Could not delete review',
     })
+  }
+  // Update doctor's rating using the reusable function
+  const updatedDoctor = await updateDoctorAverageRating(review?.doctorGMCNumber)
+
+  if (!updatedDoctor) {
+    console.error('Doctor not found or update failed')
   }
 
   return res.status(200).json({

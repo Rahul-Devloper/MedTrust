@@ -15,7 +15,7 @@ const sendEmail = async (user, message) => {
   const mailOptions = {
     from: `MedTrust <${process.env.NODEMAILER_EMAIL}>`,
     to: email,
-    subject: 'Your OTP Code',
+    subject: 'MedTrust Review Notification',
     html: `Hi ${user.name}, </br> ${message}`,
   }
 

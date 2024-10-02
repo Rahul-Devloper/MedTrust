@@ -70,3 +70,9 @@ export { default as RandomPageRedirect } from './404'
 /************************************************ Home Page ************************************************************/
 
 export { default as HomePage } from './HomePage'
+
+
+/************************************************ Common Pages ************************************************************/
+export { default as AboutPage } from './AboutPage'
+export { default as PrivacyPolicyPage } from './PrivacyPolicyPage'
+export { default as ContactPage } from './ContactPage'

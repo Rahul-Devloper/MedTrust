@@ -9,6 +9,7 @@ import avatar from "../../../../assets/images/memoji/user1.png";
 
 const MenuFooter = (props) => {
   const { user } = useSelector((state) => state.auth);
+  console.log('user==>', user)
 
   return props.collapsed === false ? (
     <Row
