@@ -20,7 +20,7 @@
   "keywords": [
     "saas"
   ],
-  "author": "dPacc",
+  "author": "rahul-devloper",
   "license": "ISC",
   "dependencies": {
     "bcryptjs": "^2.4.3",
