@@ -1,4 +1,4 @@
-# SaaS Boilerplate
+# MedTrust
 
 ## Command
 
@@ -23,4 +23,4 @@
 - Account activation reverification email
 - JSON APIs
 
-# Created by: rahul-devloper
+# Created by: Rahul-Devloper
