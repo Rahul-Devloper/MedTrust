@@ -14,7 +14,8 @@ services:
     ports:
       - "8000:8000"
     depends_on:
-      - mongo
+      mongo:
+        condition: service_healthy
     env_file: ./server/.env
     environment:
       - NODE_ENV=development
@@ -30,6 +31,13 @@ services:
     environment:
       - MONGO_INITDB_ROOT_USERNAME=root
       - MONGO_INITDB_ROOT_PASSWORD=example
+    healthcheck:
+      test: ["CMD", "mongosh", "--eval", "db.adminCommand('ping')", "--quiet"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 40s
+    restart: always
     networks:
       - app-network
   client:
@@ -46,6 +54,8 @@ services:
       - server
     ports:
       - "3000:3000"
+    environment:
+      - REACT_APP_BACKEND_API=http://localhost:8000/api
     networks:
       - app-network
 
