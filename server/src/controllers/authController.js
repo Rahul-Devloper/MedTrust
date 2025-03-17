@@ -455,14 +455,24 @@ exports.passwordResetEmail = async (req, res) => {
     })
 
     // Send password reset email to the user
+    // const transporter = nodemailer.createTransport({
+    //   port: 465,
+    //   host: 'smtpout.secureserver.net',
+    //   auth: {
+    //     user: process.env.NODEMAILER_EMAIL,
+    //     pass: process.env.NODEMAILER_PASSWORD,
+    //   },
+    //   secure: true,
+    // })
+    //mailtrap
     const transporter = nodemailer.createTransport({
-      port: 465,
-      host: 'smtpout.secureserver.net',
+      host: 'smtp.gmail.com',
+      port: 587,
+      secure: false, // use false for STARTTLS; true for SSL on port 465
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
       },
-      secure: true,
     })
 
     await new Promise((resolve, reject) => {
@@ -562,7 +572,7 @@ exports.passwordVerify = async (req, res, next) => {
         // Hash the new password
         const hashedPassword = await bcrypt.hash(newPassword, 12)
 
-        const updatedUser = await UserService.FindOneUserAndUpdate(
+        const updatedUser = await UserService.findOneUserAndUpdate(
           { email },
           { password: hashedPassword }
         )

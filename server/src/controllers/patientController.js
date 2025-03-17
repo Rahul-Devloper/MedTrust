@@ -43,6 +43,7 @@ exports.getAllPatients = async (req, res) => {
 
 // get all doctors available in the NHS database records
 exports.getAllDoctors = async (req, res) => {
+  console.log('server req==>', req)
   const doctors = await DoctorRecord.findAllDoctors()
   if (!doctors) {
     return res.status(400).json({
