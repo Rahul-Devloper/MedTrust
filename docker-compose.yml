@@ -9,7 +9,7 @@ services:
     container_name: medtrust-node-server
     command: /usr/src/app/node_modules/.bin/nodemon server.js
     volumes:
-      - ./server/:/usr/src/app
+      - ./server/:/usr/src/app 
       - /usr/src/app/node_modules
     ports:
       - "8000:8000"
