@@ -15,6 +15,8 @@ require('dotenv').config()
 
 // Initiate the express app
 const app = express()
+// ✅ Trust the proxy (required on Vercel/Heroku/etc)
+app.set("trust proxy", 1);
 
 // Middlewares
 const allowedDomains = process.env.CORS_ORIGIN?.split(',') || []
