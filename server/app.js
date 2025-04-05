@@ -17,7 +17,7 @@ require('dotenv').config()
 const app = express()
 
 // Middlewares
-var allowedDomains = process.env.CORS_ORIGIN
+const allowedDomains = process.env.CORS_ORIGIN?.split(',') || []
 app.use(
   cors({
     origin: function (origin, callback) {
