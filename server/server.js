@@ -3,6 +3,8 @@ const mongoose = require("mongoose");
 
 // Port
 const PORT = process.env.PORT || 8000;
+console.log('Using Mongo URI==>', process.env.ATLAS_URI)
+
 
 // Check for auth MongoDB URI
 if (!process.env.ATLAS_URI) {
