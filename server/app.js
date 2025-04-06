@@ -23,7 +23,6 @@ app.set("trust proxy", 1);
 //   .split(',')
 //   .map((origin) => origin.trim())
 
-console.log('Allowed CORS origins:', allowedDomains)
 // app.use(
 //   cors({
 //     origin: function (origin, callback) {
@@ -61,6 +60,8 @@ const allowedDomains = [
   'http://localhost:3000',
   'https://med-trust-client.vercel.app'
 ];
+console.log('Allowed CORS origins:', allowedDomains)
+
 
 app.use(
   cors({
@@ -80,7 +81,6 @@ app.use(
     credentials: true,
   })
 );
-
 
 // Rate Limiting
 app.use(
