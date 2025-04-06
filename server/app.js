@@ -18,12 +18,10 @@ const app = express()
 // ✅ Trust the proxy (required on Vercel/Heroku/etc)
 app.set("trust proxy", 1);
 
-app.options('*', cors()) // respond to preflight
-
 // Middlewares
-const allowedDomains = (process.env.CORS_ORIGIN || '')
-  .split(',')
-  .map((origin) => origin.trim())
+// const allowedDomains = (process.env.CORS_ORIGIN || '')
+//   .split(',')
+//   .map((origin) => origin.trim())
 
 console.log('Allowed CORS origins:', allowedDomains)
 // app.use(
@@ -42,25 +40,48 @@ console.log('Allowed CORS origins:', allowedDomains)
 //   })
 // )
 
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // Allow requests with no origin (like mobile apps, curl, etc.)
+//       if (!origin) return callback(null, true)
+
+//       if (allowedDomains.includes(origin)) {
+//         return callback(null, true)
+//       } else {
+//         console.error(`CORS blocked for origin: ${origin}`)
+//         return callback(new Error(`CORS policy violation from ${origin}`), false)
+//       }
+//     },
+//     credentials: true,
+//   })
+// )
+
+const allowedDomains = [
+  'http://localhost:3000',
+  'https://med-trust-client.vercel.app'
+];
+
 app.use(
   cors({
     origin: function (origin, callback) {
-      // Allow requests with no origin (like mobile apps, curl, etc.)
-      if (!origin) return callback(null, true)
+      // Allow requests with no origin (like mobile apps or curl)
+      if (!origin) return callback(null, true);
 
       if (allowedDomains.includes(origin)) {
-        return callback(null, true)
+        return callback(null, true);
       } else {
-        console.error(`CORS blocked for origin: ${origin}`)
         return callback(
-          new Error(`CORS policy violation from ${origin}`),
+          new Error(`CORS Error: Origin ${origin} not allowed.`),
           false
-        )
+        );
       }
     },
     credentials: true,
   })
-)
+);
+
+
 // Rate Limiting
 app.use(
   rateLimit({
