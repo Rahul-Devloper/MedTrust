@@ -56,10 +56,11 @@ app.set("trust proxy", 1);
 //   })
 // )
 
+// domains are hardcoded for vercel deployment
 const allowedDomains = [
   'http://localhost:3000',
   'https://med-trust-client.vercel.app'
-];
+]; 
 console.log('Allowed CORS origins:', allowedDomains)
 
 
