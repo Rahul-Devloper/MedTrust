@@ -21,10 +21,14 @@ const sendOTPEmail = async (email, otp) => {
   })
 
   const mailOptions = {
-    from: `MedTrust <${process.env.NODEMAILER_EMAIL}>`,
+    from: `MedTrust <${process.env.SUPPORT_EMAIL}>`,
     to: email,
     subject: 'Your OTP Code',
-    html: `Hi, </br> Your OTP code is ${otp}. This code will expire in 10 minutes.`,
+    html: `<p>Hello,</p>
+  <p>Your MedTrust OTP code is <strong>${otp}</strong>.</p>
+  <p>This code is valid for 10 minutes. Please do not share it with anyone.</p>
+  <br/>
+  <p>Thanks,<br/>MedTrust Team</p>`,
   }
 
   transporter.sendMail(mailOptions, function (error, info) {
