@@ -704,13 +704,13 @@ exports.login = async (req, res, next) => {
       await UserService.updateUserOtp(user._id, { otp, otpExpiry })
 
       // Send OTP to user's email
-      sendOTPEmail(user.email, otp).catch((err) => {
+      await sendOTPEmail(user.email, otp).catch((err) => {
         console.error('OTP Email Error:', err)
       })
 
       return res.status(200).json({
         message: 'OTP sent to your email, please verify to continue',
-        userId: user._id,
+        userId: user._id, // Send the userId to verify OTP later
       })
     }
   })(req, res, next)

@@ -39,6 +39,7 @@
     "otp-generator": "^4.0.1",
     "passport": "^0.4.1",
     "passport-local": "^1.0.0",
+    "resend": "^4.2.0",
     "sticky-session": "^1.1.2",
     "stripe": "^8.160.0",
     "uuid": "^8.3.2",
