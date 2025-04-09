@@ -3,9 +3,9 @@ const nodemailer = require('nodemailer')
 const sendEmail = async (user, message) => {
   const { email } = user
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: 'smtp-relay.brevo.com',
     port: 587,
-    secure: false, // use false for STARTTLS; true for SSL on port 465
+    secure: false, // use false for STARTTLS
     auth: {
       user: process.env.NODEMAILER_EMAIL,
       pass: process.env.NODEMAILER_PASSWORD,
@@ -13,7 +13,7 @@ const sendEmail = async (user, message) => {
   })
 
   const mailOptions = {
-    from: `MedTrust <${process.env.NODEMAILER_EMAIL}>`,
+    from: `MedTrust <rameshrahul26@gmail.com>`,
     to: email,
     subject: 'MedTrust Review Notification',
     html: `Hi ${user.name}, </br> ${message}`,

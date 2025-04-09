@@ -146,11 +146,11 @@ exports.signup = async (req, res) => {
       })
     }
 
-    // testing mailservice using mailtrap.
+    // testing mailservice using brevo.
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: 'smtp-relay.brevo.com',
       port: 587,
-      secure: false, // use false for STARTTLS; true for SSL on port 465
+      secure: false, // use false for STARTTLS
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
@@ -172,7 +172,7 @@ exports.signup = async (req, res) => {
 
     // Configure the message
     let mailOptions = {
-      from: `MedTrust <${process.env.NODEMAILER_EMAIL}>`,
+      from: `MedTrust <rameshrahul26@gmail.com>`,
       to: email,
       subject: "You're in :) Plus, a quick question",
       html: `Hi, ${newUser.name.split(' ')[0]}! <br>
@@ -358,7 +358,7 @@ exports.accountReverify = async (req, res) => {
       })
 
       let mailOptions = {
-        from: `Deepak from MedTrust <${process.env.NODEMAILER_EMAIL}>`,
+        from: `Rahul from MedTrust <rameshrahul26@gmail.com>`,
         to: email,
         subject: 'Re-Verification :) Plus, a quick question',
         html: `Hi, ${existingUser?.name?.split(' ')[0]}! <br>
@@ -466,9 +466,9 @@ exports.passwordResetEmail = async (req, res) => {
     // })
     //mailtrap
     const transporter = nodemailer.createTransport({
-      host: 'smtp.gmail.com',
+      host: 'smtp-relay.brevo.com',
       port: 587,
-      secure: false, // use false for STARTTLS; true for SSL on port 465
+      secure: false, // use false for STARTTLS
       auth: {
         user: process.env.NODEMAILER_EMAIL,
         pass: process.env.NODEMAILER_PASSWORD,
@@ -490,7 +490,7 @@ exports.passwordResetEmail = async (req, res) => {
 
     // Configure the message
     let mailOptions = {
-      from: `MedTrust <${process.env.SUPPORT_EMAIL}>`,
+      from: `MedTrust <rameshrahul26@gmail.com>`,
       to: email,
       subject: 'Password Reset',
       html: `Hi, ${existingUser?.name?.split(' ')[0]}! <br>
