@@ -707,9 +707,6 @@ exports.login = async (req, res, next) => {
         message: 'OTP sent to your email, please verify to continue',
         userId: user._id,
       })
-      console.log(
-        `OTP: ${otp}, Expires at: ${new Date(otpExpiry).toISOString()}`
-      )
     } catch (err) {
       console.error('OTP Email Error:', err)
       return res

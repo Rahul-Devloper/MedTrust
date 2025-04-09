@@ -26,6 +26,7 @@ const sendOTPEmail = async (email, otp) => {
 
   return new Promise((resolve, reject) => {
     transporter.sendMail(mailOptions, (error, info) => {
+      // sendMail is an async function, hence using Promise to handle it for awaiting the response
       if (error) {
         console.error('OTP Email Error:', error)
         return reject(error)
