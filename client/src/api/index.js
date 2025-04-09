@@ -3,59 +3,89 @@ import Cookies from "js-cookie";
 import { AUTH_TYPES } from "../redux/constants/authTypes";
 import { store } from "../redux/store";
 
-// Set the base url of the backend api
 const BASE_URL = process.env.REACT_APP_BACKEND_API;
-console.log('BASE_URL==>', BASE_URL)
-
-// Create api with base url
 const api = axios.create({ baseURL: BASE_URL })
-console.log('api==>', api)
 
-/*
-Before making any request, check for token saved in the browser cookie,
-if theres a token in the cookie, add it to the request authorization
-header
-*/
+// Debounce-related flags
+let isRefreshing = false
+let refreshSubscribers = []
+
+const onRefreshed = (token) => {
+  refreshSubscribers.forEach((cb) => cb(token))
+}
+
+const addSubscriber = (callback) => {
+  refreshSubscribers.push(callback)
+}
+
+// Add Authorization header if access token exists
 api.interceptors.request.use((req) => {
-  console.log('req==>', req)
-  // If token exists, add to req auth header
-  if (Cookies.get('access')) {
-    req.headers.authorization = `Bearer ${Cookies.get('access')}`
+  const token = Cookies.get('access')
+  if (token) {
+    req.headers.authorization = `Bearer ${token}`
   }
   return req
 })
 
-/*
-If the response has status code of 401, fetch new token before the next request 
-*/
+// Handle 401 and refresh token logic
 api.interceptors.response.use(
-  (res) => {
-    return res;
-  },
+  (res) => res,
   async (err) => {
-    if (err?.response.status === 401) {
-      const res = await api.post(
-        "/refresh_token",
-        {},
-        {
-          withCredentials: true,
-          credentials: "include",
-        }
-      );
-      // Save the new token to the browser cookie
-      Cookies.set("access", res.data.accessToken, { expires: 0.0125 }); // 14 minutes
-      // Dispatch action to update user and token in the store
-      store.dispatch({
-        type: AUTH_TYPES.AUTH,
-        payload: {
-          accessToken: res.data.accessToken,
-          user: res.data.user,
-        },
-      });
-      return await api.request(err.config);
+    const originalRequest = err.config
+
+    // If unauthorized and retry not done yet
+    if (err.response?.status === 401 && !originalRequest._retry) {
+      originalRequest._retry = true
+
+      if (isRefreshing) {
+        return new Promise((resolve) => {
+          addSubscriber((token) => {
+            originalRequest.headers.authorization = `Bearer ${token}`
+            resolve(api(originalRequest))
+          })
+        })
+      }
+
+      isRefreshing = true
+
+      try {
+        const res = await api.post(
+          '/refresh_token',
+          {},
+          {
+            withCredentials: true,
+            credentials: 'include',
+          }
+        )
+
+        const newToken = res.data.accessToken
+
+        // Save token to cookies
+        Cookies.set('access', newToken, { expires: 0.0125 }) // ~18 minutes
+
+        // Dispatch new auth state
+        store.dispatch({
+          type: AUTH_TYPES.AUTH,
+          payload: {
+            accessToken: newToken,
+            user: res.data.user,
+          },
+        })
+
+        onRefreshed(newToken)
+        refreshSubscribers = []
+        isRefreshing = false
+
+        originalRequest.headers.authorization = `Bearer ${newToken}`
+        return api(originalRequest)
+      } catch (refreshErr) {
+        isRefreshing = false
+        return Promise.reject(refreshErr)
+      }
     }
-    return Promise.reject(err);
+
+    return Promise.reject(err)
   }
-);
+)
 
 export default api;

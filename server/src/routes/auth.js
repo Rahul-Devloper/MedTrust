@@ -13,7 +13,8 @@ const {
   newAccessToken,
   verifyOtp,
   logout,
-} = require('../controllers/authController')
+} = require('../controllers/authController');
+const { refreshLimiter } = require("../middlewares/auth");
 
 // Routes
 router.post('/signup', signup)
@@ -24,7 +25,7 @@ router.post('/password/reset/verify', passwordVerify)
 router.post('/login', login)
 router.post('/verifyOtp', verifyOtp)
 router.post("/googleAuth", googleCreateOrLogin);
-router.post("/refresh_token", newAccessToken); // Generate new access token for user
+router.post("/refresh_token",refreshLimiter ,newAccessToken); // Generate new access token for user
 router.post("/logout", logout);
 
 module.exports = router;
