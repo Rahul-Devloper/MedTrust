@@ -11,7 +11,7 @@ const sendOTPEmail = async (email, otp) => {
   //   secure: false,
   // })
   const transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
+    host: 'smtp-relay.brevo.com',
     port: 587,
     secure: false, // use false for STARTTLS; true for SSL on port 465
     auth: {
@@ -21,7 +21,7 @@ const sendOTPEmail = async (email, otp) => {
   })
 
   const mailOptions = {
-    from: `MedTrust <${process.env.SUPPORT_EMAIL}>`,
+    from: `medtrust <rameshrahul26@gmail.com>`,
     to: email,
     subject: 'Your OTP Code',
     html: `<p>Hello,</p>
