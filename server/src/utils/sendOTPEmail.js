@@ -1,19 +1,11 @@
 const nodemailer = require('nodemailer')
 
 const sendOTPEmail = async (email, otp) => {
-  // const transporter = nodemailer.createTransport({
-  //   host: 'sandbox.smtp.mailtrap.io',
-  //   port: 2525,
-  //   auth: {
-  //     user: 'e9498c2661df56',
-  //     pass: '0f4933f2b27d54',
-  //   },
-  //   secure: false,
-  // })
+
   const transporter = nodemailer.createTransport({
     host: 'smtp-relay.brevo.com',
     port: 587,
-    secure: false, // use false for STARTTLS; true for SSL on port 465
+    secure: false, // use false for STARTTLS
     auth: {
       user: process.env.NODEMAILER_EMAIL,
       pass: process.env.NODEMAILER_PASSWORD,
@@ -25,18 +17,24 @@ const sendOTPEmail = async (email, otp) => {
     to: email,
     subject: 'Your OTP Code',
     html: `<p>Hello,</p>
-  <p>Your MedTrust OTP code is <strong>${otp}</strong>.</p>
-  <p>This code is valid for 10 minutes. Please do not share it with anyone.</p>
-  <br/>
-  <p>Thanks,<br/>MedTrust Team</p>`,
+      <p>Your MedTrust OTP code is <strong>${otp}</strong>.</p>
+      <p>This code is valid for 10 minutes. Please do not share it with anyone.</p>
+      <p><small>Sent at: ${new Date().toISOString()}</small></p>
+      <br/>
+      <p>Thanks,<br/>MedTrust Team</p>`,
   }
 
-  transporter.sendMail(mailOptions, function (error, info) {
-    if (error) {
-      console.log('Error:', error)
-    } else {
-      console.log('Email sent: ', info.response)
-    }
+  return new Promise((resolve, reject) => {
+    transporter.sendMail(mailOptions, (error, info) => {
+      if (error) {
+        console.error('OTP Email Error:', error)
+        return reject(error)
+      }
+      console.log(
+        `OTP "${otp}" sent to ${email} at ${new Date().toISOString()}`
+      )
+      return resolve(info)
+    })
   })
 }
 

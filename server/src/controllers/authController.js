@@ -663,60 +663,62 @@ exports.login = async (req, res, next) => {
 
   const validationErrors = []
 
-  // Validate the email and password with utils
   const emailValidationErrors = emailValidator(email)
   const passwordValidationErrors = passwordValidator(password)
 
-  if (emailValidationErrors.length) {
+  if (emailValidationErrors.length)
     validationErrors.push(...emailValidationErrors)
-  }
-
-  if (passwordValidationErrors.length) {
+  if (passwordValidationErrors.length)
     validationErrors.push(...passwordValidationErrors)
-  }
 
-  // Sends the validation error message
   if (validationErrors.length) {
-    const errorObject = {
+    return res.status(401).json({
       error: true,
       type: validationErrors,
-    }
-    res.status(401).json(errorObject)
-    return
+    })
   }
 
-  // Use passport to authenticate
   passport.authenticate('local', async (err, user, info) => {
-    if (err) {
-      return next(err)
-    }
-    if (!user) {
-      return res.send(info)
-    } else {
-      // If user is authenticated, generate and send OTP
+    if (err) return next(err)
+    if (!user) return res.send(info)
+
+    try {
       const otp = otpGenerator.generate(6, {
         upperCaseAlphabets: false,
         specialChars: false,
       })
-      const otpExpiry = Date.now() + 10 * 60 * 1000 // OTP valid for 10 minutes
+      const otpExpiry = Date.now() + 10 * 60 * 1000 // 10 mins
 
-      // Save the OTP and expiry in the user's record
       await UserService.updateUserOtp(user._id, { otp, otpExpiry })
-      console.log('OTP==>', otp)
 
-      // Send OTP to user's email
-      await sendOTPEmail(user.email, otp).catch((err) => {
-        console.error('OTP Email Error:', err)
-      })
+      //  Refetch user to confirm correct OTP before sending
+      const userAfterUpdate = await UserService.findUserById(user._id)
+      if (userAfterUpdate.otp !== otp) {
+        console.warn('OTP mismatch: something went wrong during update')
+        return res
+          .status(500)
+          .json({ error: true, message: 'Failed to send OTP. Try again.' })
+      }
+
+      //  Send email
+      await sendOTPEmail(user.email, otp)
 
       return res.status(200).json({
         message: 'OTP sent to your email, please verify to continue',
         userId: user._id,
-        otp: otp, // Send the userId to verify OTP later
       })
+      console.log(
+        `OTP: ${otp}, Expires at: ${new Date(otpExpiry).toISOString()}`
+      )
+    } catch (err) {
+      console.error('OTP Email Error:', err)
+      return res
+        .status(500)
+        .json({ error: true, message: 'Failed to send OTP. Try again.' })
     }
   })(req, res, next)
 }
+
 
 // OTP verification and login
 exports.verifyOtp = async (req, res) => {
