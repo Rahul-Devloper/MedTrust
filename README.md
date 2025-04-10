@@ -73,7 +73,17 @@ All email services handled via Nodemailer
 🌐 RESTful APIs
 
 All data and auth operations through secure JSON APIs
+![guest1](https://github.com/user-attachments/assets/b530533e-e3d1-43ef-963f-3fbe212e5e9e)
 
+![doctorProfile1](https://github.com/user-attachments/assets/bcdad360-6876-4910-acec-36380ac892d3)
+![login1](https://github.com/user-attachments/assets/c73668e9-ae43-4728-8e0e-5c529069250f)
+![reviewScreen1](https://github.com/user-attachments/assets/7e47c86c-ab94-42e9-a142-e7cf78c4c7be)
+![rating1](https://github.com/user-attachments/assets/6f47158c-5783-4395-81bc-64214549896f)
+![patientProfile1](https://github.com/user-attachments/assets/f26fe67d-8b17-4559-bee1-67bd0f07b3a8)
+![login2](https://github.com/user-attachments/assets/d3b6d7c9-132a-415f-ad7f-fbe109fc5d5e)
+
+
+![home1](https://github.com/user-attachments/assets/a30f028c-269c-4314-86ea-bb1be44da1bc)
 
 
 # Created by: Rahul-Devloper
